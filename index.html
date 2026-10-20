@@ -4,91 +4,139 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>Arcade do Zero · fliperama bartop impresso em 3D</title>
-<meta name="description" content="Monte um fliperama bartop 2 jogadores do zero: peças cortadas para a Ender 3, guia de montagem, controle de impressão e um app grátis para mandar jogos para a Raspberry Pi.">
+<meta name="description" content="Monte um fliperama bartop 2 jogadores do zero: peças cortadas para a Ender 3, guia de montagem, controle de impressão e um app grátis para mandar jogos para a Raspberry Pi pela rede.">
 <link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500&family=IBM+Plex+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500&family=IBM+Plex+Sans:wght@400;500;600;700&family=Press+Start+2P&display=swap" rel="stylesheet">
 <style>
-:root{--bg:#101113;--bg2:#16171a;--card:#1c1d20;--card2:#25262b;--line:#303237;--line2:#474950;
---txt:#f1f1ef;--mut:#c6c7c2;--dim:#a3a49f;--ok:#5fd38f;--green:#22a04b;
+:root{--bg:#0c0d0f;--bg2:#141518;--card:#1a1b1f;--card2:#232429;--line:#2b2d33;--line2:#43454c;
+--txt:#f2f3f0;--mut:#c4c6c1;--dim:#9a9c97;--green:#2ee36a;--green2:#22a04b;--glow:rgba(46,227,106,.55);
 --sans:"IBM Plex Sans",system-ui,-apple-system,"Segoe UI",Roboto,sans-serif;
---mono:"IBM Plex Mono",ui-monospace,"Cascadia Mono",Consolas,monospace}
+--mono:"IBM Plex Mono",ui-monospace,"Cascadia Mono",Consolas,monospace;
+--pix:"Press Start 2P",var(--mono)}
 *{box-sizing:border-box}
 html{scroll-behavior:smooth}
-body{margin:0;background:var(--bg);color:var(--txt);font:16px/1.6 var(--sans);-webkit-font-smoothing:antialiased}
+body{margin:0;background:var(--bg);color:var(--txt);font:16px/1.6 var(--sans);-webkit-font-smoothing:antialiased;
+background-image:radial-gradient(1100px 520px at 78% -12%,rgba(46,227,106,.10),transparent 60%),
+ radial-gradient(760px 400px at 2% 2%,rgba(46,227,106,.05),transparent 55%),
+ linear-gradient(transparent 0,transparent calc(100% - 1px),rgba(255,255,255,.018) 100%),
+ linear-gradient(90deg,transparent 0,transparent calc(100% - 1px),rgba(255,255,255,.018) 100%);
+background-size:auto,auto,34px 34px,34px 34px}
+/* faint CRT scanlines over everything */
+body::after{content:"";position:fixed;inset:0;pointer-events:none;z-index:200;opacity:.5;
+background:repeating-linear-gradient(to bottom,rgba(0,0,0,0) 0 2px,rgba(0,0,0,.035) 2px 3px)}
 a{color:inherit}
 img{max-width:100%}
 .ic{width:17px;height:17px;fill:none;stroke:currentColor;stroke-width:1.8;stroke-linecap:round;stroke-linejoin:round;flex:none}
 .wrap{max-width:1320px;margin:0 auto;padding:0 32px}
-.btn{display:inline-flex;align-items:center;gap:8px;height:42px;padding:0 18px;border:1px solid var(--line2);border-radius:4px;color:var(--txt);font-size:14.5px;font-weight:500;text-decoration:none;white-space:nowrap}
-.btn:hover{background:var(--card2)}
-.btn.primary{background:var(--txt);border-color:var(--txt);color:#111;font-weight:600}
-.btn.primary:hover{background:#fff}
+.pix{font-family:var(--pix)}
 .mono{font-family:var(--mono)}
+.gr{color:var(--green)}
+.btn{display:inline-flex;align-items:center;gap:8px;height:44px;padding:0 18px;border:1px solid var(--line2);border-radius:5px;color:var(--txt);font-size:14.5px;font-weight:500;text-decoration:none;white-space:nowrap;transition:.15s}
+.btn:hover{background:var(--card2);border-color:#5a5d66}
+.btn.primary{background:var(--green);border-color:var(--green);color:#06130a;font-weight:700;box-shadow:0 0 0 1px rgba(46,227,106,.2),0 8px 30px -8px var(--glow)}
+.btn.primary:hover{background:#43ef7c;border-color:#43ef7c;box-shadow:0 0 0 1px rgba(46,227,106,.35),0 10px 34px -6px var(--glow)}
 
-/* shared site nav (same markup as _FIT_ENDER3/deploy_site.py) */
-:root{--navh:53px}
-.sitenav{position:sticky;top:0;z-index:60;display:flex;align-items:stretch;gap:28px;height:53px;padding:0 20px;background:#101113;border-bottom:1px solid #303237;font-family:"IBM Plex Sans",system-ui,-apple-system,"Segoe UI",Roboto,sans-serif}
+/* nav */
+.sitenav{position:sticky;top:0;z-index:60;display:flex;align-items:stretch;gap:26px;height:56px;padding:0 22px;
+background:rgba(12,13,15,.82);backdrop-filter:blur(10px);border-bottom:1px solid var(--line)}
 .sitenav a{text-decoration:none}
-.sn-logo{display:flex;align-items:center;gap:10px;color:#ececea;font-size:14.5px;font-weight:600;letter-spacing:-.1px;white-space:nowrap}
-.sn-logo svg{width:22px;height:22px;fill:none;stroke:#ececea;stroke-width:1.5;stroke-linecap:round;stroke-linejoin:round}
+.sn-logo{display:flex;align-items:center;gap:11px;color:var(--txt);white-space:nowrap}
+.sn-logo svg{width:22px;height:22px;fill:none;stroke:var(--green);stroke-width:1.5;stroke-linecap:round;stroke-linejoin:round;filter:drop-shadow(0 0 5px var(--glow))}
+.sn-logo span{font:9px/1 var(--pix);letter-spacing:.5px;padding-top:2px}
 .sn-links{display:flex;align-items:stretch;gap:2px}
-.sn-links a{display:flex;align-items:center;margin-bottom:-1px;padding:0 12px;border-bottom:2px solid transparent;color:#c6c7c2;font-size:14px;font-weight:500}
-.sn-links a:hover{color:#ececea}
-.sn-links a.active{color:#ececea;border-bottom-color:#ececea}
+.sn-links a{display:flex;align-items:center;margin-bottom:-1px;padding:0 13px;border-bottom:2px solid transparent;color:var(--mut);font-size:14px;font-weight:500}
+.sn-links a:hover{color:var(--txt)}
+.sn-links a.active{color:var(--txt);border-bottom-color:var(--green)}
 .sn-dl{display:flex;align-items:center;margin-left:auto}
-.sn-dl a{display:inline-flex;align-items:center;gap:7px;height:32px;padding:0 12px;border:1px solid #474950;border-radius:4px;color:#ececea;font-size:13.5px;font-weight:500;white-space:nowrap}
-.sn-dl a:hover{background:#25262b}
+.sn-dl a{display:inline-flex;align-items:center;gap:7px;height:34px;padding:0 13px;border:1px solid var(--green2);border-radius:5px;color:var(--green);font-size:13.5px;font-weight:600;white-space:nowrap}
+.sn-dl a:hover{background:rgba(46,227,106,.08)}
 .sn-dl svg{width:15px;height:15px;fill:none;stroke:currentColor;stroke-width:1.8;stroke-linecap:round;stroke-linejoin:round}
-@media(max-width:640px){.sitenav{gap:6px;padding:0 10px}.sn-logo span,.sn-dl span{display:none}.sn-links a{padding:0 9px}}
+@media(max-width:680px){.sitenav{gap:4px;padding:0 10px}.sn-logo span,.sn-dl span{display:none}.sn-links a{padding:0 9px}}
 
 /* hero */
-.hero{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1.15fr);gap:48px;align-items:center;padding:56px 0 40px}
-.kicker{margin:0 0 18px;color:var(--dim);font:13.5px var(--mono)}
-h1{margin:0 0 18px;font-size:52px;font-weight:600;letter-spacing:-1.6px;line-height:1.06}
+.hero{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1.12fr);gap:48px;align-items:center;padding:60px 0 40px}
+.badge{display:inline-flex;align-items:center;gap:9px;margin:0 0 22px;padding:7px 13px;border:1px solid var(--line2);border-radius:999px;background:var(--card);font:8.5px/1 var(--pix);color:var(--mut);letter-spacing:.5px}
+.badge b{color:var(--green);font-weight:400}
+.dot{width:7px;height:7px;border-radius:50%;background:var(--green);box-shadow:0 0 8px var(--glow)}
+h1{margin:0 0 20px;font-size:54px;font-weight:700;letter-spacing:-1.8px;line-height:1.04}
+h1 .hl{color:var(--green);text-shadow:0 0 28px var(--glow)}
 .lead{max-width:34em;margin:0 0 28px;color:var(--mut);font-size:18px}
-.cta{display:flex;flex-wrap:wrap;gap:10px}
-.heroimg{margin:0;overflow:hidden;background:var(--card);border:1px solid var(--line);border-radius:6px;aspect-ratio:4/3}
-.heroimg img{display:block;width:100%;height:100%;object-fit:cover}
-.spec{display:grid;grid-template-columns:repeat(6,minmax(0,1fr));margin:8px 0 0;border:1px solid var(--line);border-radius:6px;background:var(--bg2)}
+.cta{display:flex;flex-wrap:wrap;gap:11px}
+/* hero screen bezel */
+.screen{position:relative;margin:0;padding:12px;border:1px solid var(--line2);border-radius:12px;
+background:linear-gradient(180deg,#1a1b1f,#111216);box-shadow:0 30px 70px -30px #000,0 0 0 1px rgba(46,227,106,.06)}
+.screen::before{content:"";position:absolute;left:50%;top:5px;transform:translateX(-50%);width:54px;height:4px;border-radius:3px;background:#2b2d33}
+.screen .glass{overflow:hidden;border-radius:7px;aspect-ratio:4/3;background:#0b0c0e;
+box-shadow:inset 0 0 60px rgba(0,0,0,.6);position:relative}
+.screen .glass img{display:block;width:100%;height:100%;object-fit:cover}
+.screen .glass::after{content:"";position:absolute;inset:0;pointer-events:none;
+background:repeating-linear-gradient(to bottom,rgba(0,0,0,0) 0 2px,rgba(0,0,0,.08) 2px 3px)}
+.spec{display:grid;grid-template-columns:repeat(6,minmax(0,1fr));margin:6px 0 0;border:1px solid var(--line);border-radius:6px;background:var(--bg2);overflow:hidden}
 .spec div{padding:14px 18px;border-right:1px solid var(--line)}
 .spec div:last-child{border-right:0}
-.spec dt{margin:0 0 4px;color:var(--dim);font-size:13px}
+.spec dt{margin:0 0 6px;color:var(--dim);font:7.5px/1.4 var(--pix);letter-spacing:.3px}
 .spec dd{margin:0;font:500 17px var(--mono)}
 
 /* sections */
-section{padding:72px 0 0}
-.shead{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1.4fr);gap:48px;align-items:end;margin-bottom:28px;padding-bottom:16px;border-bottom:1px solid var(--line)}
-h2{margin:0;font-size:30px;font-weight:600;letter-spacing:-.7px;line-height:1.15}
+section{padding:76px 0 0}
+.eyebrow{margin:0 0 14px;color:var(--green);font:9px/1 var(--pix);letter-spacing:1px}
+.shead{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1.4fr);gap:48px;align-items:end;margin-bottom:30px;padding-bottom:18px;border-bottom:1px solid var(--line)}
+h2{margin:0;font-size:32px;font-weight:700;letter-spacing:-.8px;line-height:1.12}
 .shead p{margin:0;color:var(--mut);font-size:15.5px}
 .tools{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:20px}
-.tool{display:flex;flex-direction:column}
-.shot{margin:0 0 16px;overflow:hidden;background:var(--card);border:1px solid var(--line);border-radius:6px;aspect-ratio:16/10}
+.tool{display:flex;flex-direction:column;padding:16px;border:1px solid var(--line);border-radius:8px;background:var(--card);transition:.15s}
+.tool:hover{border-color:var(--line2);transform:translateY(-2px)}
+.shot{margin:0 0 15px;overflow:hidden;background:var(--bg2);border:1px solid var(--line);border-radius:6px;aspect-ratio:16/10}
 .shot img{display:block;width:100%;height:100%;object-fit:cover;object-position:left top}
-.tool .num{color:var(--dim);font:13px var(--mono)}
-.tool h3{margin:4px 0 6px;font-size:19px;font-weight:600;letter-spacing:-.3px}
+.tool .num{color:var(--green);font:8px/1 var(--pix)}
+.tool h3{margin:9px 0 6px;font-size:19px;font-weight:600;letter-spacing:-.3px}
 .tool p{flex:1;margin:0 0 14px;color:var(--mut);font-size:15px}
-.tool .lnk{display:inline-flex;align-items:center;gap:6px;align-self:flex-start;padding-bottom:2px;border-bottom:1px solid var(--line2);font-size:14px;font-weight:500;text-decoration:none}
-.tool .lnk:hover{border-bottom-color:var(--txt)}
+.tool .lnk{display:inline-flex;align-items:center;gap:6px;align-self:flex-start;padding-bottom:2px;border-bottom:1px solid var(--line2);font-size:14px;font-weight:600;color:var(--green);text-decoration:none}
+.tool .lnk:hover{border-bottom-color:var(--green)}
 .flow{display:flex;flex-direction:column;align-items:center;justify-content:center;height:100%;padding:16px;background:var(--bg2)}
-.flow .node{display:flex;align-items:baseline;justify-content:space-between;gap:12px;width:min(290px,100%);padding:9px 14px;border:1px solid var(--line2);border-radius:4px;background:var(--card);font-size:13px;line-height:1.3}
+.flow .node{display:flex;align-items:baseline;justify-content:space-between;gap:12px;width:min(290px,100%);padding:10px 14px;border:1px solid var(--line2);border-radius:5px;background:var(--card);font-size:13px;line-height:1.3}
 .flow .node b{font-weight:600}
 .flow .node span{color:var(--dim);font:12px var(--mono)}
 .flow .link{position:relative;flex:none;width:1px;height:26px}
-.flow .link::before{content:"";position:absolute;inset:0;background:var(--line2)}
-.flow .link::after{content:"";position:absolute;left:-3px;bottom:0;width:6px;height:6px;border-right:1px solid var(--mut);border-bottom:1px solid var(--mut);transform:rotate(45deg)}
-.flow .link em{position:absolute;left:12px;top:50%;transform:translateY(-50%);color:var(--dim);font:12px var(--mono);font-style:normal;white-space:nowrap}
+.flow .link::before{content:"";position:absolute;inset:0;background:var(--green2)}
+.flow .link::after{content:"";position:absolute;left:-3px;bottom:0;width:6px;height:6px;border-right:1px solid var(--green);border-bottom:1px solid var(--green);transform:rotate(45deg)}
+.flow .link em{position:absolute;left:12px;top:50%;transform:translateY(-50%);color:var(--green);font:11px var(--mono);font-style:normal;white-space:nowrap}
+
+/* bot section (WiFi) */
+.bot{display:grid;grid-template-columns:minmax(0,1.05fr) minmax(0,1fr);gap:44px;align-items:center;
+padding:34px 36px;background:linear-gradient(140deg,#15211a,#121317 60%);border:1px solid var(--line2);border-radius:12px;
+box-shadow:0 0 0 1px rgba(46,227,106,.05),0 30px 60px -40px var(--glow)}
+.bot h2{font-size:30px}
+.bot .eyebrow{margin-bottom:12px}
+.bot ol{counter-reset:s;list-style:none;margin:18px 0 22px;padding:0;display:grid;gap:12px}
+.bot ol li{position:relative;padding-left:40px;color:var(--mut);font-size:15px}
+.bot ol li b{color:var(--txt);font-weight:600}
+.bot ol li::before{counter-increment:s;content:counter(s);position:absolute;left:0;top:-1px;width:26px;height:26px;
+display:flex;align-items:center;justify-content:center;border-radius:6px;background:rgba(46,227,106,.12);
+border:1px solid var(--green2);color:var(--green);font:9px/1 var(--pix)}
+/* network diagram */
+.net{display:flex;flex-direction:column;gap:0;padding:22px;background:#0d0e10;border:1px solid var(--line);border-radius:10px}
+.net .dev{display:flex;align-items:center;gap:14px;padding:14px 16px;border:1px solid var(--line2);border-radius:8px;background:var(--card)}
+.net .dev svg{width:30px;height:30px;color:var(--green);flex:none}
+.net .dev .t{font-weight:600;font-size:15px}
+.net .dev .s{color:var(--dim);font:12px var(--mono)}
+.net .wifi{display:flex;flex-direction:column;align-items:center;gap:4px;padding:12px 0;color:var(--green);font:9px/1 var(--pix);letter-spacing:.5px}
+.net .wifi svg{width:26px;height:26px;animation:pulse 2.2s ease-in-out infinite}
+@keyframes pulse{0%,100%{opacity:.5;transform:translateY(0)}50%{opacity:1;transform:translateY(-2px)}}
+
+/* steps */
 .steps{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:0;margin:0;padding:0;list-style:none;border-top:1px solid var(--line2)}
 .steps li{position:relative;padding:22px 24px 0 0}
-.steps li::before{content:"";position:absolute;top:-4px;left:0;width:7px;height:7px;border-radius:50%;background:var(--txt)}
-.steps .num{color:var(--dim);font:13px var(--mono)}
-.steps h4{margin:4px 0 6px;font-size:17px;font-weight:600}
+.steps li::before{content:"";position:absolute;top:-4px;left:0;width:8px;height:8px;border-radius:50%;background:var(--green);box-shadow:0 0 8px var(--glow)}
+.steps .num{color:var(--green);font:8px/1 var(--pix)}
+.steps h4{margin:10px 0 6px;font-size:17px;font-weight:600}
 .steps p{margin:0;color:var(--mut);font-size:15px}
 .views{display:grid;grid-template-columns:1fr 1fr;gap:20px}
-.views figure{margin:0;overflow:hidden;background:var(--card);border:1px solid var(--line);border-radius:6px}
+.views figure{margin:0;overflow:hidden;background:var(--card);border:1px solid var(--line);border-radius:8px}
 .views img{display:block;width:100%;aspect-ratio:4/3;object-fit:cover}
-.views figcaption{padding:10px 14px;border-top:1px solid var(--line);color:var(--mut);font-size:13.5px}
-.dl{display:grid;grid-template-columns:minmax(0,1.2fr) minmax(0,1fr);gap:40px;align-items:center;padding:32px 36px;background:var(--bg2);border:1px solid var(--line);border-radius:6px}
-.dl p{margin:8px 0 0;color:var(--mut);font-size:15.5px}
+.views figcaption{padding:11px 15px;border-top:1px solid var(--line);color:var(--mut);font-size:13.5px}
+.dl{display:grid;grid-template-columns:minmax(0,1.2fr) minmax(0,1fr);gap:40px;align-items:center;padding:34px 36px;background:var(--bg2);border:1px solid var(--line);border-radius:10px}
+.dl p{margin:10px 0 0;color:var(--mut);font-size:15.5px}
 .dl .cta{justify-content:flex-end}
 .dl small{display:block;margin-top:14px;color:var(--dim);font-size:13px}
 .dl small a{text-decoration:underline;text-underline-offset:2px}
@@ -96,50 +144,52 @@ h2{margin:0;font-size:30px;font-weight:600;letter-spacing:-.7px;line-height:1.15
 .faq div{padding:18px 0;border-bottom:1px solid var(--line)}
 .faq h4{margin:0 0 6px;font-size:16px;font-weight:600}
 .faq p{margin:0;color:var(--mut);font-size:15px}
-footer{display:flex;flex-wrap:wrap;justify-content:space-between;gap:12px;margin-top:80px;padding:26px 32px;border-top:1px solid var(--line);color:var(--dim);font-size:13.5px}
+footer{display:flex;flex-wrap:wrap;justify-content:space-between;gap:12px;margin-top:84px;padding:28px 32px;border-top:1px solid var(--line);color:var(--dim);font-size:13.5px}
 footer a{color:var(--mut);text-decoration:none}
 footer a:hover{color:var(--txt)}
 @media(max-width:1100px){.spec{grid-template-columns:repeat(3,minmax(0,1fr))}.spec div:nth-child(3){border-right:0}.spec div:nth-child(-n+3){border-bottom:1px solid var(--line)}}
 @media(max-width:900px){
   .wrap{padding:0 18px}
-  .hero,.shead,.dl{grid-template-columns:1fr;gap:24px}
-  .hero{padding:32px 0 24px}
-  h1{font-size:38px}
+  .hero,.shead,.dl,.bot{grid-template-columns:1fr;gap:26px}
+  .hero{padding:34px 0 24px}
+  h1{font-size:40px}
   .tools,.views,.faq{grid-template-columns:1fr}
   .steps{grid-template-columns:1fr 1fr;row-gap:28px}
-  .dl{padding:24px 20px}
+  .dl,.bot{padding:24px 20px}
   .dl .cta{justify-content:flex-start}
 }
-@media(max-width:560px){.spec{grid-template-columns:1fr 1fr}.spec div{border-right:0;border-bottom:1px solid var(--line)}.steps{grid-template-columns:1fr}}
+@media(max-width:560px){.spec{grid-template-columns:1fr 1fr}.spec div{border-right:0;border-bottom:1px solid var(--line)}.steps{grid-template-columns:1fr}h1{font-size:34px}}
 </style>
 </head>
 <body>
 <svg width="0" height="0" style="position:absolute" aria-hidden="true"><defs>
 <symbol id="i-down" viewBox="0 0 24 24"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></symbol>
 <symbol id="i-arrow" viewBox="0 0 24 24"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></symbol>
+<symbol id="i-pc" viewBox="0 0 24 24"><rect x="2" y="3" width="20" height="14" rx="2"/><path d="M8 21h8M12 17v4"/></symbol>
+<symbol id="i-wifi" viewBox="0 0 24 24"><path d="M5 12.5a10 10 0 0 1 14 0"/><path d="M8.5 16a5 5 0 0 1 7 0"/><line x1="12" y1="19.5" x2="12.01" y2="19.5"/></symbol>
+<symbol id="i-pi" viewBox="0 0 24 24"><rect x="3" y="6" width="18" height="12" rx="2"/><path d="M7 10h.01M7 14h.01M11 10h6M11 14h6"/></symbol>
 </defs></svg>
 
-<nav class="sitenav"><a class="sn-logo" href="index.html"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M6 3h12v6l-1.5 3H19v9H5v-9h2.5L6 9z"/><rect x="8" y="4.8" width="8" height="2.4"/><path d="M8.2 12h7.6"/><circle cx="9" cy="16" r=".9"/><circle cx="12" cy="16" r=".9"/><circle cx="15" cy="16" r=".9"/></svg><span>Arcade do Zero</span></a><div class="sn-links"><a href="index.html" class="active">Início</a><a href="guia.html">Guia</a><a href="controle.html">Controle</a></div><div class="sn-dl"><a href="https://github.com/lucasdcorrea1/arcade-do-zero/releases/latest/download/RetroPie-ROM-Sender-portable.exe"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg><span>Baixar app</span></a></div></nav>
+<nav class="sitenav"><a class="sn-logo" href="index.html"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M6 3h12v6l-1.5 3H19v9H5v-9h2.5L6 9z"/><rect x="8" y="4.8" width="8" height="2.4"/><path d="M8.2 12h7.6"/><circle cx="9" cy="16" r=".9"/><circle cx="12" cy="16" r=".9"/><circle cx="15" cy="16" r=".9"/></svg><span>ARCADE DO ZERO</span></a><div class="sn-links"><a href="index.html" class="active">Início</a><a href="guia.html">Guia</a><a href="controle.html">Controle</a><a href="app.html">App</a></div><div class="sn-dl"><a href="https://github.com/lucasdcorrea1/arcade-do-zero/releases/latest/download/RetroPie-ROM-Sender-portable.exe"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg><span>Baixar app</span></a></div></nav>
 
 <header class="wrap">
   <div class="hero">
     <div>
-      <p class="kicker">projeto aberto · bartop 2 jogadores · Ender 3</p>
-      <h1>Monte um fliperama de verdade, impresso na sua Ender 3.</h1>
-      <p class="lead">Peças já cortadas para caber na mesa de 220&nbsp;mm, guia de montagem em 8 etapas, um controle para acompanhar as 300&nbsp;h de impressão e um app que manda os jogos para a Raspberry Pi. Tudo grátis.</p>
+      <span class="badge"><span class="dot"></span>PROJETO ABERTO <b>·</b> 100% GRÁTIS</span>
+      <h1>Monte um fliperama <span class="hl">de verdade</span>, impresso na sua Ender 3.</h1>
+      <p class="lead">Peças já cortadas para caber na mesa de 220&nbsp;mm, guia de montagem em 8 etapas, um controle para acompanhar as 300&nbsp;h de impressão e um app que manda os jogos para a Raspberry Pi <b>pela rede WiFi</b>.</p>
       <div class="cta">
         <a href="guia.html" class="btn primary">Ver o guia de montagem</a>
-        <a href="controle.html" class="btn">Controle de impressão</a>
-        <a href="#download" class="btn"><svg class="ic"><use href="#i-down"/></svg>Baixar o app</a>
+        <a href="app.html" class="btn"><svg class="ic"><use href="#i-wifi"/></svg>Como atualizar jogos</a>
       </div>
     </div>
-    <figure class="heroimg"><img src="assets/cabinet_iso.png" alt="Fliperama bartop montado, vista 3/4"></figure>
+    <figure class="screen"><div class="glass"><img src="assets/cabinet_iso.png" alt="Fliperama bartop montado, vista 3/4"></div></figure>
   </div>
   <dl class="spec">
     <div><dt>Peças</dt><dd>230</dd></div>
-    <div><dt>Mesa</dt><dd>220 × 220 mm</dd></div>
+    <div><dt>Mesa</dt><dd>220×220</dd></div>
     <div><dt>Material</dt><dd>PLA</dd></div>
-    <div><dt>Cores</dt><dd>verde + preto</dd></div>
+    <div><dt>Cores</dt><dd>verde+preto</dd></div>
     <div><dt>Montagem</dt><dd>8 etapas</dd></div>
     <div><dt>Jogadores</dt><dd>2</dd></div>
   </dl>
@@ -149,7 +199,7 @@ footer a:hover{color:var(--txt)}
 
 <section id="oque">
   <div class="shead">
-    <h2>Três ferramentas, da impressora ao jogo rodando</h2>
+    <div><p class="eyebrow">O QUE VOCÊ RECEBE</p><h2>Três ferramentas, da impressora ao jogo rodando</h2></div>
     <p>Cada uma resolve uma parte do caminho: imprimir sem se perder, montar na ordem certa e colocar os jogos no fliperama.</p>
   </div>
   <div class="tools">
@@ -172,20 +222,45 @@ footer a:hover{color:var(--txt)}
         <div class="node"><b>Site de ROM</b><span>download</span></div>
         <div class="link"><em>intercepta</em></div>
         <div class="node"><b>ROM Sender</b><span>Windows</span></div>
-        <div class="link"><em>SFTP</em></div>
+        <div class="link"><em>WiFi · SFTP</em></div>
         <div class="node"><b>RetroPie</b><span>pasta do emulador</span></div>
       </div></figure>
       <span class="num">03</span>
       <h3>App RetroPie ROM Sender</h3>
-      <p>Programa para Windows que pega o jogo que você baixou e envia pela rede para a Raspberry Pi, já na pasta certa do emulador, com capa. Sem terminal.</p>
-      <a class="lnk" href="#download">Baixar o app <svg class="ic"><use href="#i-arrow"/></svg></a>
+      <p>Programa para Windows que pega o jogo que você baixou e envia pela rede para a Raspberry Pi, já na pasta certa do emulador, com capa. Sem terminal, sem FileZilla.</p>
+      <a class="lnk" href="app.html">Ver como funciona <svg class="ic"><use href="#i-arrow"/></svg></a>
+    </div>
+  </div>
+</section>
+
+<section id="bot">
+  <div class="bot">
+    <div>
+      <p class="eyebrow">ATUALIZAR JOGOS PELO WIFI</p>
+      <h2>Jogos novos no fliperama <span class="gr">sem tirar o cartão</span></h2>
+      <p class="lead" style="margin-bottom:0;font-size:16px">Com o fliperama na estante e a Raspberry Pi ligada, você adiciona jogos do seu PC pela mesma rede WiFi — nada de desmontar nada ou mexer no terminal da Pi.</p>
+      <ol>
+        <li>Você <b>navega e baixa</b> o jogo no site de ROM, dentro do navegador do app.</li>
+        <li>O app <b>intercepta</b> o arquivo e detecta o emulador certo pela URL.</li>
+        <li>Envia pela rede por <b>SFTP</b> direto para <span class="mono">~/RetroPie/roms</span> na Pi.</li>
+        <li>Reinicia o EmulationStation e o jogo <b>aparece na hora</b> — já com a capa.</li>
+      </ol>
+      <div class="cta">
+        <a href="app.html" class="btn primary">Saiba mais sobre o app</a>
+        <a href="https://github.com/lucasdcorrea1/arcade-do-zero/releases/latest/download/RetroPie-ROM-Sender-portable.exe" class="btn"><svg class="ic"><use href="#i-down"/></svg>Baixar agora</a>
+      </div>
+    </div>
+    <div class="net">
+      <div class="dev"><svg class="ic"><use href="#i-pc"/></svg><div><div class="t">Seu PC (Windows)</div><div class="s">RetroPie ROM Sender</div></div></div>
+      <div class="wifi"><svg class="ic"><use href="#i-wifi"/></svg>REDE WIFI · SFTP</div>
+      <div class="dev"><svg class="ic"><use href="#i-pi"/></svg><div><div class="t">Raspberry Pi</div><div class="s">RetroPie · ~/RetroPie/roms</div></div></div>
     </div>
   </div>
 </section>
 
 <section id="como">
   <div class="shead">
-    <h2>Quatro passos até jogar</h2>
+    <div><p class="eyebrow">COMO FUNCIONA</p><h2>Quatro passos até jogar</h2></div>
     <p>O caminho completo, do primeiro STL ao primeiro "insert coin".</p>
   </div>
   <ol class="steps">
@@ -206,6 +281,7 @@ footer a:hover{color:var(--txt)}
 <section id="download">
   <div class="dl">
     <div>
+      <p class="eyebrow" style="margin-bottom:10px">DOWNLOAD · GRÁTIS</p>
       <h2>RetroPie ROM Sender</h2>
       <p>Envia ROMs para a sua RetroPie pela rede (SFTP), direto na pasta certa do emulador. Baixe a versão portátil, que roda sem instalar, ou o instalador.</p>
       <small>Windows 64-bit · sempre a versão mais recente · <a href="https://github.com/lucasdcorrea1/arcade-do-zero/releases">ver versões</a> · código aberto, sem conta e sem rastreio: <a href="https://github.com/lucasdcorrea1/arcade-games-setup/tree/main/desktop-app">ver o código</a></small>
@@ -219,7 +295,7 @@ footer a:hover{color:var(--txt)}
 
 <section id="faq">
   <div class="shead">
-    <h2>Perguntas frequentes</h2>
+    <div><p class="eyebrow">DÚVIDAS</p><h2>Perguntas frequentes</h2></div>
     <p>O que costuma aparecer antes de começar.</p>
   </div>
   <div class="faq">
@@ -227,7 +303,7 @@ footer a:hover{color:var(--txt)}
     <div><h4>Quanto tempo leva para imprimir?</h4><p>São mais de 300&nbsp;h de impressão no total. É para isso que existe o controle: você marca o progresso, as falhas e as horas de cada peça.</p></div>
     <div><h4>Preciso imprimir colorido?</h4><p>Não é obrigatório, mas o modelo é bicolor (verde + preto) e fica bem melhor em duas cores. O controle mostra a cor de cada peça e filtra por cor, para você imprimir uma cor de cada vez.</p></div>
     <div><h4>É realmente grátis?</h4><p>Sim. O guia, o controle e o app são gratuitos. O gasto é o filamento e o hardware: tela, botões e Raspberry Pi.</p></div>
-    <div><h4>O que o app do emulador faz?</h4><p>Ele pega o arquivo que você baixa num site de ROM e envia direto para a RetroPie por SFTP, na pasta certa do emulador, sem precisar mexer no terminal.</p></div>
+    <div><h4>Como coloco jogos no fliperama?</h4><p>Pelo app, na mesma rede WiFi: ele manda o jogo do seu PC direto para a Raspberry Pi e o jogo aparece na hora. <a href="app.html" style="color:var(--green)">Veja a página do app</a>.</p></div>
     <div><h4>Posso abrir as peças direto no fatiador?</h4><p>Sim. No controle, cada peça tem o botão "Abrir no Orca", que abre o STL no OrcaSlicer depois de rodar uma vez o instalador do atalho.</p></div>
   </div>
 </section>
@@ -236,7 +312,7 @@ footer a:hover{color:var(--txt)}
 
 <footer>
   <span>Arcade do Zero · projeto aberto · 2026</span>
-  <span><a href="guia.html">Guia</a> · <a href="controle.html">Controle</a> · <a href="https://github.com/lucasdcorrea1/arcade-do-zero">GitHub</a></span>
+  <span><a href="guia.html">Guia</a> · <a href="controle.html">Controle</a> · <a href="app.html">App</a> · <a href="https://github.com/lucasdcorrea1/arcade-do-zero">GitHub</a></span>
 </footer>
 </body>
 </html>

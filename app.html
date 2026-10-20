@@ -1,0 +1,269 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>RetroPie ROM Sender · atualize os jogos do fliperama pelo WiFi</title>
+<meta name="description" content="App grátis para Windows que envia jogos (ROMs) do seu PC direto para a Raspberry Pi pela rede WiFi (SFTP), na pasta certa do emulador do RetroPie. Sem terminal, sem FileZilla. Código aberto.">
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500&family=IBM+Plex+Sans:wght@400;500;600;700&family=Press+Start+2P&display=swap" rel="stylesheet">
+<style>
+:root{--bg:#0c0d0f;--bg2:#141518;--card:#1a1b1f;--card2:#232429;--line:#2b2d33;--line2:#43454c;
+--txt:#f2f3f0;--mut:#c4c6c1;--dim:#9a9c97;--green:#2ee36a;--green2:#22a04b;--glow:rgba(46,227,106,.55);
+--sans:"IBM Plex Sans",system-ui,-apple-system,"Segoe UI",Roboto,sans-serif;
+--mono:"IBM Plex Mono",ui-monospace,"Cascadia Mono",Consolas,monospace;
+--pix:"Press Start 2P",var(--mono)}
+*{box-sizing:border-box}
+html{scroll-behavior:smooth}
+body{margin:0;background:var(--bg);color:var(--txt);font:16px/1.6 var(--sans);-webkit-font-smoothing:antialiased;
+background-image:radial-gradient(1100px 520px at 80% -12%,rgba(46,227,106,.10),transparent 60%),
+ radial-gradient(760px 400px at 2% 2%,rgba(46,227,106,.05),transparent 55%),
+ linear-gradient(transparent 0,transparent calc(100% - 1px),rgba(255,255,255,.018) 100%),
+ linear-gradient(90deg,transparent 0,transparent calc(100% - 1px),rgba(255,255,255,.018) 100%);
+background-size:auto,auto,34px 34px,34px 34px}
+body::after{content:"";position:fixed;inset:0;pointer-events:none;z-index:200;opacity:.5;
+background:repeating-linear-gradient(to bottom,rgba(0,0,0,0) 0 2px,rgba(0,0,0,.035) 2px 3px)}
+a{color:inherit}
+.ic{width:17px;height:17px;fill:none;stroke:currentColor;stroke-width:1.8;stroke-linecap:round;stroke-linejoin:round;flex:none}
+.wrap{max-width:1100px;margin:0 auto;padding:0 32px}
+.pix{font-family:var(--pix)}
+.mono{font-family:var(--mono)}
+.gr{color:var(--green)}
+.btn{display:inline-flex;align-items:center;gap:8px;height:44px;padding:0 18px;border:1px solid var(--line2);border-radius:5px;color:var(--txt);font-size:14.5px;font-weight:500;text-decoration:none;white-space:nowrap;transition:.15s}
+.btn:hover{background:var(--card2);border-color:#5a5d66}
+.btn.primary{background:var(--green);border-color:var(--green);color:#06130a;font-weight:700;box-shadow:0 0 0 1px rgba(46,227,106,.2),0 8px 30px -8px var(--glow)}
+.btn.primary:hover{background:#43ef7c}
+.sitenav{position:sticky;top:0;z-index:60;display:flex;align-items:stretch;gap:26px;height:56px;padding:0 22px;
+background:rgba(12,13,15,.82);backdrop-filter:blur(10px);border-bottom:1px solid var(--line)}
+.sitenav a{text-decoration:none}
+.sn-logo{display:flex;align-items:center;gap:11px;color:var(--txt);white-space:nowrap}
+.sn-logo svg{width:22px;height:22px;fill:none;stroke:var(--green);stroke-width:1.5;stroke-linecap:round;stroke-linejoin:round;filter:drop-shadow(0 0 5px var(--glow))}
+.sn-logo span{font:9px/1 var(--pix);letter-spacing:.5px;padding-top:2px}
+.sn-links{display:flex;align-items:stretch;gap:2px}
+.sn-links a{display:flex;align-items:center;margin-bottom:-1px;padding:0 13px;border-bottom:2px solid transparent;color:var(--mut);font-size:14px;font-weight:500}
+.sn-links a:hover{color:var(--txt)}
+.sn-links a.active{color:var(--txt);border-bottom-color:var(--green)}
+.sn-dl{display:flex;align-items:center;margin-left:auto}
+.sn-dl a{display:inline-flex;align-items:center;gap:7px;height:34px;padding:0 13px;border:1px solid var(--green2);border-radius:5px;color:var(--green);font-size:13.5px;font-weight:600;white-space:nowrap}
+.sn-dl a:hover{background:rgba(46,227,106,.08)}
+.sn-dl svg{width:15px;height:15px;fill:none;stroke:currentColor;stroke-width:1.8;stroke-linecap:round;stroke-linejoin:round}
+@media(max-width:680px){.sitenav{gap:4px;padding:0 10px}.sn-logo span,.sn-dl span{display:none}.sn-links a{padding:0 9px}}
+
+.eyebrow{margin:0 0 14px;color:var(--green);font:9px/1 var(--pix);letter-spacing:1px}
+/* hero */
+.hero{padding:62px 0 20px;max-width:760px}
+.badge{display:inline-flex;align-items:center;gap:9px;margin:0 0 22px;padding:7px 13px;border:1px solid var(--line2);border-radius:999px;background:var(--card);font:8.5px/1 var(--pix);color:var(--mut);letter-spacing:.5px}
+.badge b{color:var(--green);font-weight:400}
+.dot{width:7px;height:7px;border-radius:50%;background:var(--green);box-shadow:0 0 8px var(--glow)}
+h1{margin:0 0 20px;font-size:46px;font-weight:700;letter-spacing:-1.4px;line-height:1.07}
+h1 .hl{color:var(--green);text-shadow:0 0 28px var(--glow)}
+.lead{margin:0 0 26px;color:var(--mut);font-size:18px}
+.cta{display:flex;flex-wrap:wrap;gap:11px}
+/* network diagram */
+.net{display:grid;grid-template-columns:1fr auto 1fr;align-items:center;gap:14px;margin:36px 0 0;padding:26px;background:#0d0e10;border:1px solid var(--line);border-radius:12px}
+.net .dev{display:flex;align-items:center;gap:14px;padding:16px;border:1px solid var(--line2);border-radius:9px;background:var(--card)}
+.net .dev svg{width:32px;height:32px;color:var(--green);flex:none}
+.net .dev .t{font-weight:600;font-size:15px}
+.net .dev .s{color:var(--dim);font:12px var(--mono)}
+.net .wifi{display:flex;flex-direction:column;align-items:center;gap:6px;color:var(--green);font:8px/1.4 var(--pix);letter-spacing:.5px;text-align:center}
+.net .wifi svg{width:28px;height:28px;animation:pulse 2.2s ease-in-out infinite}
+@keyframes pulse{0%,100%{opacity:.5}50%{opacity:1}}
+
+section{padding:70px 0 0}
+.shead{margin-bottom:30px;padding-bottom:18px;border-bottom:1px solid var(--line)}
+h2{margin:0;font-size:30px;font-weight:700;letter-spacing:-.7px;line-height:1.14}
+.shead p{margin:10px 0 0;color:var(--mut);font-size:15.5px;max-width:52em}
+/* flow steps (numbered big) */
+.flowsteps{display:grid;grid-template-columns:repeat(4,1fr);gap:16px;counter-reset:f}
+.flowsteps .fs{position:relative;padding:20px;border:1px solid var(--line);border-radius:9px;background:var(--card)}
+.flowsteps .fs::before{counter-increment:f;content:counter(f);display:flex;align-items:center;justify-content:center;width:30px;height:30px;margin-bottom:12px;border-radius:7px;background:rgba(46,227,106,.12);border:1px solid var(--green2);color:var(--green);font:10px/1 var(--pix)}
+.flowsteps .fs h4{margin:0 0 6px;font-size:16px;font-weight:600}
+.flowsteps .fs p{margin:0;color:var(--mut);font-size:14px}
+.flowsteps .fs .mono{display:block;margin-top:8px;color:var(--green);font-size:12px}
+/* feature grid (tabs) */
+.feats{display:grid;grid-template-columns:repeat(2,1fr);gap:16px}
+.feat{display:flex;gap:16px;padding:20px;border:1px solid var(--line);border-radius:9px;background:var(--card)}
+.feat .fi{flex:none;width:44px;height:44px;display:flex;align-items:center;justify-content:center;border-radius:9px;background:rgba(46,227,106,.1);border:1px solid var(--green2);color:var(--green)}
+.feat .fi svg{width:22px;height:22px}
+.feat h3{margin:2px 0 6px;font-size:17px;font-weight:600}
+.feat p{margin:0;color:var(--mut);font-size:14.5px}
+.feat .tag{display:inline-block;margin-top:9px;padding:3px 8px;border:1px solid var(--line2);border-radius:4px;color:var(--dim);font:11px var(--mono)}
+/* requirements */
+.reqs{display:grid;grid-template-columns:repeat(3,1fr);gap:16px}
+.req{padding:20px;border:1px solid var(--line);border-radius:9px;background:var(--bg2)}
+.req .num{color:var(--green);font:8px/1 var(--pix)}
+.req h4{margin:10px 0 6px;font-size:16px;font-weight:600}
+.req p{margin:0;color:var(--mut);font-size:14px}
+/* trust */
+.trust{display:grid;grid-template-columns:repeat(2,1fr);gap:14px;margin-bottom:20px}
+.trust li{display:flex;gap:13px;padding:16px 18px;border:1px solid var(--line);border-radius:9px;background:var(--card);list-style:none}
+.trust li svg{width:20px;height:20px;color:var(--green);flex:none;margin-top:2px}
+.trust b{display:block;font-size:15px;margin-bottom:2px}
+.trust span{color:var(--mut);font-size:14px}
+.trust{padding:0;margin-top:0}
+ul.trust{margin:0 0 20px}
+.note{display:flex;gap:14px;padding:18px 20px;border:1px solid var(--line2);border-left:3px solid var(--green);border-radius:8px;background:var(--bg2)}
+.note svg{width:20px;height:20px;color:var(--green);flex:none;margin-top:2px}
+.note p{margin:0;color:var(--mut);font-size:14.5px}
+.note b{color:var(--txt)}
+.dl{display:grid;grid-template-columns:minmax(0,1.2fr) minmax(0,1fr);gap:40px;align-items:center;margin-top:16px;padding:34px 36px;background:var(--bg2);border:1px solid var(--line);border-radius:10px}
+.dl p{margin:10px 0 0;color:var(--mut);font-size:15.5px}
+.dl .cta{justify-content:flex-end}
+.dl small{display:block;margin-top:14px;color:var(--dim);font-size:13px}
+.dl small a{text-decoration:underline;text-underline-offset:2px}
+footer{display:flex;flex-wrap:wrap;justify-content:space-between;gap:12px;margin-top:84px;padding:28px 32px;border-top:1px solid var(--line);color:var(--dim);font-size:13.5px}
+footer a{color:var(--mut);text-decoration:none}
+footer a:hover{color:var(--txt)}
+@media(max-width:900px){
+  .wrap{padding:0 18px}
+  h1{font-size:34px}
+  .net{grid-template-columns:1fr;text-align:left}
+  .net .wifi{flex-direction:row;justify-content:center}
+  .net .wifi svg{transform:rotate(90deg)}
+  .flowsteps,.feats,.reqs,.trust,ul.trust,.dl{grid-template-columns:1fr}
+  .dl{padding:24px 20px}.dl .cta{justify-content:flex-start}
+}
+</style>
+</head>
+<body>
+<svg width="0" height="0" style="position:absolute" aria-hidden="true"><defs>
+<symbol id="i-down" viewBox="0 0 24 24"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></symbol>
+<symbol id="i-pc" viewBox="0 0 24 24"><rect x="2" y="3" width="20" height="14" rx="2"/><path d="M8 21h8M12 17v4"/></symbol>
+<symbol id="i-wifi" viewBox="0 0 24 24"><path d="M5 12.5a10 10 0 0 1 14 0"/><path d="M8.5 16a5 5 0 0 1 7 0"/><line x1="12" y1="19.5" x2="12.01" y2="19.5"/></symbol>
+<symbol id="i-pi" viewBox="0 0 24 24"><rect x="3" y="6" width="18" height="12" rx="2"/><path d="M7 10h.01M7 14h.01M11 10h6M11 14h6"/></symbol>
+<symbol id="i-globe" viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><path d="M3 12h18M12 3a14 14 0 0 1 0 18M12 3a14 14 0 0 0 0 18"/></symbol>
+<symbol id="i-grid" viewBox="0 0 24 24"><rect x="3" y="3" width="7" height="7"/><rect x="14" y="3" width="7" height="7"/><rect x="3" y="14" width="7" height="7"/><rect x="14" y="14" width="7" height="7"/></symbol>
+<symbol id="i-image" viewBox="0 0 24 24"><rect x="3" y="3" width="18" height="18" rx="2"/><circle cx="9" cy="9" r="1.6"/><path d="m21 15-5-5L5 21"/></symbol>
+<symbol id="i-sliders" viewBox="0 0 24 24"><line x1="4" y1="21" x2="4" y2="14"/><line x1="4" y1="10" x2="4" y2="3"/><line x1="12" y1="21" x2="12" y2="12"/><line x1="12" y1="8" x2="12" y2="3"/><line x1="20" y1="21" x2="20" y2="16"/><line x1="20" y1="12" x2="20" y2="3"/><circle cx="4" cy="12" r="2"/><circle cx="12" cy="10" r="2"/><circle cx="20" cy="14" r="2"/></symbol>
+<symbol id="i-code" viewBox="0 0 24 24"><polyline points="16 18 22 12 16 6"/><polyline points="8 6 2 12 8 18"/></symbol>
+<symbol id="i-shield" viewBox="0 0 24 24"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/><polyline points="9 12 11 14 15 10"/></symbol>
+<symbol id="i-eye" viewBox="0 0 24 24"><path d="M1 12s4-7 11-7 11 7 11 7-4 7-11 7-11-7-11-7z"/><circle cx="12" cy="12" r="3"/></symbol>
+<symbol id="i-lock" viewBox="0 0 24 24"><rect x="3" y="11" width="18" height="11" rx="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></symbol>
+<symbol id="i-alert" viewBox="0 0 24 24"><path d="M10.3 3.9 1.8 18a2 2 0 0 0 1.7 3h17a2 2 0 0 0 1.7-3L13.7 3.9a2 2 0 0 0-3.4 0z"/><line x1="12" y1="9" x2="12" y2="13"/><line x1="12" y1="17" x2="12.01" y2="17"/></symbol>
+</defs></svg>
+
+<nav class="sitenav"><a class="sn-logo" href="index.html"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M6 3h12v6l-1.5 3H19v9H5v-9h2.5L6 9z"/><rect x="8" y="4.8" width="8" height="2.4"/><path d="M8.2 12h7.6"/><circle cx="9" cy="16" r=".9"/><circle cx="12" cy="16" r=".9"/><circle cx="15" cy="16" r=".9"/></svg><span>ARCADE DO ZERO</span></a><div class="sn-links"><a href="index.html">Início</a><a href="guia.html">Guia</a><a href="controle.html">Controle</a><a href="app.html" class="active">App</a></div><div class="sn-dl"><a href="https://github.com/lucasdcorrea1/arcade-do-zero/releases/latest/download/RetroPie-ROM-Sender-portable.exe"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg><span>Baixar app</span></a></div></nav>
+
+<header class="wrap">
+  <div class="hero">
+    <span class="badge"><span class="dot"></span>WINDOWS <b>·</b> CÓDIGO ABERTO <b>·</b> GRÁTIS</span>
+    <h1>Atualize os jogos do fliperama <span class="hl">pelo WiFi</span>.</h1>
+    <p class="lead">O <b>RetroPie ROM Sender</b> é um app para Windows que pega o jogo que você baixou e manda direto para a Raspberry Pi pela rede, já na pasta certa do emulador — e com a capa. Nada de cartão SD, FileZilla ou terminal.</p>
+    <div class="cta">
+      <a href="https://github.com/lucasdcorrea1/arcade-do-zero/releases/latest/download/RetroPie-ROM-Sender-portable.exe" class="btn primary"><svg class="ic"><use href="#i-down"/></svg>Baixar portátil</a>
+      <a href="https://github.com/lucasdcorrea1/arcade-do-zero/releases/latest/download/RetroPie-ROM-Sender-Setup.exe" class="btn"><svg class="ic"><use href="#i-down"/></svg>Instalador (.exe)</a>
+    </div>
+  </div>
+  <div class="wrap" style="padding:0">
+    <div class="net">
+      <div class="dev"><svg class="ic"><use href="#i-pc"/></svg><div><div class="t">Seu PC (Windows)</div><div class="s">RetroPie ROM Sender</div></div></div>
+      <div class="wifi"><svg class="ic"><use href="#i-wifi"/></svg>REDE WIFI<br>SFTP</div>
+      <div class="dev"><svg class="ic"><use href="#i-pi"/></svg><div><div class="t">Raspberry Pi</div><div class="s">RetroPie · ~/RetroPie/roms</div></div></div>
+    </div>
+  </div>
+</header>
+
+<main class="wrap">
+
+<section id="como">
+  <div class="shead">
+    <p class="eyebrow">COMO FUNCIONA</p>
+    <h2>Do site de ROM ao fliperama, em 4 passos</h2>
+    <p>O fluxo é o mesmo que você já fazia — só que automático. Você continua clicando em "download" no site; o app cuida do resto pela rede.</p>
+  </div>
+  <div class="flowsteps">
+    <div class="fs"><h4>Navega e baixa</h4><p>Abra o site de ROM no navegador embutido e clique em Download, como sempre.</p></div>
+    <div class="fs"><h4>App intercepta</h4><p>Ele pega o arquivo e detecta o sistema pela própria URL do download.<span class="mono">.../roms/snes/...</span></p></div>
+    <div class="fs"><h4>Envia pela rede</h4><p>Transfere por SFTP para a pasta certa do emulador na Raspberry Pi.<span class="mono">~/RetroPie/roms/snes</span></p></div>
+    <div class="fs"><h4>Aparece na hora</h4><p>Reinicia o EmulationStation (opcional) e o jogo surge na lista, com a capa.</p></div>
+  </div>
+  <div class="note" style="margin-top:20px">
+    <svg class="ic"><use href="#i-alert"/></svg>
+    <p><b>Não é um scraper.</b> Quem clica em "download" é você, no site, respeitando o fluxo dele (contadores, anúncios). O app só pega o arquivo resultante e cuida da transferência. Baixe apenas jogos que você tem o direito de usar.</p>
+  </div>
+</section>
+
+<section id="recursos">
+  <div class="shead">
+    <p class="eyebrow">O QUE ELE FAZ</p>
+    <h2>Quatro abas, tudo pela rede</h2>
+    <p>Além de enviar um jogo por vez, o app gerencia a biblioteca inteira da sua Raspberry Pi sem você encostar no terminal.</p>
+  </div>
+  <div class="feats">
+    <div class="feat"><div class="fi"><svg class="ic"><use href="#i-globe"/></svg></div><div>
+      <h3>Baixar</h3>
+      <p>Navegador embutido para pegar jogos. Um por vez, <b>em lote</b> (a categoria inteira, página por página, sozinho) ou <b>importar do PC</b> um arquivo que você já tem.</p>
+      <span class="tag">single · lote · importar</span>
+    </div></div>
+    <div class="feat"><div class="fi"><svg class="ic"><use href="#i-grid"/></svg></div><div>
+      <h3>Meus jogos</h3>
+      <p>Lista tudo que já está na Pi, por sistema, <b>com as capas</b>. Carrega em partes e busca as imagens em paralelo, para ser rápido mesmo com biblioteca grande.</p>
+      <span class="tag">biblioteca + capas</span>
+    </div></div>
+    <div class="feat"><div class="fi"><svg class="ic"><use href="#i-image"/></svg></div><div>
+      <h3>Temas</h3>
+      <p>Mostra os temas do EmulationStation já instalados na Raspberry e troca para o que você clicar — reiniciando o ES sozinho para aplicar.</p>
+      <span class="tag">trocar tema do ES</span>
+    </div></div>
+    <div class="feat"><div class="fi"><svg class="ic"><use href="#i-sliders"/></svg></div><div>
+      <h3>Conexão</h3>
+      <p>IP, usuário e senha da Pi, pasta base e pasta das ROMs no seu PC, reiniciar o ES após enviar e <b>manutenção</b> (ver espaço no cartão, reiniciar a Pi).</p>
+      <span class="tag">config + manutenção</span>
+    </div></div>
+  </div>
+</section>
+
+<section id="precisa">
+  <div class="shead">
+    <p class="eyebrow">PARA FUNCIONAR</p>
+    <h2>O que você precisa</h2>
+    <p>Tudo roda na sua rede local — o PC e a Raspberry Pi só precisam estar no mesmo WiFi (ou cabo).</p>
+  </div>
+  <div class="reqs">
+    <div class="req"><span class="num">01</span><h4>Um PC com Windows</h4><p>64-bit. Roda a versão portátil (sem instalar) ou o instalador.</p></div>
+    <div class="req"><span class="num">02</span><h4>Raspberry Pi com RetroPie</h4><p>Ligada e na mesma rede. SSH ativo (padrão do RetroPie), usuário <span class="mono">pi</span>.</p></div>
+    <div class="req"><span class="num">03</span><h4>O IP da Pi</h4><p>Você informa uma vez em "Conexão". Fica salvo só no seu PC, nunca sobe para lugar nenhum.</p></div>
+  </div>
+</section>
+
+<section id="confianca">
+  <div class="shead">
+    <p class="eyebrow">POR QUE CONFIAR</p>
+    <h2>Código aberto, sem rastreio</h2>
+    <p>Baixar e rodar um <span class="mono">.exe</span> da internet pede cautela — e você está certo em desconfiar. Por isso o app é 100% aberto (licença MIT).</p>
+  </div>
+  <ul class="trust">
+    <li><svg class="ic"><use href="#i-code"/></svg><div><b>Leia o código antes de rodar</b><span>Todo o funcionamento está em <span class="mono">desktop-app/src</span>. Nada ofuscado.</span></div></li>
+    <li><svg class="ic"><use href="#i-shield"/></svg><div><b>Não confie no meu .exe — gere o seu</b><span>Em 3 comandos você compila o app e obtém o mesmo programa.</span></div></li>
+    <li><svg class="ic"><use href="#i-eye"/></svg><div><b>Sem rastreio, sem telemetria, sem conta</b><span>Só conversa com o site que você abre e com a sua Raspberry Pi.</span></div></li>
+    <li><svg class="ic"><use href="#i-lock"/></svg><div><b>Seus dados ficam no seu PC</b><span>IP e senha da Pi vão para um arquivo local, nada sobe para servidores.</span></div></li>
+  </ul>
+  <div class="note">
+    <svg class="ic"><use href="#i-alert"/></svg>
+    <p><b>"O Windows protegeu o seu PC" (SmartScreen).</b> Como o app é grátis e sem assinatura digital paga, o Windows pode mostrar um aviso azul ao abrir — isso é esperado para qualquer app novo sem certificado, não quer dizer vírus. Clique em <b>"Mais informações" → "Executar assim mesmo"</b>. Se preferir, compile o seu: o resultado é idêntico, sem o aviso.</p>
+  </div>
+</section>
+
+<section id="baixar">
+  <div class="dl">
+    <div>
+      <p class="eyebrow" style="margin-bottom:10px">DOWNLOAD · GRÁTIS</p>
+      <h2>Baixe o RetroPie ROM Sender</h2>
+      <p>Versão portátil roda sem instalar. Os links apontam sempre para a versão mais recente.</p>
+      <small>Windows 64-bit · <a href="https://github.com/lucasdcorrea1/arcade-do-zero/releases">ver versões</a> · <a href="https://github.com/lucasdcorrea1/arcade-games-setup/tree/main/desktop-app">ver o código / compilar</a></small>
+    </div>
+    <div class="cta">
+      <a href="https://github.com/lucasdcorrea1/arcade-do-zero/releases/latest/download/RetroPie-ROM-Sender-portable.exe" class="btn primary"><svg class="ic"><use href="#i-down"/></svg>Baixar portátil</a>
+      <a href="https://github.com/lucasdcorrea1/arcade-do-zero/releases/latest/download/RetroPie-ROM-Sender-Setup.exe" class="btn"><svg class="ic"><use href="#i-down"/></svg>Instalador (.exe)</a>
+    </div>
+  </div>
+</section>
+
+</main>
+
+<footer>
+  <span>Arcade do Zero · projeto aberto · 2026</span>
+  <span><a href="index.html">Início</a> · <a href="guia.html">Guia</a> · <a href="controle.html">Controle</a> · <a href="https://github.com/lucasdcorrea1/arcade-do-zero">GitHub</a></span>
+</footer>
+</body>
+</html>
