@@ -50,7 +50,7 @@ clique em **"Mais informações" → "Executar assim mesmo"**. Prefere não conf
 |------|---------|------|
 | **Landing** | A vitrine do projeto | [site](https://lucasdcorrea1.github.io/arcade-do-zero/) |
 | **Guia passo a passo** | Da impressão à montagem (8 etapas, renders 3D, lista de material, config do slicer) | [guia](https://lucasdcorrea1.github.io/arcade-do-zero/guia.html) |
-| **Controle de impressão** | Painel pra marcar o que já imprimiu, falhas, horas e comentários por peça (229 peças) | [controle](https://lucasdcorrea1.github.io/arcade-do-zero/controle.html) |
+| **Controle de impressão** | Painel pra marcar o que já imprimiu, falhas, horas e comentários por peça (230 peças) | [controle](https://lucasdcorrea1.github.io/arcade-do-zero/controle.html) |
 | **App do emulador** | RetroPie ROM Sender (download acima) | [código](https://github.com/lucasdcorrea1/arcade-games-setup/tree/main/desktop-app) |
 
 ---

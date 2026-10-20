@@ -3,195 +3,239 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>Arcade do Zero — monte seu fliperama 3D</title>
-<meta name="description" content="Monte um fliperama bartop 2 jogadores do zero: guia passo a passo, controle de impressão 3D e um app grátis para controlar o emulador na Raspberry Pi.">
+<title>Arcade do Zero · fliperama bartop impresso em 3D</title>
+<meta name="description" content="Monte um fliperama bartop 2 jogadores do zero: peças cortadas para a Ender 3, guia de montagem, controle de impressão e um app grátis para mandar jogos para a Raspberry Pi.">
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500&family=IBM+Plex+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
 <style>
-:root{--bg:#0f1117;--ink:#0b0d12;--card:#161922;--card2:#1c202b;--txt:#e7eaf1;--mut:#97a1b4;
---acc:#6366f1;--acc2:#818cf8;--ok:#22c55e;--warn:#f59e0b;--line:#242a37;--hair:#2d3443;
---sh:0 1px 2px rgba(0,0,0,.4),0 10px 30px rgba(0,0,0,.3)}
+:root{--bg:#0e0f10;--bg2:#131416;--card:#18191b;--card2:#1f2023;--line:#26272b;--line2:#36373c;
+--txt:#ececea;--mut:#a0a19c;--dim:#6f706c;--ok:#4cc276;--green:#22a04b;
+--sans:"IBM Plex Sans",system-ui,-apple-system,"Segoe UI",Roboto,sans-serif;
+--mono:"IBM Plex Mono",ui-monospace,"Cascadia Mono",Consolas,monospace}
 *{box-sizing:border-box}
 html{scroll-behavior:smooth}
-body{margin:0;font-family:system-ui,-apple-system,Segoe UI,Roboto,sans-serif;background:var(--bg);color:var(--txt);font-size:16px;line-height:1.6;-webkit-font-smoothing:antialiased;
-background-image:radial-gradient(900px 500px at 85% -10%, #1a1f3a 0, transparent 60%),radial-gradient(700px 400px at 5% 0%, #121a2e 0, transparent 55%)}
-a{color:var(--acc2);text-decoration:none}
-.ic{width:18px;height:18px;fill:none;stroke:currentColor;stroke-width:1.8;stroke-linecap:round;stroke-linejoin:round;flex:none}
-.wrap{max-width:1080px;margin:0 auto;padding:0 22px}
-/* nav */
-nav{position:sticky;top:0;z-index:20;backdrop-filter:blur(10px);background:#0f1117cc;border-bottom:1px solid var(--line)}
-.navin{display:flex;align-items:center;gap:14px;height:62px}
-.logo{display:flex;align-items:center;gap:10px;font-weight:800;letter-spacing:-.3px}
-.logo .mark{width:34px;height:34px;border-radius:9px;background:linear-gradient(145deg,var(--acc),#4f46e5);display:flex;align-items:center;justify-content:center;box-shadow:var(--sh)}
-.logo .mark .ic{color:#fff;width:20px;height:20px}
-.navlinks{display:flex;gap:4px;margin-left:auto;align-items:center}
-.navlinks a{color:var(--mut);padding:8px 12px;border-radius:8px;font-size:14px;font-weight:600}
-.navlinks a:hover{color:var(--txt);background:#ffffff08}
-.btn{display:inline-flex;align-items:center;gap:8px;border-radius:10px;padding:11px 18px;font-weight:700;font-size:14px;border:1px solid var(--hair);background:var(--card);color:var(--txt);cursor:pointer;transition:.15s}
-.btn:hover{border-color:var(--acc2)}
-.btn.primary{background:var(--acc);border-color:var(--acc);color:#fff;box-shadow:var(--sh)}
-.btn.primary:hover{background:var(--acc2);border-color:var(--acc2)}
-.btn.lg{padding:14px 22px;font-size:15px}
+body{margin:0;background:var(--bg);color:var(--txt);font:16px/1.6 var(--sans);-webkit-font-smoothing:antialiased}
+a{color:inherit}
+img{max-width:100%}
+.ic{width:17px;height:17px;fill:none;stroke:currentColor;stroke-width:1.8;stroke-linecap:round;stroke-linejoin:round;flex:none}
+.wrap{max-width:1320px;margin:0 auto;padding:0 32px}
+.btn{display:inline-flex;align-items:center;gap:8px;height:42px;padding:0 18px;border:1px solid var(--line2);border-radius:4px;color:var(--txt);font-size:14.5px;font-weight:500;text-decoration:none;white-space:nowrap}
+.btn:hover{background:var(--card2)}
+.btn.primary{background:var(--txt);border-color:var(--txt);color:#111;font-weight:600}
+.btn.primary:hover{background:#fff}
+.mono{font-family:var(--mono)}
+
+/* shared site nav (same markup as _FIT_ENDER3/deploy_site.py) */
+:root{--navh:53px}
+.sitenav{position:sticky;top:0;z-index:60;display:flex;align-items:stretch;gap:28px;height:53px;padding:0 20px;background:#0e0f10;border-bottom:1px solid #26272b;font-family:"IBM Plex Sans",system-ui,-apple-system,"Segoe UI",Roboto,sans-serif}
+.sitenav a{text-decoration:none}
+.sn-logo{display:flex;align-items:center;gap:10px;color:#ececea;font-size:14.5px;font-weight:600;letter-spacing:-.1px;white-space:nowrap}
+.sn-logo svg{width:22px;height:22px;fill:none;stroke:#ececea;stroke-width:1.5;stroke-linecap:round;stroke-linejoin:round}
+.sn-links{display:flex;align-items:stretch;gap:2px}
+.sn-links a{display:flex;align-items:center;margin-bottom:-1px;padding:0 12px;border-bottom:2px solid transparent;color:#a0a19c;font-size:13.5px;font-weight:500}
+.sn-links a:hover{color:#ececea}
+.sn-links a.active{color:#ececea;border-bottom-color:#ececea}
+.sn-dl{display:flex;align-items:center;margin-left:auto}
+.sn-dl a{display:inline-flex;align-items:center;gap:7px;height:32px;padding:0 12px;border:1px solid #36373c;border-radius:4px;color:#ececea;font-size:13px;font-weight:500;white-space:nowrap}
+.sn-dl a:hover{background:#1f2023}
+.sn-dl svg{width:15px;height:15px;fill:none;stroke:currentColor;stroke-width:1.8;stroke-linecap:round;stroke-linejoin:round}
+@media(max-width:640px){.sitenav{gap:6px;padding:0 10px}.sn-logo span,.sn-dl span{display:none}.sn-links a{padding:0 9px}}
+
 /* hero */
-.hero{display:grid;grid-template-columns:1.05fr .95fr;gap:40px;align-items:center;padding:72px 0 56px}
-.pill{display:inline-flex;align-items:center;gap:8px;font-size:12.5px;font-weight:700;color:var(--acc2);background:#6366f118;border:1px solid #6366f133;padding:6px 12px;border-radius:999px;text-transform:uppercase;letter-spacing:.6px}
-h1{font-size:46px;line-height:1.08;margin:18px 0 14px;letter-spacing:-1px;font-weight:800}
-h1 .g{background:linear-gradient(120deg,var(--acc2),#c084fc);-webkit-background-clip:text;background-clip:text;color:transparent}
-.lead{color:var(--mut);font-size:18px;max-width:30em;margin:0 0 26px}
-.cta{display:flex;gap:12px;flex-wrap:wrap}
-.heroimg{background:radial-gradient(circle at 50% 35%, #1b2130, #0d1016);border:1px solid var(--line);border-radius:20px;box-shadow:var(--sh);overflow:hidden;aspect-ratio:4/3;display:flex;align-items:center;justify-content:center}
-.heroimg img{width:100%;height:100%;object-fit:cover}
-.trust{display:flex;gap:26px;flex-wrap:wrap;color:var(--mut);font-size:13.5px;margin-top:22px}
-.trust b{color:var(--txt)}
+.hero{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1.15fr);gap:48px;align-items:center;padding:56px 0 40px}
+.kicker{margin:0 0 18px;color:var(--dim);font:13px var(--mono)}
+h1{margin:0 0 18px;font-size:52px;font-weight:600;letter-spacing:-1.6px;line-height:1.06}
+.lead{max-width:34em;margin:0 0 28px;color:var(--mut);font-size:18px}
+.cta{display:flex;flex-wrap:wrap;gap:10px}
+.heroimg{margin:0;overflow:hidden;background:var(--card);border:1px solid var(--line);border-radius:6px;aspect-ratio:4/3}
+.heroimg img{display:block;width:100%;height:100%;object-fit:cover}
+.spec{display:grid;grid-template-columns:repeat(6,minmax(0,1fr));margin:8px 0 0;border:1px solid var(--line);border-radius:6px;background:var(--bg2)}
+.spec div{padding:14px 18px;border-right:1px solid var(--line)}
+.spec div:last-child{border-right:0}
+.spec dt{margin:0 0 4px;color:var(--dim);font-size:12.5px}
+.spec dd{margin:0;font:500 17px var(--mono)}
+
 /* sections */
-section{padding:46px 0}
-.eyebrow{text-transform:uppercase;letter-spacing:1.6px;font-size:12px;font-weight:800;color:var(--acc2);margin:0 0 10px}
-h2{font-size:30px;letter-spacing:-.5px;margin:0 0 10px;font-weight:800}
-.sub{color:var(--mut);font-size:16px;max-width:40em;margin:0 0 30px}
-.grid3{display:grid;grid-template-columns:repeat(3,1fr);gap:16px}
-.feat{background:var(--card);border:1px solid var(--line);border-radius:16px;padding:22px;box-shadow:var(--sh);display:flex;flex-direction:column;gap:10px}
-.feat .fic{width:44px;height:44px;border-radius:11px;background:#6366f115;border:1px solid #6366f130;display:flex;align-items:center;justify-content:center;color:var(--acc2)}
-.feat h3{margin:4px 0 0;font-size:18px}
-.feat p{margin:0;color:var(--mut);font-size:14.5px;flex:1}
-.feat .flink{font-size:13.5px;font-weight:700;color:var(--acc2);display:inline-flex;align-items:center;gap:6px;margin-top:4px}
-.tag-soon{font-size:10px;font-weight:800;text-transform:uppercase;letter-spacing:.5px;color:var(--warn);background:#2a2113;border:1px solid #4a3a16;padding:2px 8px;border-radius:6px}
-/* steps */
-.steps{display:grid;grid-template-columns:repeat(4,1fr);gap:16px;counter-reset:s}
-.step{background:var(--card);border:1px solid var(--line);border-radius:16px;padding:20px;box-shadow:var(--sh)}
-.step .n{width:34px;height:34px;border-radius:10px;background:linear-gradient(145deg,var(--acc),#4f46e5);color:#fff;font-weight:800;display:flex;align-items:center;justify-content:center;margin-bottom:12px}
-.step h4{margin:0 0 6px;font-size:16px}
-.step p{margin:0;color:var(--mut);font-size:14px}
-/* download band */
-.band{background:linear-gradient(120deg,#171b2b,#141726);border:1px solid var(--line);border-radius:22px;padding:40px;box-shadow:var(--sh);text-align:center}
-.band h2{margin:0 0 8px}
-.band p{color:var(--mut);max-width:34em;margin:0 auto 22px}
-/* faq */
-.faq{display:grid;gap:10px}
-.faq details{background:var(--card);border:1px solid var(--line);border-radius:12px;padding:4px 18px}
-.faq summary{cursor:pointer;font-weight:700;padding:14px 0;list-style:none;display:flex;justify-content:space-between;align-items:center}
-.faq summary::-webkit-details-marker{display:none}
-.faq summary::after{content:"+";color:var(--acc2);font-size:20px}
-.faq details[open] summary::after{content:"\2013"}
-.faq p{margin:0 0 14px;color:var(--mut);font-size:14.5px}
-footer{border-top:1px solid var(--line);margin-top:30px;padding:30px 0;color:var(--mut);font-size:13.5px;display:flex;flex-wrap:wrap;gap:12px;align-items:center;justify-content:space-between}
-@media(max-width:820px){.hero{grid-template-columns:1fr;padding:48px 0 36px}.grid3{grid-template-columns:1fr}.steps{grid-template-columns:1fr 1fr}h1{font-size:36px}.navlinks a:not(.btn){display:none}}
+section{padding:72px 0 0}
+.shead{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1.4fr);gap:48px;align-items:end;margin-bottom:28px;padding-bottom:16px;border-bottom:1px solid var(--line)}
+h2{margin:0;font-size:30px;font-weight:600;letter-spacing:-.7px;line-height:1.15}
+.shead p{margin:0;color:var(--mut);font-size:15.5px}
+.tools{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:20px}
+.tool{display:flex;flex-direction:column}
+.shot{margin:0 0 16px;overflow:hidden;background:var(--card);border:1px solid var(--line);border-radius:6px;aspect-ratio:16/10}
+.shot img{display:block;width:100%;height:100%;object-fit:cover;object-position:left top}
+.tool .num{color:var(--dim);font:13px var(--mono)}
+.tool h3{margin:4px 0 6px;font-size:19px;font-weight:600;letter-spacing:-.3px}
+.tool p{flex:1;margin:0 0 14px;color:var(--mut);font-size:15px}
+.tool .lnk{display:inline-flex;align-items:center;gap:6px;align-self:flex-start;padding-bottom:2px;border-bottom:1px solid var(--line2);font-size:14px;font-weight:500;text-decoration:none}
+.tool .lnk:hover{border-bottom-color:var(--txt)}
+.flow{display:flex;flex-direction:column;align-items:center;justify-content:center;height:100%;padding:16px;background:#141517}
+.flow .node{display:flex;align-items:baseline;justify-content:space-between;gap:12px;width:min(290px,100%);padding:9px 14px;border:1px solid var(--line2);border-radius:4px;background:var(--card);font-size:13px;line-height:1.3}
+.flow .node b{font-weight:600}
+.flow .node span{color:var(--dim);font:11.5px var(--mono)}
+.flow .link{position:relative;flex:none;width:1px;height:26px;background:var(--line2)}
+.flow .link::after{content:"";position:absolute;left:-3px;bottom:0;width:6px;height:6px;border-right:1px solid var(--mut);border-bottom:1px solid var(--mut);transform:rotate(45deg)}
+.flow .link em{position:absolute;left:12px;top:50%;transform:translateY(-50%);color:var(--dim);font:11px var(--mono);font-style:normal;white-space:nowrap}
+.steps{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:0;margin:0;padding:0;list-style:none;border-top:1px solid var(--line2)}
+.steps li{position:relative;padding:22px 24px 0 0}
+.steps li::before{content:"";position:absolute;top:-4px;left:0;width:7px;height:7px;border-radius:50%;background:var(--txt)}
+.steps .num{color:var(--dim);font:13px var(--mono)}
+.steps h4{margin:4px 0 6px;font-size:17px;font-weight:600}
+.steps p{margin:0;color:var(--mut);font-size:15px}
+.views{display:grid;grid-template-columns:1fr 1fr;gap:20px}
+.views figure{margin:0;overflow:hidden;background:var(--card);border:1px solid var(--line);border-radius:6px}
+.views img{display:block;width:100%;aspect-ratio:4/3;object-fit:cover}
+.views figcaption{padding:10px 14px;border-top:1px solid var(--line);color:var(--mut);font-size:13.5px}
+.dl{display:grid;grid-template-columns:minmax(0,1.2fr) minmax(0,1fr);gap:40px;align-items:center;padding:32px 36px;background:var(--bg2);border:1px solid var(--line);border-radius:6px}
+.dl p{margin:8px 0 0;color:var(--mut);font-size:15.5px}
+.dl .cta{justify-content:flex-end}
+.dl small{display:block;margin-top:14px;color:var(--dim);font-size:13px}
+.dl small a{text-decoration:underline;text-underline-offset:2px}
+.faq{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:0 48px}
+.faq div{padding:18px 0;border-bottom:1px solid var(--line)}
+.faq h4{margin:0 0 6px;font-size:16px;font-weight:600}
+.faq p{margin:0;color:var(--mut);font-size:15px}
+footer{display:flex;flex-wrap:wrap;justify-content:space-between;gap:12px;margin-top:80px;padding:26px 32px;border-top:1px solid var(--line);color:var(--dim);font-size:13.5px}
+footer a{color:var(--mut);text-decoration:none}
+footer a:hover{color:var(--txt)}
+@media(max-width:1100px){.spec{grid-template-columns:repeat(3,minmax(0,1fr))}.spec div:nth-child(3){border-right:0}.spec div:nth-child(-n+3){border-bottom:1px solid var(--line)}}
+@media(max-width:900px){
+  .wrap{padding:0 18px}
+  .hero,.shead,.dl{grid-template-columns:1fr;gap:24px}
+  .hero{padding:32px 0 24px}
+  h1{font-size:38px}
+  .tools,.views,.faq{grid-template-columns:1fr}
+  .steps{grid-template-columns:1fr 1fr;row-gap:28px}
+  .dl{padding:24px 20px}
+  .dl .cta{justify-content:flex-start}
+}
+@media(max-width:560px){.spec{grid-template-columns:1fr 1fr}.spec div{border-right:0;border-bottom:1px solid var(--line)}.steps{grid-template-columns:1fr}}
 </style>
 </head>
 <body>
-<svg width="0" height="0" style="position:absolute"><defs>
-<symbol id="i-pad" viewBox="0 0 24 24"><line x1="6" y1="11" x2="10" y2="11"/><line x1="8" y1="9" x2="8" y2="13"/><line x1="15" y1="12" x2="15.01" y2="12"/><line x1="18" y1="10" x2="18.01" y2="10"/><path d="M17.32 5H6.68a4 4 0 0 0-3.978 3.59c-.006.052-.01.101-.017.152C2.604 9.416 2 14.456 2 16a3 3 0 0 0 3 3c1 0 1.5-.5 2-1l1.414-1.414A2 2 0 0 1 9.828 16h4.344a2 2 0 0 1 1.414.586L17 18c.5.5 1 1 2 1a3 3 0 0 0 3-3c0-1.544-.604-6.584-.685-7.258-.007-.05-.011-.1-.017-.151A4 4 0 0 0 17.32 5z"/></symbol>
-<symbol id="i-chip" viewBox="0 0 24 24"><rect x="4" y="4" width="16" height="16" rx="2"/><rect x="9" y="9" width="6" height="6"/><line x1="9" y1="2" x2="9" y2="4"/><line x1="15" y1="2" x2="15" y2="4"/><line x1="9" y1="20" x2="9" y2="22"/><line x1="15" y1="20" x2="15" y2="22"/><line x1="20" y1="9" x2="22" y2="9"/><line x1="20" y1="14" x2="22" y2="14"/><line x1="2" y1="9" x2="4" y2="9"/><line x1="2" y1="14" x2="4" y2="14"/></symbol>
-<symbol id="i-book" viewBox="0 0 24 24"><path d="M12 7v14"/><path d="M3 18a1 1 0 0 1-1-1V4a1 1 0 0 1 1-1h5a4 4 0 0 1 4 4 4 4 0 0 1 4-4h5a1 1 0 0 1 1 1v13a1 1 0 0 1-1 1h-6a3 3 0 0 0-3 3 3 3 0 0 0-3-3z"/></symbol>
-<symbol id="i-list" viewBox="0 0 24 24"><line x1="8" y1="6" x2="21" y2="6"/><line x1="8" y1="12" x2="21" y2="12"/><line x1="8" y1="18" x2="21" y2="18"/><line x1="3" y1="6" x2="3.01" y2="6"/><line x1="3" y1="12" x2="3.01" y2="12"/><line x1="3" y1="18" x2="3.01" y2="18"/></symbol>
+<svg width="0" height="0" style="position:absolute" aria-hidden="true"><defs>
 <symbol id="i-down" viewBox="0 0 24 24"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></symbol>
 <symbol id="i-arrow" viewBox="0 0 24 24"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></symbol>
-<symbol id="i-check" viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></symbol>
 </defs></svg>
 
-<nav><div class="wrap navin">
-  <div class="logo"><span class="mark"><svg class="ic"><use href="#i-pad"/></svg></span> Arcade do Zero</div>
-  <div class="navlinks">
-    <a href="#como">Como funciona</a>
-    <a href="guia.html">Guia</a>
-    <a href="controle.html">Controle de impressão</a>
-    <a href="#download" class="btn primary"><svg class="ic"><use href="#i-down"/></svg>Baixar o app</a>
-  </div>
-</div></nav>
+<nav class="sitenav"><a class="sn-logo" href="index.html"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M6 3h12v6l-1.5 3H19v9H5v-9h2.5L6 9z"/><rect x="8" y="4.8" width="8" height="2.4"/><path d="M8.2 12h7.6"/><circle cx="9" cy="16" r=".9"/><circle cx="12" cy="16" r=".9"/><circle cx="15" cy="16" r=".9"/></svg><span>Arcade do Zero</span></a><div class="sn-links"><a href="index.html" class="active">Início</a><a href="guia.html">Guia</a><a href="controle.html">Controle</a></div><div class="sn-dl"><a href="https://github.com/lucasdcorrea1/arcade-do-zero/releases/latest/download/RetroPie-ROM-Sender-portable.exe"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg><span>Baixar app</span></a></div></nav>
 
-<header class="wrap hero">
-  <div>
-    <span class="pill">🕹️ Projeto aberto · 100% grátis</span>
-    <h1>Monte seu <span class="g">fliperama</span> do zero.</h1>
-    <p class="lead">Um bartop de 2 jogadores, impresso em 3D na sua Ender 3. Guia passo a passo, controle das impressões e um app grátis para rodar os jogos na Raspberry Pi.</p>
-    <div class="cta">
-      <a href="https://github.com/lucasdcorrea1/arcade-do-zero/releases/latest/download/RetroPie-ROM-Sender-portable.exe" class="btn primary lg"><svg class="ic"><use href="#i-down"/></svg>Baixar o app (grátis)</a>
-      <a href="guia.html" class="btn lg"><svg class="ic"><use href="#i-book"/></svg>Ver o guia</a>
+<header class="wrap">
+  <div class="hero">
+    <div>
+      <p class="kicker">projeto aberto · bartop 2 jogadores · Ender 3</p>
+      <h1>Monte um fliperama de verdade, impresso na sua Ender 3.</h1>
+      <p class="lead">Peças já cortadas para caber na mesa de 220&nbsp;mm, guia de montagem em 8 etapas, um controle para acompanhar as 300&nbsp;h de impressão e um app que manda os jogos para a Raspberry Pi. Tudo grátis.</p>
+      <div class="cta">
+        <a href="guia.html" class="btn primary">Ver o guia de montagem</a>
+        <a href="controle.html" class="btn">Controle de impressão</a>
+        <a href="#download" class="btn"><svg class="ic"><use href="#i-down"/></svg>Baixar o app</a>
+      </div>
     </div>
-    <div class="trust">
-      <span><b>229</b> peças</span>
-      <span><b>8</b> etapas de montagem</span>
-      <span><b>2</b> cores (verde + preto)</span>
-      <span><b>2</b> jogadores</span>
-    </div>
+    <figure class="heroimg"><img src="assets/cabinet_iso.png" alt="Fliperama bartop montado, vista 3/4"></figure>
   </div>
-  <div class="heroimg"><img src="assets/cabinet_iso.png" alt="Fliperama bartop montado"></div>
+  <dl class="spec">
+    <div><dt>Peças</dt><dd>230</dd></div>
+    <div><dt>Mesa</dt><dd>220 × 220 mm</dd></div>
+    <div><dt>Material</dt><dd>PLA</dd></div>
+    <div><dt>Cores</dt><dd>verde + preto</dd></div>
+    <div><dt>Montagem</dt><dd>8 etapas</dd></div>
+    <div><dt>Jogadores</dt><dd>2</dd></div>
+  </dl>
 </header>
 
 <main class="wrap">
 
 <section id="oque">
-  <p class="eyebrow">O que você recebe</p>
-  <h2>Tudo pra sair do zero ao "insert coin"</h2>
-  <p class="sub">Três ferramentas que trabalham juntas — da impressora até o jogo rodando.</p>
-  <div class="grid3">
-    <div class="feat">
-      <div class="fic"><svg class="ic"><use href="#i-chip"/></svg></div>
-      <h3>App do emulador</h3>
-      <p>Programa grátis pra Windows: navega em sites de ROM, intercepta o download e envia direto pra sua RetroPie (via SFTP), já na pasta certa do emulador.</p>
-      <a class="flink" href="#download">Baixar agora <svg class="ic"><use href="#i-arrow"/></svg></a>
-    </div>
-    <div class="feat">
-      <div class="fic"><svg class="ic"><use href="#i-book"/></svg></div>
-      <h3>Guia passo a passo</h3>
-      <p>Da impressão à montagem: renders 3D do gabinete, lista de material, as 8 etapas e as dicas de configuração do slicer pra sair perfeito.</p>
-      <a class="flink" href="guia.html">Abrir o guia <svg class="ic"><use href="#i-arrow"/></svg></a>
-    </div>
-    <div class="feat">
-      <div class="fic"><svg class="ic"><use href="#i-list"/></svg></div>
+  <div class="shead">
+    <h2>Três ferramentas, da impressora ao jogo rodando</h2>
+    <p>Cada uma resolve uma parte do caminho: imprimir sem se perder, montar na ordem certa e colocar os jogos no fliperama.</p>
+  </div>
+  <div class="tools">
+    <div class="tool">
+      <figure class="shot"><img src="assets/shot_controle.png" alt="Controle de impressão: lista das partes e cards das peças"></figure>
+      <span class="num">01</span>
       <h3>Controle de impressão</h3>
-      <p>Painel pra marcar o que já imprimiu, anotar falhas, horas e comentários por peça — e filtrar <b>por cor</b> (verde/preto). Com 229 peças e 300h+, você não se perde.</p>
-      <a class="flink" href="controle.html">Abrir o controle <svg class="ic"><use href="#i-arrow"/></svg></a>
+      <p>Todas as peças com miniatura 3D, separadas por parte. Marque o que já saiu da impressora, anote falhas e horas, filtre por cor do filamento e abra cada STL direto no OrcaSlicer.</p>
+      <a class="lnk" href="controle.html">Abrir o controle <svg class="ic"><use href="#i-arrow"/></svg></a>
+    </div>
+    <div class="tool">
+      <figure class="shot"><img src="assets/shot_guia.png" alt="Manual de montagem: etapas com passos e peças"></figure>
+      <span class="num">02</span>
+      <h3>Guia de montagem</h3>
+      <p>As 8 etapas, das peças cortadas à caixa fechada: o que fazer em cada uma, quais partes entram e o material necessário. Inclui a lista de compras e a configuração do fatiador.</p>
+      <a class="lnk" href="guia.html">Abrir o guia <svg class="ic"><use href="#i-arrow"/></svg></a>
+    </div>
+    <div class="tool">
+      <figure class="shot"><div class="flow">
+        <div class="node"><b>Site de ROM</b><span>download</span></div>
+        <div class="link"><em>intercepta</em></div>
+        <div class="node"><b>ROM Sender</b><span>Windows</span></div>
+        <div class="link"><em>SFTP</em></div>
+        <div class="node"><b>RetroPie</b><span>pasta do emulador</span></div>
+      </div></figure>
+      <span class="num">03</span>
+      <h3>App RetroPie ROM Sender</h3>
+      <p>Programa para Windows que pega o jogo que você baixou e envia pela rede para a Raspberry Pi, já na pasta certa do emulador, com capa. Sem terminal.</p>
+      <a class="lnk" href="#download">Baixar o app <svg class="ic"><use href="#i-arrow"/></svg></a>
     </div>
   </div>
 </section>
 
 <section id="como">
-  <p class="eyebrow">Como funciona</p>
-  <h2>Quatro passos até jogar</h2>
-  <div class="steps">
-    <div class="step"><div class="n">1</div><h4>Imprima</h4><p>Baixe os STL já cortados pra caber na Ender 3 e siga a ordem no controle de impressão.</p></div>
-    <div class="step"><div class="n">2</div><h4>Monte</h4><p>Cole os painéis pelos pinos de encaixe e parafuse a caixa seguindo as 8 etapas do guia.</p></div>
-    <div class="step"><div class="n">3</div><h4>Instale o Pi</h4><p>Coloque a Raspberry Pi com RetroPie e use o app pra adicionar jogos e capas.</p></div>
-    <div class="step"><div class="n">4</div><h4>Jogue</h4><p>Ligue, chame um amigo e divirta-se no seu fliperama 2 jogadores feito por você.</p></div>
+  <div class="shead">
+    <h2>Quatro passos até jogar</h2>
+    <p>O caminho completo, do primeiro STL ao primeiro "insert coin".</p>
   </div>
+  <ol class="steps">
+    <li><span class="num">01</span><h4>Imprima</h4><p>Os STL já estão cortados para a Ender 3. Siga a ordem sugerida no controle de impressão e marque cada peça.</p></li>
+    <li><span class="num">02</span><h4>Monte</h4><p>Cole os pedaços de cada painel pelos pinos de encaixe e parafuse a caixa seguindo as 8 etapas do guia.</p></li>
+    <li><span class="num">03</span><h4>Instale o Pi</h4><p>Coloque a Raspberry Pi com RetroPie e use o app para mandar jogos e capas pela rede.</p></li>
+    <li><span class="num">04</span><h4>Jogue</h4><p>Ligue, chame alguém para o segundo controle e jogue no fliperama que você mesmo fez.</p></li>
+  </ol>
 </section>
 
 <section>
-  <div class="grid3" style="grid-template-columns:1fr 1fr">
-    <div class="heroimg" style="aspect-ratio:4/3"><img src="assets/cabinet_front.png" alt="Vista frontal"></div>
-    <div class="heroimg" style="aspect-ratio:4/3"><img src="assets/cabinet_rear.png" alt="Vista traseira"></div>
+  <div class="views">
+    <figure><img src="assets/cabinet_front.png" alt="Vista frontal do fliperama"><figcaption>Frente: marquee, tela e os dois controles</figcaption></figure>
+    <figure><img src="assets/cabinet_rear.png" alt="Vista traseira do fliperama"><figcaption>Traseira: porta de acesso, alça e entrada de força</figcaption></figure>
   </div>
 </section>
 
 <section id="download">
-  <div class="band">
-    <p class="eyebrow">Download · grátis</p>
-    <h2>RetroPie ROM Sender</h2>
-    <p>App pra Windows que envia ROMs direto pra sua RetroPie pela rede (SFTP), já na pasta certa do emulador — sem mexer no terminal. Baixe o portable (roda sem instalar) ou o instalador.</p>
-    <div class="cta" style="justify-content:center">
-      <a href="https://github.com/lucasdcorrea1/arcade-do-zero/releases/latest/download/RetroPie-ROM-Sender-portable.exe" class="btn primary lg"><svg class="ic"><use href="#i-down"/></svg>Baixar (portable)</a>
-      <a href="https://github.com/lucasdcorrea1/arcade-do-zero/releases/latest/download/RetroPie-ROM-Sender-Setup.exe" class="btn lg"><svg class="ic"><use href="#i-down"/></svg>Instalador (.exe)</a>
+  <div class="dl">
+    <div>
+      <h2>RetroPie ROM Sender</h2>
+      <p>Envia ROMs para a sua RetroPie pela rede (SFTP), direto na pasta certa do emulador. Baixe a versão portátil, que roda sem instalar, ou o instalador.</p>
+      <small>Windows 64-bit · sempre a versão mais recente · <a href="https://github.com/lucasdcorrea1/arcade-do-zero/releases">ver versões</a> · código aberto, sem conta e sem rastreio: <a href="https://github.com/lucasdcorrea1/arcade-games-setup/tree/main/desktop-app">ver o código</a></small>
     </div>
-    <p style="font-size:12.5px;margin-top:16px;color:var(--mut)">Windows 64-bit · sempre a versão mais recente · <a href="https://github.com/lucasdcorrea1/arcade-do-zero/releases" style="color:var(--acc2)">ver versões</a></p>
-    <p style="font-size:12.5px;margin-top:8px;color:var(--mut)">🔓 100% open source · sem rastreio · sem conta · <a href="https://github.com/lucasdcorrea1/arcade-games-setup/tree/main/desktop-app" style="color:var(--acc2)">ver o código</a> ou compile você mesmo</p>
+    <div class="cta">
+      <a href="https://github.com/lucasdcorrea1/arcade-do-zero/releases/latest/download/RetroPie-ROM-Sender-portable.exe" class="btn primary"><svg class="ic"><use href="#i-down"/></svg>Baixar portátil</a>
+      <a href="https://github.com/lucasdcorrea1/arcade-do-zero/releases/latest/download/RetroPie-ROM-Sender-Setup.exe" class="btn"><svg class="ic"><use href="#i-down"/></svg>Instalador (.exe)</a>
+    </div>
   </div>
 </section>
 
 <section id="faq">
-  <p class="eyebrow">Dúvidas</p>
-  <h2>Perguntas frequentes</h2>
+  <div class="shead">
+    <h2>Perguntas frequentes</h2>
+    <p>O que costuma aparecer antes de começar.</p>
+  </div>
   <div class="faq">
-    <details open><summary>Preciso de impressora grande?</summary><p>Não. Todas as peças foram cortadas pra caber numa Ender 3 (mesa 220×220). Elas se encaixam por pinos e se colam depois.</p></details>
-    <details><summary>Quanto tempo leva pra imprimir?</summary><p>São 300h+ de impressão no total. Por isso existe o controle: você marca o progresso, falhas e horas de cada peça sem se perder.</p></details>
-    <details><summary>Preciso imprimir colorido?</summary><p>Não é obrigatório, mas o modelo é <b>bicolor (verde + preto)</b> e fica muito melhor em duas cores. No controle de impressão cada peça mostra a cor certa e dá pra filtrar por cor — você imprime todas de uma cor, troca o filamento e imprime as da outra.</p></details>
-    <details><summary>É realmente grátis?</summary><p>Sim. O guia, o controle e o app são gratuitos. O que você gasta é o filamento e as peças de hardware (tela, botões, Raspberry Pi).</p></details>
-    <details><summary>O que o app do emulador faz?</summary><p>Ele navega em sites de ROM, intercepta o arquivo que você baixa e envia direto pra sua RetroPie por SFTP, colocando na pasta certa do emulador — sem precisar mexer no terminal.</p></details>
+    <div><h4>Preciso de impressora grande?</h4><p>Não. Todas as peças foram cortadas para caber numa Ender 3 (mesa de 220 × 220&nbsp;mm). Elas se encaixam por pinos e se colam depois.</p></div>
+    <div><h4>Quanto tempo leva para imprimir?</h4><p>São mais de 300&nbsp;h de impressão no total. É para isso que existe o controle: você marca o progresso, as falhas e as horas de cada peça.</p></div>
+    <div><h4>Preciso imprimir colorido?</h4><p>Não é obrigatório, mas o modelo é bicolor (verde + preto) e fica bem melhor em duas cores. O controle mostra a cor de cada peça e filtra por cor, para você imprimir uma cor de cada vez.</p></div>
+    <div><h4>É realmente grátis?</h4><p>Sim. O guia, o controle e o app são gratuitos. O gasto é o filamento e o hardware: tela, botões e Raspberry Pi.</p></div>
+    <div><h4>O que o app do emulador faz?</h4><p>Ele pega o arquivo que você baixa num site de ROM e envia direto para a RetroPie por SFTP, na pasta certa do emulador, sem precisar mexer no terminal.</p></div>
+    <div><h4>Posso abrir as peças direto no fatiador?</h4><p>Sim. No controle, cada peça tem o botão "Abrir no Orca", que abre o STL no OrcaSlicer depois de rodar uma vez o instalador do atalho.</p></div>
   </div>
 </section>
 
 </main>
 
-<footer class="wrap">
-  <div class="logo"><span class="mark"><svg class="ic"><use href="#i-pad"/></svg></span> Arcade do Zero</div>
-  <span>Feito para makers · projeto aberto · 2026</span>
+<footer>
+  <span>Arcade do Zero · projeto aberto · 2026</span>
+  <span><a href="guia.html">Guia</a> · <a href="controle.html">Controle</a> · <a href="https://github.com/lucasdcorrea1/arcade-do-zero">GitHub</a></span>
 </footer>
 </body>
 </html>
