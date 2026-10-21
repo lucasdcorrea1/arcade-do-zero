@@ -7,6 +7,21 @@ controle das impressões e um app grátis para rodar os jogos na Raspberry Pi.
 
 Tudo é **gratuito e open source**. Sem cadastro, sem pegadinha.
 
+> **Modelo 3D original:** "2 Player Bartop Arcade - Machine - Cabinet", criado por
+> **[LeapTechOnline](https://makerworld.com/pt/@LeapTechOnline)** e publicado no
+> [MakerWorld](https://makerworld.com/pt/models/1517006-2-player-bartop-arcade-machine-cabinet-no-ams).
+> As peças deste projeto são um remix (cortadas para a mesa da Ender 3, com pinos de encaixe) e seguem
+> a mesma licença Creative Commons do original, sem fins comerciais. O código (site e app) é MIT.
+
+---
+
+## ⬇️ Baixar as peças para imprimir
+
+**[ArcadeDoZero-Ender3-STL.zip](https://github.com/lucasdcorrea1/arcade-do-zero/releases/download/stl-pack/ArcadeDoZero-Ender3-STL.zip)** (10 MB):
+231 peças em STL separadas pelas 18 partes, 106 mesas prontas por cor de filamento, LEIA-ME com a
+configuração do fatiador e o instalador do botão "Abrir no Orca". Detalhes no
+[release](https://github.com/lucasdcorrea1/arcade-do-zero/releases/tag/stl-pack).
+
 ---
 
 ## ⬇️ Baixar o app (RetroPie ROM Sender)

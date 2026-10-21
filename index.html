@@ -71,6 +71,18 @@ box-shadow:inset 0 0 60px rgba(0,0,0,.6);position:relative}
 .screen .glass img{display:block;width:100%;height:100%;object-fit:cover}
 .screen .glass::after{content:"";position:absolute;inset:0;pointer-events:none;
 background:repeating-linear-gradient(to bottom,rgba(0,0,0,0) 0 2px,rgba(0,0,0,.08) 2px 3px)}
+/* credit seal for the original designer, pinned to the corner of the hero screen */
+.seal{position:absolute;right:-16px;bottom:-24px;z-index:3;display:flex;align-items:center;gap:13px;padding:13px 18px 13px 13px;
+background:#111a14;border:1px solid var(--green2);border-radius:10px;color:var(--txt);text-decoration:none;
+transform:rotate(-3deg);box-shadow:0 16px 36px -12px #000,0 0 28px -10px var(--glow);transition:transform .15s}
+.seal::before{content:"";position:absolute;inset:4px;border:1px dashed rgba(46,227,106,.38);border-radius:7px;pointer-events:none}
+.seal:hover{transform:rotate(0) scale(1.03)}
+.seal .em{display:flex;flex:none;align-items:center;justify-content:center;width:48px;height:48px;border-radius:50%;background:var(--green);color:#06130a;box-shadow:0 0 16px -2px var(--glow)}
+.seal .em svg{width:25px;height:25px;fill:none;stroke:currentColor;stroke-width:1.8;stroke-linecap:round;stroke-linejoin:round}
+.seal .k{display:block;color:var(--green);font:8px/1 var(--pix);letter-spacing:.6px}
+.seal .n{display:block;margin:7px 0 4px;font-size:19px;font-weight:700;letter-spacing:-.3px;line-height:1}
+.seal .s{display:block;color:var(--mut);font:12.5px/1.2 var(--mono)}
+@media(max-width:560px){.seal{right:-6px;bottom:-20px;gap:10px;padding:10px 14px 10px 10px}.seal .n{font-size:16px}.seal .em{width:40px;height:40px}}
 .spec{display:grid;grid-template-columns:repeat(6,minmax(0,1fr));margin:6px 0 0;border:1px solid var(--line);border-radius:6px;background:var(--bg2);overflow:hidden}
 .spec div{padding:14px 18px;border-right:1px solid var(--line)}
 .spec div:last-child{border-right:0}
@@ -184,7 +196,12 @@ footer a:hover{color:var(--txt)}
         <a href="app.html" class="btn"><svg class="ic"><use href="#i-wifi"/></svg>Como atualizar jogos</a>
       </div>
     </div>
-    <figure class="screen"><div class="glass"><img src="assets/cabinet_iso.png" alt="Fliperama bartop montado, vista 3/4"></div></figure>
+    <figure class="screen"><div class="glass"><img src="assets/cabinet_iso.png" alt="Fliperama bartop montado, vista 3/4"></div>
+      <a class="seal" href="https://makerworld.com/pt/@LeapTechOnline" target="_blank" rel="noopener" aria-label="Design original do modelo por LeapTechOnline, perfil no MakerWorld">
+        <span class="em"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16z"/><polyline points="3.27 6.96 12 12.01 20.73 6.96"/><line x1="12" y1="22.08" x2="12" y2="12"/></svg></span>
+        <span><span class="k">DESIGN ORIGINAL</span><span class="n">LeapTechOnline</span><span class="s">perfil no MakerWorld ↗</span></span>
+      </a>
+    </figure>
   </div>
   <dl class="spec">
     <div><dt>Peças</dt><dd>230</dd></div>
@@ -240,7 +257,7 @@ footer a:hover{color:var(--txt)}
       <p class="eyebrow" style="margin-bottom:10px">DOWNLOAD · PEÇAS 3D</p>
       <h2>Peças prontas para imprimir</h2>
       <p>Um ZIP com tudo para a Ender 3: 231 peças em STL separadas pelas 18 partes do gabinete e 106 mesas prontas por cor de filamento (verde, preto e branco), em que cada arquivo é uma impressão. Inclui o LEIA-ME com a configuração do fatiador e o instalador do botão "Abrir no Orca".</p>
-      <small>Remix do modelo "2 Player Bartop Arcade - Machine - Cabinet", do autor original no MakerWorld (<a href="https://makerworld.com/models/1517006">ver o original</a>): peças cortadas para a mesa de 220&nbsp;mm, com pinos de encaixe. Mesma licença Creative Commons do original, uso não comercial; ao compartilhar, mantenha o crédito ao autor.</small>
+      <small>Remix do modelo <a href="https://makerworld.com/pt/models/1517006-2-player-bartop-arcade-machine-cabinet-no-ams">"2 Player Bartop Arcade - Machine - Cabinet"</a>, criado por <a href="https://makerworld.com/pt/@LeapTechOnline">LeapTechOnline</a> no MakerWorld: peças cortadas para a mesa de 220&nbsp;mm, com pinos de encaixe. Mesma licença Creative Commons do original, uso não comercial; ao compartilhar, mantenha o crédito ao LeapTechOnline.</small>
     </div>
     <div class="cta">
       <a href="https://github.com/lucasdcorrea1/arcade-do-zero/releases/download/stl-pack/ArcadeDoZero-Ender3-STL.zip" class="btn primary"><svg class="ic"><use href="#i-down"/></svg>Baixar peças (.zip, 10 MB)</a>
@@ -321,14 +338,14 @@ footer a:hover{color:var(--txt)}
     <div><h4>É realmente grátis?</h4><p>Sim. O guia, o controle e o app são gratuitos. O gasto é o filamento e o hardware: tela, botões e Raspberry Pi.</p></div>
     <div><h4>Como coloco jogos no fliperama?</h4><p>Pelo app, na mesma rede WiFi: ele manda o jogo do seu PC direto para a Raspberry Pi e o jogo aparece na hora. <a href="app.html" style="color:var(--green)">Veja a página do app</a>.</p></div>
     <div><h4>Posso abrir as peças direto no fatiador?</h4><p>Sim. No controle, cada peça tem o botão "Abrir no Orca". Baixe o ZIP das peças, extraia numa pasta fixa e rode uma vez o <span class="mono">INSTALAR_abrir_no_orca.bat</span> que vem dentro de <span class="mono">pecas/</span>.</p></div>
-    <div><h4>Posso compartilhar as peças?</h4><p>Sim, sem fins comerciais e mantendo o crédito ao autor original do modelo no MakerWorld, sob a mesma licença Creative Commons do original.</p></div>
+    <div><h4>Posso compartilhar as peças?</h4><p>Sim, sem fins comerciais e mantendo o crédito ao <a href="https://makerworld.com/pt/@LeapTechOnline" style="color:var(--green)">LeapTechOnline</a>, autor do modelo original no MakerWorld, sob a mesma licença Creative Commons do original.</p></div>
   </div>
 </section>
 
 </main>
 
 <footer>
-  <span>Arcade do Zero · projeto aberto · 2026 · modelo original: <a href="https://makerworld.com/models/1517006">2 Player Bartop Arcade (MakerWorld)</a></span>
+  <span>Arcade do Zero · projeto aberto · 2026 · modelo 3D original por <a href="https://makerworld.com/pt/@LeapTechOnline">LeapTechOnline</a> (<a href="https://makerworld.com/pt/models/1517006-2-player-bartop-arcade-machine-cabinet-no-ams">MakerWorld</a>)</span>
   <span><a href="guia.html">Guia</a> · <a href="controle.html">Controle</a> · <a href="app.html">App</a> · <a href="https://github.com/lucasdcorrea1/arcade-do-zero">GitHub</a></span>
 </footer>
 </body>
