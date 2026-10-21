@@ -54,48 +54,53 @@ background:rgba(12,13,15,.82);backdrop-filter:blur(10px);border-bottom:1px solid
 @media(max-width:680px){.sitenav{gap:4px;padding:0 10px}.sn-logo span,.sn-dl span{display:none}.sn-links a{padding:0 9px}}
 
 /* hero */
-.hero{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1.12fr);gap:48px;align-items:center;padding:60px 0 40px}
+.hero{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1.12fr);gap:48px;align-items:center;padding:48px 0 36px}
 .badge{display:inline-flex;align-items:center;gap:9px;margin:0 0 22px;padding:7px 13px;border:1px solid var(--line2);border-radius:999px;background:var(--card);font:8.5px/1 var(--pix);color:var(--mut);letter-spacing:.5px}
 .badge b{color:var(--green);font-weight:400}
 .dot{width:7px;height:7px;border-radius:50%;background:var(--green);box-shadow:0 0 8px var(--glow)}
-h1{margin:0 0 20px;font-size:54px;font-weight:700;letter-spacing:-1.8px;line-height:1.04}
+h1{margin:0 0 18px;font-size:50px;font-weight:700;letter-spacing:-1.8px;line-height:1.04}
 h1 .hl{color:var(--green);text-shadow:0 0 28px var(--glow)}
 .lead{max-width:34em;margin:0 0 28px;color:var(--mut);font-size:18px}
 .cta{display:flex;flex-wrap:wrap;gap:11px}
-/* hero screen bezel */
-.screen{position:relative;margin:0;padding:12px;border:1px solid var(--line2);border-radius:12px;
-background:linear-gradient(180deg,#1a1b1f,#111216);box-shadow:0 30px 70px -30px #000,0 0 0 1px rgba(46,227,106,.06)}
-.screen::before{content:"";position:absolute;left:50%;top:5px;transform:translateX(-50%);width:54px;height:4px;border-radius:3px;background:#2b2d33}
-.screen .glass{overflow:hidden;border-radius:7px;aspect-ratio:4/3;background:#0b0c0e;
-box-shadow:inset 0 0 60px rgba(0,0,0,.6);position:relative}
-.screen .glass img{display:block;width:100%;height:100%;object-fit:cover}
-.screen .glass::after{content:"";position:absolute;inset:0;pointer-events:none;
-background:repeating-linear-gradient(to bottom,rgba(0,0,0,0) 0 2px,rgba(0,0,0,.08) 2px 3px)}
-/* credit seal for the original designer (LeapTechOnline), pinned to the corner of the hero screen.
+/* hero stage: the 3D cabinet stands straight on the page background (no frame), with a green glow
+   behind it and a lit floor under it. Transparent poster = same view, so the swap to the live model is invisible. */
+.stage{position:relative;margin:-24px 0 -8px;--mvh:540px}
+.stage::before{content:"";position:absolute;left:50%;top:calc(var(--mvh)*.44);width:86%;aspect-ratio:1;transform:translate(-50%,-50%);border-radius:50%;pointer-events:none;
+background:radial-gradient(closest-side,rgba(46,227,106,.17),rgba(46,227,106,.05) 58%,transparent)}
+.stage::after{content:"";position:absolute;left:50%;top:calc(var(--mvh)*.85 - 35px);width:74%;height:70px;transform:translateX(-50%);border-radius:50%;pointer-events:none;
+background:radial-gradient(closest-side,rgba(46,227,106,.22),rgba(46,227,106,.06) 60%,transparent)}
+.stage model-viewer{position:relative;z-index:1;display:block;width:100%;height:var(--mvh);background:transparent;--poster-color:transparent;cursor:grab}
+.stage model-viewer:active{cursor:grabbing}
+.stage model-viewer::part(default-progress-bar){display:none}
+.hint3d{position:absolute;left:50%;top:4px;z-index:2;display:flex;align-items:center;gap:9px;transform:translateX(-50%);
+color:var(--dim);font:8px/1 var(--pix);letter-spacing:.5px;white-space:nowrap;pointer-events:none;transition:opacity .5s}
+.hint3d svg{width:18px;height:18px;fill:none;stroke:var(--green);stroke-width:1.8;stroke-linecap:round;stroke-linejoin:round}
+.stage.touched .hint3d{opacity:0}
+@media(hover:none){.hint3d .zh{display:none}}
+/* credit seal for the original designer (LeapTechOnline), under the hero buttons, aligned with the text column.
    The avatar loads from MakerWorld's image CDN, with assets/leaptech-avatar.png as fallback. */
-.seal{position:absolute;right:-18px;bottom:-30px;z-index:3;display:flex;align-items:center;gap:16px;padding:14px 20px 16px 14px;overflow:hidden;
+.seal{position:relative;display:flex;width:fit-content;max-width:100%;margin-top:28px;align-items:center;gap:14px;padding:12px 18px 12px 12px;overflow:hidden;
 background:#111a14;border:1px solid var(--green2);border-radius:12px;color:var(--txt);text-decoration:none;
-transform:rotate(-3deg);box-shadow:0 18px 40px -14px #000,0 0 32px -10px var(--glow);transition:transform .2s}
+box-shadow:0 18px 40px -14px #000,0 0 32px -10px var(--glow);transition:transform .2s}
 .seal::before{content:"";position:absolute;inset:4px;border:1px dashed rgba(46,227,106,.38);border-radius:9px;pointer-events:none}
 .seal::after{content:"";position:absolute;top:0;bottom:0;left:-60%;width:40%;background:linear-gradient(100deg,transparent,rgba(255,255,255,.11),transparent);transform:skewX(-18deg);animation:sealshine 7s ease-in-out infinite;pointer-events:none}
 @keyframes sealshine{0%,72%{left:-60%}100%{left:130%}}
-.seal:hover{transform:rotate(0) scale(1.03)}
-.medal{position:relative;flex:none;width:84px;height:84px}
+.seal:hover{transform:translateY(-2px)}
+.medal{position:relative;flex:none;width:72px;height:72px}
 .medal .burst{position:absolute;inset:0;width:100%;height:100%;fill:var(--green);filter:drop-shadow(0 0 10px var(--glow));animation:sealspin 28s linear infinite}
 @keyframes sealspin{to{transform:rotate(360deg)}}
 .medal .ribbon{position:absolute;bottom:-12px;width:18px;height:30px;background:var(--green2);clip-path:polygon(0 0,100% 0,100% 100%,50% 76%,0 100%)}
-.medal .ribbon.l{left:20px;transform:rotate(16deg)}
-.medal .ribbon.r{right:20px;transform:rotate(-16deg);background:#178a3c}
+.medal .ribbon.l{left:17px;transform:rotate(16deg)}
+.medal .ribbon.r{right:17px;transform:rotate(-16deg);background:#178a3c}
 .medal .av{position:absolute;inset:9px;overflow:hidden;border-radius:50%;background:#fff;box-shadow:0 0 0 3px #0e1511}
 .medal .av img{display:block;width:100%;height:100%;object-fit:cover}
 .medal .ten{position:absolute;top:-5px;right:-9px;display:flex;align-items:center;justify-content:center;width:31px;height:31px;border-radius:50%;background:#ffcf4a;color:#2a1d00;font:9px/1 var(--pix);box-shadow:0 0 0 2px #0e1511,0 0 14px -2px rgba(255,207,74,.75)}
-.seal .stars{display:flex;align-items:center;gap:7px;color:#ffcf4a;font-size:14px;letter-spacing:1px;line-height:1}
-.seal .stars em{font:8px/1 var(--pix);font-style:normal;letter-spacing:.5px}
-.seal .k{display:block;margin-top:8px;color:var(--green);font:8px/1.3 var(--pix);letter-spacing:.5px}
+.seal .stars{color:#ffcf4a;letter-spacing:1px}
+.seal .k{display:block;color:var(--green);font:8px/1.3 var(--pix);letter-spacing:.5px}
 .seal .n{display:block;margin:6px 0 5px;font-size:20px;font-weight:700;letter-spacing:-.3px;line-height:1}
 .seal .s{display:block;color:var(--mut);font:12.5px/1.35 var(--mono)}
 @media(prefers-reduced-motion:reduce){.seal::after,.medal .burst{animation:none}}
-@media(max-width:560px){.seal{right:-6px;bottom:-28px;gap:12px;padding:11px 14px 13px 11px}.medal{width:66px;height:66px}.medal .ribbon{width:14px;height:24px}.medal .ribbon.l{left:15px}.medal .ribbon.r{right:15px}.seal .n{font-size:17px}}
+@media(max-width:560px){.seal{gap:12px;padding:11px 14px 13px 11px}.medal{width:66px;height:66px}.medal .ribbon{width:14px;height:24px}.medal .ribbon.l{left:15px}.medal .ribbon.r{right:15px}.seal .n{font-size:17px}}
 .spec{display:grid;grid-template-columns:repeat(6,minmax(0,1fr));margin:6px 0 0;border:1px solid var(--line);border-radius:6px;background:var(--bg2);overflow:hidden}
 .spec div{padding:14px 18px;border-right:1px solid var(--line)}
 .spec div:last-child{border-right:0}
@@ -131,7 +136,7 @@ h2{margin:0;font-size:32px;font-weight:700;letter-spacing:-.8px;line-height:1.12
 .bot{display:grid;grid-template-columns:minmax(0,1.05fr) minmax(0,1fr);gap:44px;align-items:center;
 padding:34px 36px;background:linear-gradient(140deg,#15211a,#121317 60%);border:1px solid var(--line2);border-radius:12px;
 box-shadow:0 0 0 1px rgba(46,227,106,.05),0 30px 60px -40px var(--glow)}
-.bot h2{font-size:30px}
+.bot h2{font-size:30px;margin-bottom:10px}
 .bot .eyebrow{margin-bottom:12px}
 .bot ol{counter-reset:s;list-style:none;margin:18px 0 22px;padding:0;display:grid;gap:12px}
 .bot ol li{position:relative;padding-left:40px;color:var(--mut);font-size:15px}
@@ -184,7 +189,10 @@ footer a:hover{color:var(--txt)}
   .dl .cta{justify-content:flex-start}
 }
 @media(max-width:560px){.spec{grid-template-columns:1fr 1fr}.spec div{border-right:0;border-bottom:1px solid var(--line)}.steps{grid-template-columns:1fr}h1{font-size:34px}}
+@media(max-width:900px){.stage{margin:0 0 10px;--mvh:440px}}
+@media(max-width:560px){.stage{--mvh:380px}}
 </style>
+<script type="module" src="https://cdn.jsdelivr.net/npm/@google/model-viewer@3.5.0/dist/model-viewer.min.js"></script>
 </head>
 <body>
 <svg width="0" height="0" style="position:absolute" aria-hidden="true"><defs>
@@ -201,20 +209,60 @@ footer a:hover{color:var(--txt)}
   <div class="hero">
     <div>
       <span class="badge"><span class="dot"></span>PROJETO ABERTO <b>·</b> 100% GRÁTIS</span>
-      <h1>Monte um fliperama <span class="hl">de verdade</span>, impresso na sua Ender 3.</h1>
-      <p class="lead">Peças já cortadas para caber na mesa de 220&nbsp;mm, guia de montagem em 8 etapas, um controle para acompanhar as 300&nbsp;h de impressão e um app que manda os jogos para a Raspberry Pi <b>pela rede WiFi</b>.</p>
+      <h1>Um fliperama <span class="hl">de verdade</span>, impresso na Ender 3.</h1>
+      <p class="lead">Peças cortadas para a mesa de 220&nbsp;mm, guia de montagem e um app que manda jogos para a Raspberry Pi <b>pelo WiFi</b>.</p>
       <div class="cta">
-        <a href="https://github.com/lucasdcorrea1/arcade-do-zero/releases/download/stl-pack/ArcadeDoZero-Ender3-STL.zip" class="btn primary"><svg class="ic"><use href="#i-down"/></svg>Baixar as peças (.zip)</a>
-        <a href="guia.html" class="btn">Ver o guia de montagem</a>
-        <a href="app.html" class="btn"><svg class="ic"><use href="#i-wifi"/></svg>Como atualizar jogos</a>
+        <a href="https://github.com/lucasdcorrea1/arcade-do-zero/releases/download/stl-pack/ArcadeDoZero-Ender3-STL.zip" class="btn primary"><svg class="ic"><use href="#i-down"/></svg>Baixar peças (.zip)</a>
+        <a href="guia.html" class="btn">Guia de montagem</a>
+        <a href="app.html" class="btn"><svg class="ic"><use href="#i-wifi"/></svg>Atualizar jogos</a>
       </div>
-    </div>
-    <figure class="screen"><div class="glass"><img src="assets/cabinet_iso.png" alt="Fliperama bartop montado, vista 3/4"></div>
       <a class="seal" href="https://makerworld.com/pt/@LeapTechOnline" target="_blank" rel="noopener" aria-label="Design original de LeapTechOnline, modelo Staff Pick no MakerWorld">
         <span class="medal" aria-hidden="true"><i class="ribbon l"></i><i class="ribbon r"></i><svg class="burst" viewBox="0 0 100 100"><polygon points="50.0,0.0 55.7,6.4 62.9,1.7 66.8,9.3 75.0,6.7 76.8,15.1 85.4,14.6 84.9,23.2 93.3,25.0 90.7,33.2 98.3,37.1 93.6,44.3 100.0,50.0 93.6,55.7 98.3,62.9 90.7,66.8 93.3,75.0 84.9,76.8 85.4,85.4 76.8,84.9 75.0,93.3 66.8,90.7 62.9,98.3 55.7,93.6 50.0,100.0 44.3,93.6 37.1,98.3 33.2,90.7 25.0,93.3 23.2,84.9 14.6,85.4 15.1,76.8 6.7,75.0 9.3,66.8 1.7,62.9 6.4,55.7 0.0,50.0 6.4,44.3 1.7,37.1 9.3,33.2 6.7,25.0 15.1,23.2 14.6,14.6 23.2,15.1 25.0,6.7 33.2,9.3 37.1,1.7 44.3,6.4"/></svg><span class="av"><img id="sealAv" src="https://public-cdn.bblmw.com/avatar/290004276/2025-06-10_3751c1e50e6c8.png?x-oss-process=image/resize,w_160/format,webp" alt="" referrerpolicy="no-referrer" onerror="this.onerror=null;this.src='assets/leaptech-avatar.png'"></span><span class="ten">10</span></span>
-        <span><span class="stars">★★★★★ <em>NOTA 10</em></span><span class="k" id="sealTag">DESIGN ORIGINAL · STAFF PICK</span><span class="n" id="sealName">LeapTechOnline</span><span class="s" id="sealStats">3,1 mil seguidores · 40,4 mil downloads ↗</span></span>
+        <span><span class="k" id="sealTag">DESIGN ORIGINAL</span><span class="n" id="sealName">LeapTechOnline</span><span class="s" id="sealStats"><span class="stars">★★★★★</span> Staff Pick · 40,4&nbsp;mil&nbsp;downloads&nbsp;↗</span></span>
       </a>
+    </div>
+    <figure class="stage" id="stage"><model-viewer src="assets/cabinet.glb?v=20261021" poster="assets/cabinet_poster.png?v=20261021"
+        alt="Modelo 3D do fliperama montado. Arraste para girar e role para dar zoom." camera-controls disable-pan touch-action="pan-y"
+        auto-rotate auto-rotate-delay="2500" rotation-per-second="16deg" interaction-prompt="none" camera-orbit="35deg 74deg auto" camera-target="auto 0.31m auto"
+        min-camera-orbit="auto 45deg auto" max-camera-orbit="auto 92deg auto"
+        field-of-view="27deg" max-field-of-view="27deg" min-field-of-view="14deg" zoom-sensitivity="0.45" shadow-intensity="1.1" shadow-softness="0.9" exposure="0.8" tone-mapping="neutral" environment-image="neutral"></model-viewer>
+      <span class="hint3d" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M21 12a9 9 0 1 1-3-6.7"/><polyline points="21 3 21 9 15 9"/></svg>ARRASTE PARA GIRAR<span class="zh"> · ROLE PARA ZOOM</span></span>
     </figure>
+    <script>
+    (function(){
+      var stage = document.getElementById('stage'), mv = stage.querySelector('model-viewer');
+      // opened straight from disk (file://) the browser blocks fetching the .glb, so load the inlined copy instead
+      if (location.protocol === 'file:') {
+        var src = mv.getAttribute('src'); mv.removeAttribute('src');
+        var s = document.createElement('script'); s.src = 'assets/cabinet-glb.js?' + src.split('?')[1];
+        s.onload = function(){ mv.setAttribute('src', window.CABINET_GLB) };
+        document.head.appendChild(s);
+      }
+      if (matchMedia('(prefers-reduced-motion: reduce)').matches) mv.removeAttribute('auto-rotate');
+      mv.addEventListener('camera-change', function(e){ if (e.detail.source === 'user-interaction') stage.classList.add('touched') });
+
+      // Wheel over the model zooms it, but only after the mouse has actually moved over it: a page scrolled
+      // under a still cursor keeps scrolling, and so does scrolling down once fully zoomed out.
+      var armed = false, maxFov = 27, flip = 0, r0 = null;
+      mv.addEventListener('load', function(){ r0 = mv.getCameraOrbit().radius });
+      stage.addEventListener('pointermove', function(e){ if (e.pointerType === 'mouse' && (e.movementX || e.movementY)) armed = true });
+      addEventListener('scroll', function(){ armed = false }, { passive: true });
+      stage.addEventListener('wheel', function(e){
+        var zoomedOut = mv.getFieldOfView() >= maxFov - 0.3;
+        if (!armed || (e.deltaY > 0 && zoomedOut)) e.stopPropagation();   // model-viewer never sees it, the page scrolls
+      }, { capture: true });
+      // leaving the model eases the zoom (field of view + camera distance) back to the full view;
+      // a tiny fov change forces the update since the attribute value itself never changed
+      stage.addEventListener('pointerleave', function(e){
+        if (e.pointerType !== 'mouse') return;
+        armed = false;
+        if (r0 === null || mv.getFieldOfView() >= maxFov - 0.3) return;
+        var o = mv.getCameraOrbit();
+        flip = 1 - flip; mv.fieldOfView = (maxFov - flip * 0.001) + 'deg';
+        mv.cameraOrbit = o.theta + 'rad ' + o.phi + 'rad ' + r0 + 'm';
+      });
+    })();
+    </script>
   </div>
   <dl class="spec">
     <div><dt>Peças</dt><dd>230</dd></div>
@@ -231,21 +279,21 @@ footer a:hover{color:var(--txt)}
 <section id="oque">
   <div class="shead">
     <div><p class="eyebrow">O QUE VOCÊ RECEBE</p><h2>Três ferramentas, da impressora ao jogo rodando</h2></div>
-    <p>Cada uma resolve uma parte do caminho: imprimir sem se perder, montar na ordem certa e colocar os jogos no fliperama.</p>
+    <p>Imprimir sem se perder, montar na ordem certa e colocar os jogos no fliperama.</p>
   </div>
   <div class="tools">
     <div class="tool">
       <figure class="shot"><img src="assets/shot_controle.png" alt="Controle de impressão: lista das partes e cards das peças"></figure>
       <span class="num">01</span>
       <h3>Controle de impressão</h3>
-      <p>Todas as peças com miniatura 3D, separadas por parte. Marque o que já saiu da impressora, anote falhas e horas, filtre por cor do filamento e abra cada STL direto no OrcaSlicer.</p>
+      <p>Todas as peças com miniatura, por parte. Marque o que já imprimiu, anote falhas e abra cada STL no OrcaSlicer.</p>
       <a class="lnk" href="controle.html">Abrir o controle <svg class="ic"><use href="#i-arrow"/></svg></a>
     </div>
     <div class="tool">
       <figure class="shot"><img src="assets/shot_guia.png" alt="Manual de montagem: etapas com passos e peças"></figure>
       <span class="num">02</span>
       <h3>Guia de montagem</h3>
-      <p>As 8 etapas, das peças cortadas à caixa fechada: o que fazer em cada uma, quais partes entram e o material necessário. Inclui a lista de compras e a configuração do fatiador.</p>
+      <p>As 8 etapas da montagem, com as partes de cada uma, a lista de compras e a configuração do fatiador.</p>
       <a class="lnk" href="guia.html">Abrir o guia <svg class="ic"><use href="#i-arrow"/></svg></a>
     </div>
     <div class="tool">
@@ -258,7 +306,7 @@ footer a:hover{color:var(--txt)}
       </div></figure>
       <span class="num">03</span>
       <h3>App RetroPie ROM Sender</h3>
-      <p>Programa para Windows que pega o jogo que você baixou e envia pela rede para a Raspberry Pi, já na pasta certa do emulador, com capa. Sem terminal, sem FileZilla.</p>
+      <p>Envia o jogo baixado no PC para a Raspberry Pi pela rede, já na pasta certa e com capa.</p>
       <a class="lnk" href="app.html">Ver como funciona <svg class="ic"><use href="#i-arrow"/></svg></a>
     </div>
   </div>
@@ -269,7 +317,7 @@ footer a:hover{color:var(--txt)}
     <div>
       <p class="eyebrow" style="margin-bottom:10px">DOWNLOAD · PEÇAS 3D</p>
       <h2>Peças prontas para imprimir</h2>
-      <p>Um ZIP com tudo para a Ender 3: 231 peças em STL separadas pelas 18 partes do gabinete e 106 mesas prontas por cor de filamento (verde, preto e branco), em que cada arquivo é uma impressão. Inclui o LEIA-ME com a configuração do fatiador e o instalador do botão "Abrir no Orca".</p>
+      <p>231 peças em STL, separadas pelas 18 partes, e 106 mesas prontas por cor (cada arquivo é uma impressão). Inclui o LEIA-ME e o botão "Abrir no Orca".</p>
       <small>Versão para Ender 3 do modelo <a href="https://makerworld.com/pt/models/1517006-2-player-bartop-arcade-machine-cabinet-no-ams">"2 Player Bartop Arcade - Machine - Cabinet"</a>, criado por <a href="https://makerworld.com/pt/@LeapTechOnline">LeapTechOnline</a> no MakerWorld e distribuída aqui com autorização do autor. O original segue a licença padrão de arquivo digital do MakerWorld: não redistribua estes arquivos nem impressões deles sem permissão do LeapTechOnline.</small>
     </div>
     <div class="cta">
@@ -284,12 +332,12 @@ footer a:hover{color:var(--txt)}
     <div>
       <p class="eyebrow">ATUALIZAR JOGOS PELO WIFI</p>
       <h2>Jogos novos no fliperama <span class="gr">sem tirar o cartão</span></h2>
-      <p class="lead" style="margin-bottom:0;font-size:16px">Com o fliperama na estante e a Raspberry Pi ligada, você adiciona jogos do seu PC pela mesma rede WiFi — nada de desmontar nada ou mexer no terminal da Pi.</p>
+      <p class="lead" style="margin-bottom:0;font-size:16px">Com a Pi ligada, você manda jogos do PC pela mesma rede WiFi, sem desmontar nada nem usar terminal.</p>
       <ol>
-        <li>Você <b>navega e baixa</b> o jogo no site de ROM, dentro do navegador do app.</li>
-        <li>O app <b>intercepta</b> o arquivo e detecta o emulador certo pela URL.</li>
-        <li>Envia pela rede por <b>SFTP</b> direto para <span class="mono">~/RetroPie/roms</span> na Pi.</li>
-        <li>Reinicia o EmulationStation e o jogo <b>aparece na hora</b> — já com a capa.</li>
+        <li><b>Baixe</b> o jogo pelo navegador do app.</li>
+        <li>O app <b>detecta o emulador</b> certo.</li>
+        <li>Envia por <b>SFTP</b> para <span class="mono">~/RetroPie/roms</span>.</li>
+        <li>O jogo <b>aparece na hora</b>, já com capa.</li>
       </ol>
       <div class="cta">
         <a href="app.html" class="btn primary">Saiba mais sobre o app</a>
@@ -310,17 +358,17 @@ footer a:hover{color:var(--txt)}
     <p>O caminho completo, do primeiro STL ao primeiro "insert coin".</p>
   </div>
   <ol class="steps">
-    <li><span class="num">01</span><h4>Imprima</h4><p>Os STL já estão cortados para a Ender 3. Siga a ordem sugerida no controle de impressão e marque cada peça.</p></li>
-    <li><span class="num">02</span><h4>Monte</h4><p>Cole os pedaços de cada painel pelos pinos de encaixe e parafuse a caixa seguindo as 8 etapas do guia.</p></li>
-    <li><span class="num">03</span><h4>Instale o Pi</h4><p>Grave o RetroPie no cartão e configure a Raspberry Pi seguindo o <a href="raspberry.html" style="color:var(--green)">guia de instalação</a>. Depois use o app para mandar jogos e capas pela rede.</p></li>
-    <li><span class="num">04</span><h4>Jogue</h4><p>Ligue, chame alguém para o segundo controle e jogue no fliperama que você mesmo fez.</p></li>
+    <li><span class="num">01</span><h4>Imprima</h4><p>STL já cortados para a Ender 3. Siga a ordem do controle.</p></li>
+    <li><span class="num">02</span><h4>Monte</h4><p>Cole os pedaços pelos pinos e feche a caixa em 8 etapas.</p></li>
+    <li><span class="num">03</span><h4>Instale o Pi</h4><p>Grave o RetroPie (<a href="raspberry.html" style="color:var(--green)">guia de instalação</a>) e mande os jogos pelo app.</p></li>
+    <li><span class="num">04</span><h4>Jogue</h4><p>Chame alguém para o segundo controle e jogue.</p></li>
   </ol>
 </section>
 
 <section>
   <div class="views">
-    <figure><img src="assets/cabinet_front.png" alt="Vista frontal do fliperama"><figcaption>Frente: marquee, tela e os dois controles</figcaption></figure>
-    <figure><img src="assets/cabinet_rear.png" alt="Vista traseira do fliperama"><figcaption>Traseira: porta de acesso, alça e entrada de força</figcaption></figure>
+    <figure><img src="assets/cabinet_front.png?v=20261021" alt="Vista frontal do fliperama"><figcaption>Frente: marquee, tela e os dois controles</figcaption></figure>
+    <figure><img src="assets/cabinet_rear.png?v=20261021" alt="Vista traseira do fliperama"><figcaption>Traseira: porta de acesso, alça e entrada de força</figcaption></figure>
   </div>
 </section>
 
