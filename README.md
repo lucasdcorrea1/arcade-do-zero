@@ -10,8 +10,9 @@ Tudo é **gratuito e open source**. Sem cadastro, sem pegadinha.
 > **Modelo 3D original:** "2 Player Bartop Arcade - Machine - Cabinet", criado por
 > **[LeapTechOnline](https://makerworld.com/pt/@LeapTechOnline)** e publicado no
 > [MakerWorld](https://makerworld.com/pt/models/1517006-2-player-bartop-arcade-machine-cabinet-no-ams).
-> As peças deste projeto são um remix (cortadas para a mesa da Ender 3, com pinos de encaixe) e seguem
-> a mesma licença Creative Commons do original, sem fins comerciais. O código (site e app) é MIT.
+> As peças deste projeto são uma versão para a Ender 3 (cortadas, com pinos de encaixe), distribuída aqui com
+> autorização do autor. O original segue a Standard Digital File License do MakerWorld: não redistribua os
+> arquivos nem remixes sem permissão dele. O código (site e app) é MIT.
 
 ---
 
