@@ -141,7 +141,7 @@ footer a:hover{color:var(--txt)}
 <symbol id="i-alert" viewBox="0 0 24 24"><path d="M10.3 3.9 1.8 18a2 2 0 0 0 1.7 3h17a2 2 0 0 0 1.7-3L13.7 3.9a2 2 0 0 0-3.4 0z"/><line x1="12" y1="9" x2="12" y2="13"/><line x1="12" y1="17" x2="12.01" y2="17"/></symbol>
 </defs></svg>
 
-<nav class="sitenav"><a class="sn-logo" href="index.html"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M6 3h12v6l-1.5 3H19v9H5v-9h2.5L6 9z"/><rect x="8" y="4.8" width="8" height="2.4"/><path d="M8.2 12h7.6"/><circle cx="9" cy="16" r=".9"/><circle cx="12" cy="16" r=".9"/><circle cx="15" cy="16" r=".9"/></svg><span>ARCADE DO ZERO</span></a><div class="sn-links"><a href="index.html">Início</a><a href="guia.html">Guia</a><a href="controle.html">Controle</a><a href="raspberry.html">RetroPie</a></div><div class="sn-app"><a href="app.html" class="active"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M5 12.5a10 10 0 0 1 14 0"/><path d="M8.5 16a5 5 0 0 1 7 0"/><line x1="12" y1="19.5" x2="12.01" y2="19.5"/></svg><span>App<span class="g"> grátis</span></span></a></div></nav>
+<nav class="sitenav"><a class="sn-logo" href="index.html"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M6 3h12v6l-1.5 3H19v9H5v-9h2.5L6 9z"/><rect x="8" y="4.8" width="8" height="2.4"/><path d="M8.2 12h7.6"/><circle cx="9" cy="16" r=".9"/><circle cx="12" cy="16" r=".9"/><circle cx="15" cy="16" r=".9"/></svg><span>ARCADE DO ZERO</span></a><div class="sn-links"><a href="index.html">Início</a><a href="guia.html">Guia</a><a href="controle.html">Controle</a></div><div class="sn-app"><a href="app.html" class="active"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M5 12.5a10 10 0 0 1 14 0"/><path d="M8.5 16a5 5 0 0 1 7 0"/><line x1="12" y1="19.5" x2="12.01" y2="19.5"/></svg><span>App<span class="g"> grátis</span></span></a></div></nav>
 
 <header class="wrap">
   <div class="hero">
@@ -158,10 +158,27 @@ footer a:hover{color:var(--txt)}
     <div class="window"><img src="assets/app_biblioteca.jpg?v=20261021" alt="RetroPie ROM Sender, aba Meus jogos: a biblioteca da Raspberry Pi por console, com capa e tamanho de cada jogo" width="2400" height="1632"></div>
     <div class="float"><img src="assets/app_envio.jpg?v=20261021" alt="Barra de envio: anguna.gba, console Game Boy Advance, enviando pro fliperama 68%" width="2400" height="252"></div>
   </figure>
-  <p class="facts"><b>Jogos de 34 videogames</b> · capa automática · sem abrir a máquina · sem digitar comandos</p>
+  <p class="facts"><b>Instala o RetroPie pra você</b> · jogos de 34 videogames · capa automática · sem abrir a máquina · sem digitar comandos</p>
 </header>
 
 <main class="wrap">
+
+<section id="comece">
+  <div class="shead">
+    <p class="eyebrow">COMECE DO ZERO</p>
+    <h2>Ele instala o RetroPie pra você</h2>
+    <p>Sem outro programa e sem comandos: coloque o cartão de memória da Raspberry Pi no computador e abra a aba <b>Novo fliperama</b>.</p>
+  </div>
+  <ol class="steps">
+    <li><span class="num">01</span><h4>Escolha o cartão</h4><p>O app lista só cartões e pendrives, nunca o disco do computador. Depois é só dizer qual é a sua Raspberry Pi.</p></li>
+    <li><span class="num">02</span><h4>Ele grava o RetroPie</h4><p>Baixa o RetroPie mais novo, confere se o download veio inteiro, apaga o cartão e grava. O Wi-Fi da sua casa já vai junto.</p></li>
+    <li><span class="num">03</span><h4>Ligue o fliperama</h4><p>Coloque o cartão na Pi e ligue. O app acha o fliperama no Wi-Fi e termina a configuração sozinho.</p></li>
+  </ol>
+  <div class="note" style="margin-top:20px">
+    <svg class="ic"><use href="#i-alert"/></svg>
+    <p><b>Tudo o que estiver no cartão é apagado.</b> Use um cartão só para o fliperama.</p>
+  </div>
+</section>
 
 <section id="como">
   <div class="shead">
@@ -210,6 +227,11 @@ footer a:hover{color:var(--txt)}
       <div>
         <h3>Troque o visual do fliperama</h3>
         <p>A tela inicial do fliperama pode ter vários visuais, chamados temas. O app mostra os que estão instalados e qual está em uso: clique em outro e ele troca na hora.</p>
+        <ul>
+          <li><b>Centenas de temas</b> para baixar, com foto, dos mais populares aos mais novos</li>
+          <li><b>Filtre por cor ou criador</b> e esconda os que não gostou</li>
+          <li>Mostra só os que <b>funcionam no seu fliperama</b></li>
+        </ul>
       </div>
     </div>
     <div class="row flip">
@@ -235,12 +257,8 @@ footer a:hover{color:var(--txt)}
   </div>
   <div class="reqs">
     <div class="req"><span class="num">01</span><h4>Um computador com Windows</h4><p>Windows 10 ou 11, 64 bits. Dá para usar sem instalar (versão portátil) ou instalar normalmente.</p></div>
-    <div class="req"><span class="num">02</span><h4>O fliperama com RetroPie</h4><p>O RetroPie é o sistema de jogos que roda na Raspberry Pi. Ele precisa estar com o acesso remoto (SSH) ligado; o guia de instalação, logo abaixo, mostra como.</p></div>
+    <div class="req"><span class="num">02</span><h4>Uma Raspberry Pi</h4><p>Ainda sem RetroPie? O app grava o cartão pra você (<a href="#comece" style="color:var(--green)">veja como</a>). Se o seu já tem, basta o acesso remoto (SSH) ligado.</p></div>
     <div class="req"><span class="num">03</span><h4>A senha do fliperama</h4><p>Só na primeira vez, na tela de conexão. Fica salva no seu computador e não vai para nenhum servidor.</p></div>
-  </div>
-  <div class="note" style="margin-top:20px">
-    <svg class="ic"><use href="#i-alert"/></svg>
-    <p><b>Em breve: setup completo da Raspberry Pi pelo app.</b> Estamos trabalhando para o RetroPie ROM Sender configurar a Pi sozinho, direto do seu PC: Wi-Fi, SSH, emuladores e controles. Por enquanto essa parte é manual: siga o <a href="raspberry.html" style="color:var(--green)">guia de instalação do RetroPie</a>, com os mesmos comandos que usamos no nosso fliperama.</p>
   </div>
 </section>
 
@@ -253,7 +271,7 @@ footer a:hover{color:var(--txt)}
   <ul class="trust">
     <li><svg class="ic"><use href="#i-code"/></svg><div><b>Leia o código antes de rodar</b><span>Todo o funcionamento está em <span class="mono">desktop-app/src</span>. Nada ofuscado.</span></div></li>
     <li><svg class="ic"><use href="#i-shield"/></svg><div><b>Não confie no meu .exe — gere o seu</b><span>Em 3 comandos você compila o app e obtém o mesmo programa.</span></div></li>
-    <li><svg class="ic"><use href="#i-eye"/></svg><div><b>Sem rastreio, sem telemetria, sem conta</b><span>Só conversa com a sua Raspberry Pi e com os sites que você mesmo abrir.</span></div></li>
+    <li><svg class="ic"><use href="#i-eye"/></svg><div><b>Sem rastreio, sem telemetria, sem conta</b><span>Fala com a sua Raspberry Pi, com os sites que você abrir e com o GitHub, de onde vêm o RetroPie e os temas (as fotos dos temas chegam reduzidas pelo wsrv.nl).</span></div></li>
     <li><svg class="ic"><use href="#i-lock"/></svg><div><b>Seus dados ficam no seu PC</b><span>IP e senha da Pi vão para um arquivo local, nada sobe para servidores.</span></div></li>
   </ul>
   <div class="note">
