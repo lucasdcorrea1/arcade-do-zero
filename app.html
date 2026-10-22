@@ -3,8 +3,8 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>RetroPie ROM Sender · atualize os jogos do fliperama pelo WiFi</title>
-<meta name="description" content="App grátis para Windows que envia jogos (ROMs) do seu PC direto para a Raspberry Pi pela rede WiFi (SFTP), na pasta certa do emulador do RetroPie. Sem terminal, sem FileZilla. Código aberto.">
+<title>RetroPie ROM Sender · seus jogos no fliperama pelo WiFi</title>
+<meta name="description" content="App para Windows que manda seus jogos do PC para o fliperama (Raspberry Pi com RetroPie) pelo WiFi, na pasta certa do emulador e com capa. Biblioteca, temas e manutenção da Pi sem terminal. Grátis e de código aberto.">
 <link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500&family=IBM+Plex+Sans:wght@400;500;600;700&family=Press+Start+2P&display=swap" rel="stylesheet">
 <style>
@@ -43,11 +43,7 @@ background:rgba(12,13,15,.82);backdrop-filter:blur(10px);border-bottom:1px solid
 .sn-links a{display:flex;align-items:center;margin-bottom:-1px;padding:0 13px;border-bottom:2px solid transparent;color:var(--mut);font-size:14px;font-weight:500}
 .sn-links a:hover{color:var(--txt)}
 .sn-links a.active{color:var(--txt);border-bottom-color:var(--green)}
-.sn-dl{display:flex;align-items:center;margin-left:auto}
-.sn-dl a{display:inline-flex;align-items:center;gap:7px;height:34px;padding:0 13px;border:1px solid var(--green2);border-radius:5px;color:var(--green);font-size:13.5px;font-weight:600;white-space:nowrap}
-.sn-dl a:hover{background:rgba(46,227,106,.08)}
-.sn-dl svg{width:15px;height:15px;fill:none;stroke:currentColor;stroke-width:1.8;stroke-linecap:round;stroke-linejoin:round}
-@media(max-width:680px){.sitenav{gap:4px;padding:0 10px}.sn-logo span,.sn-dl span{display:none}.sn-links a{padding:0 9px}}
+@media(max-width:680px){.sitenav{gap:4px;padding:0 10px}.sn-logo span{display:none}.sn-links a{padding:0 9px}}
 
 .eyebrow{margin:0 0 14px;color:var(--green);font:9px/1 var(--pix);letter-spacing:1px}
 /* hero */
@@ -58,36 +54,44 @@ background:rgba(12,13,15,.82);backdrop-filter:blur(10px);border-bottom:1px solid
 h1{margin:0 0 20px;font-size:46px;font-weight:700;letter-spacing:-1.4px;line-height:1.07}
 h1 .hl{color:var(--green);text-shadow:0 0 28px var(--glow)}
 .lead{margin:0 0 26px;color:var(--mut);font-size:18px}
+.pack{margin:12px 0 0;color:var(--dim);font:12.5px var(--mono)}
+.pack a{text-decoration:underline;text-underline-offset:2px}
 .cta{display:flex;flex-wrap:wrap;gap:11px}
-/* network diagram */
-.net{display:grid;grid-template-columns:1fr auto 1fr;align-items:center;gap:14px;margin:36px 0 0;padding:26px;background:#0d0e10;border:1px solid var(--line);border-radius:12px}
-.net .dev{display:flex;align-items:center;gap:14px;padding:16px;border:1px solid var(--line2);border-radius:9px;background:var(--card)}
-.net .dev svg{width:32px;height:32px;color:var(--green);flex:none}
-.net .dev .t{font-weight:600;font-size:15px}
-.net .dev .s{color:var(--dim);font:12px var(--mono)}
-.net .wifi{display:flex;flex-direction:column;align-items:center;gap:6px;color:var(--green);font:8px/1.4 var(--pix);letter-spacing:.5px;text-align:center}
-.net .wifi svg{width:28px;height:28px;animation:pulse 2.2s ease-in-out infinite}
-@keyframes pulse{0%,100%{opacity:.5}50%{opacity:1}}
 
+/* product shots: the real app window, with the send strip floating over it */
+.product{position:relative;margin:44px 0 0}
+.window{overflow:hidden;border:1px solid #2a2e3c;border-radius:12px;background:#0c0e15;
+box-shadow:0 46px 90px -34px #000,0 0 0 1px rgba(255,255,255,.03),0 0 90px -30px rgba(124,124,255,.32)}
+.product img,.shot img{display:block;width:100%;height:auto}
+.product .float{position:absolute;left:-22px;bottom:-34px;width:min(600px,58%);overflow:hidden;border:1px solid #2f3446;border-radius:10px;
+box-shadow:0 26px 50px -14px #000,0 0 0 1px rgba(46,227,106,.08)}
+.facts{margin:58px 0 0;color:var(--dim);font:13px var(--mono);text-align:center}
+.facts b{color:var(--txt);font-weight:500}
+/* how it works */
+.steps{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));margin:0;padding:0;list-style:none;border-top:1px solid var(--line2)}
+.steps li{position:relative;padding:22px 26px 0 0}
+.steps li::before{content:"";position:absolute;top:-4px;left:0;width:8px;height:8px;border-radius:50%;background:var(--green);box-shadow:0 0 8px var(--glow)}
+.steps .num{color:var(--green);font:8px/1 var(--pix)}
+.steps h4{margin:10px 0 6px;font-size:17px;font-weight:600}
+.steps p{margin:0;color:var(--mut);font-size:15px}
+/* feature rows: screenshot + text, alternating sides */
+.row{display:grid;grid-template-columns:minmax(0,1.25fr) minmax(0,1fr);gap:46px;align-items:center;padding:38px 0;border-top:1px solid var(--line)}
+.row:first-child{border-top:0;padding-top:0}
+.row.flip{grid-template-columns:minmax(0,1fr) minmax(0,1.25fr)}
+.row.flip .shot{order:2}
+.shot{overflow:hidden;border:1px solid #2a2e3c;border-radius:10px;box-shadow:0 30px 60px -30px #000}
+.shot.crop{aspect-ratio:16/10}
+.shot.crop img{height:100%;object-fit:cover;object-position:0 62%}
+.row h3{margin:0 0 10px;font-size:24px;font-weight:700;letter-spacing:-.5px;line-height:1.2}
+.row p{margin:0 0 14px;color:var(--mut);font-size:15.5px}
+.row ul{margin:0;padding:0;list-style:none;display:grid;gap:8px}
+.row li{position:relative;padding-left:22px;color:var(--mut);font-size:15px}
+.row li::before{content:"";position:absolute;left:2px;top:9px;width:8px;height:8px;border-radius:2px;background:var(--green)}
+.row li b{color:var(--txt);font-weight:600}
 section{padding:70px 0 0}
 .shead{margin-bottom:30px;padding-bottom:18px;border-bottom:1px solid var(--line)}
 h2{margin:0;font-size:30px;font-weight:700;letter-spacing:-.7px;line-height:1.14}
 .shead p{margin:10px 0 0;color:var(--mut);font-size:15.5px;max-width:52em}
-/* flow steps (numbered big) */
-.flowsteps{display:grid;grid-template-columns:repeat(4,1fr);gap:16px;counter-reset:f}
-.flowsteps .fs{position:relative;padding:20px;border:1px solid var(--line);border-radius:9px;background:var(--card)}
-.flowsteps .fs::before{counter-increment:f;content:counter(f);display:flex;align-items:center;justify-content:center;width:30px;height:30px;margin-bottom:12px;border-radius:7px;background:rgba(46,227,106,.12);border:1px solid var(--green2);color:var(--green);font:10px/1 var(--pix)}
-.flowsteps .fs h4{margin:0 0 6px;font-size:16px;font-weight:600}
-.flowsteps .fs p{margin:0;color:var(--mut);font-size:14px}
-.flowsteps .fs .mono{display:block;margin-top:8px;color:var(--green);font-size:12px}
-/* feature grid (tabs) */
-.feats{display:grid;grid-template-columns:repeat(2,1fr);gap:16px}
-.feat{display:flex;gap:16px;padding:20px;border:1px solid var(--line);border-radius:9px;background:var(--card)}
-.feat .fi{flex:none;width:44px;height:44px;display:flex;align-items:center;justify-content:center;border-radius:9px;background:rgba(46,227,106,.1);border:1px solid var(--green2);color:var(--green)}
-.feat .fi svg{width:22px;height:22px}
-.feat h3{margin:2px 0 6px;font-size:17px;font-weight:600}
-.feat p{margin:0;color:var(--mut);font-size:14.5px}
-.feat .tag{display:inline-block;margin-top:9px;padding:3px 8px;border:1px solid var(--line2);border-radius:4px;color:var(--dim);font:11px var(--mono)}
 /* requirements */
 .reqs{display:grid;grid-template-columns:repeat(3,1fr);gap:16px}
 .req{padding:20px;border:1px solid var(--line);border-radius:9px;background:var(--bg2)}
@@ -106,35 +110,25 @@ ul.trust{margin:0 0 20px}
 .note svg{width:20px;height:20px;color:var(--green);flex:none;margin-top:2px}
 .note p{margin:0;color:var(--mut);font-size:14.5px}
 .note b{color:var(--txt)}
-.dl{display:grid;grid-template-columns:minmax(0,1.2fr) minmax(0,1fr);gap:40px;align-items:center;margin-top:16px;padding:34px 36px;background:var(--bg2);border:1px solid var(--line);border-radius:10px}
-.dl p{margin:10px 0 0;color:var(--mut);font-size:15.5px}
-.dl .cta{justify-content:flex-end}
-.dl small{display:block;margin-top:14px;color:var(--dim);font-size:13px}
-.dl small a{text-decoration:underline;text-underline-offset:2px}
 footer{display:flex;flex-wrap:wrap;justify-content:space-between;gap:12px;margin-top:84px;padding:28px 32px;border-top:1px solid var(--line);color:var(--dim);font-size:13.5px}
 footer a{color:var(--mut);text-decoration:none}
 footer a:hover{color:var(--txt)}
 @media(max-width:900px){
   .wrap{padding:0 18px}
   h1{font-size:34px}
-  .net{grid-template-columns:1fr;text-align:left}
-  .net .wifi{flex-direction:row;justify-content:center}
-  .net .wifi svg{transform:rotate(90deg)}
-  .flowsteps,.feats,.reqs,.trust,ul.trust,.dl{grid-template-columns:1fr}
-  .dl{padding:24px 20px}.dl .cta{justify-content:flex-start}
+  .reqs,.trust,ul.trust,.steps{grid-template-columns:1fr}
+  .steps{border-top:0}
+  .steps li{padding:22px 0 18px;border-top:1px solid var(--line2)}
+  .row,.row.flip{grid-template-columns:1fr;gap:22px}
+  .row.flip .shot{order:0}
+  .product{margin-bottom:40px}
+  .product .float{left:8px;bottom:-30px;width:86%}
 }
 </style>
 </head>
 <body>
 <svg width="0" height="0" style="position:absolute" aria-hidden="true"><defs>
 <symbol id="i-down" viewBox="0 0 24 24"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></symbol>
-<symbol id="i-pc" viewBox="0 0 24 24"><rect x="2" y="3" width="20" height="14" rx="2"/><path d="M8 21h8M12 17v4"/></symbol>
-<symbol id="i-wifi" viewBox="0 0 24 24"><path d="M5 12.5a10 10 0 0 1 14 0"/><path d="M8.5 16a5 5 0 0 1 7 0"/><line x1="12" y1="19.5" x2="12.01" y2="19.5"/></symbol>
-<symbol id="i-pi" viewBox="0 0 24 24"><rect x="3" y="6" width="18" height="12" rx="2"/><path d="M7 10h.01M7 14h.01M11 10h6M11 14h6"/></symbol>
-<symbol id="i-globe" viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><path d="M3 12h18M12 3a14 14 0 0 1 0 18M12 3a14 14 0 0 0 0 18"/></symbol>
-<symbol id="i-grid" viewBox="0 0 24 24"><rect x="3" y="3" width="7" height="7"/><rect x="14" y="3" width="7" height="7"/><rect x="3" y="14" width="7" height="7"/><rect x="14" y="14" width="7" height="7"/></symbol>
-<symbol id="i-image" viewBox="0 0 24 24"><rect x="3" y="3" width="18" height="18" rx="2"/><circle cx="9" cy="9" r="1.6"/><path d="m21 15-5-5L5 21"/></symbol>
-<symbol id="i-sliders" viewBox="0 0 24 24"><line x1="4" y1="21" x2="4" y2="14"/><line x1="4" y1="10" x2="4" y2="3"/><line x1="12" y1="21" x2="12" y2="12"/><line x1="12" y1="8" x2="12" y2="3"/><line x1="20" y1="21" x2="20" y2="16"/><line x1="20" y1="12" x2="20" y2="3"/><circle cx="4" cy="12" r="2"/><circle cx="12" cy="10" r="2"/><circle cx="20" cy="14" r="2"/></symbol>
 <symbol id="i-code" viewBox="0 0 24 24"><polyline points="16 18 22 12 16 6"/><polyline points="8 6 2 12 8 18"/></symbol>
 <symbol id="i-shield" viewBox="0 0 24 24"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/><polyline points="9 12 11 14 15 10"/></symbol>
 <symbol id="i-eye" viewBox="0 0 24 24"><path d="M1 12s4-7 11-7 11 7 11 7-4 7-11 7-11-7-11-7z"/><circle cx="12" cy="12" r="3"/></symbol>
@@ -142,25 +136,24 @@ footer a:hover{color:var(--txt)}
 <symbol id="i-alert" viewBox="0 0 24 24"><path d="M10.3 3.9 1.8 18a2 2 0 0 0 1.7 3h17a2 2 0 0 0 1.7-3L13.7 3.9a2 2 0 0 0-3.4 0z"/><line x1="12" y1="9" x2="12" y2="13"/><line x1="12" y1="17" x2="12.01" y2="17"/></symbol>
 </defs></svg>
 
-<nav class="sitenav"><a class="sn-logo" href="index.html"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M6 3h12v6l-1.5 3H19v9H5v-9h2.5L6 9z"/><rect x="8" y="4.8" width="8" height="2.4"/><path d="M8.2 12h7.6"/><circle cx="9" cy="16" r=".9"/><circle cx="12" cy="16" r=".9"/><circle cx="15" cy="16" r=".9"/></svg><span>ARCADE DO ZERO</span></a><div class="sn-links"><a href="index.html">Início</a><a href="guia.html">Guia</a><a href="controle.html">Controle</a><a href="raspberry.html">RetroPie</a><a href="app.html" class="active">App</a></div><div class="sn-dl"><a href="https://github.com/lucasdcorrea1/arcade-do-zero/releases/latest/download/RetroPie-ROM-Sender-portable.exe"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg><span>Baixar app</span></a></div></nav>
+<nav class="sitenav"><a class="sn-logo" href="index.html"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M6 3h12v6l-1.5 3H19v9H5v-9h2.5L6 9z"/><rect x="8" y="4.8" width="8" height="2.4"/><path d="M8.2 12h7.6"/><circle cx="9" cy="16" r=".9"/><circle cx="12" cy="16" r=".9"/><circle cx="15" cy="16" r=".9"/></svg><span>ARCADE DO ZERO</span></a><div class="sn-links"><a href="index.html">Início</a><a href="guia.html">Guia</a><a href="controle.html">Controle</a><a href="raspberry.html">RetroPie</a><a href="app.html" class="active">App</a></div></nav>
 
 <header class="wrap">
   <div class="hero">
-    <span class="badge"><span class="dot"></span>WINDOWS <b>·</b> CÓDIGO ABERTO <b>·</b> GRÁTIS</span>
-    <h1>Atualize os jogos do fliperama <span class="hl">pelo WiFi</span>.</h1>
-    <p class="lead">O <b>RetroPie ROM Sender</b> é um app para Windows que pega o jogo que você baixou e manda direto para a Raspberry Pi pela rede, já na pasta certa do emulador — e com a capa. Nada de cartão SD, FileZilla ou terminal.</p>
+    <span class="badge"><span class="dot"></span>APP PARA WINDOWS <b>·</b> GRÁTIS</span>
+    <h1>Seus jogos no fliperama, <span class="hl">pelo WiFi</span>.</h1>
+    <p class="lead">Escolha o jogo no PC e ele aparece no fliperama, na pasta certa do emulador e com capa. Veja a biblioteca, troque o tema e cuide da Raspberry Pi sem abrir a caixa nem digitar comando.</p>
     <div class="cta">
-      <a href="https://github.com/lucasdcorrea1/arcade-do-zero/releases/latest/download/RetroPie-ROM-Sender-portable.exe" class="btn primary"><svg class="ic"><use href="#i-down"/></svg>Baixar portátil</a>
+      <a href="https://github.com/lucasdcorrea1/arcade-do-zero/releases/latest/download/RetroPie-ROM-Sender-portable.exe" class="btn primary"><svg class="ic"><use href="#i-down"/></svg>Baixar grátis</a>
       <a href="https://github.com/lucasdcorrea1/arcade-do-zero/releases/latest/download/RetroPie-ROM-Sender-Setup.exe" class="btn"><svg class="ic"><use href="#i-down"/></svg>Instalador (.exe)</a>
     </div>
+    <p class="pack">Windows 64-bit · sempre a versão mais recente · <a href="https://github.com/lucasdcorrea1/arcade-do-zero/releases">ver versões</a> · <a href="https://github.com/lucasdcorrea1/arcade-games-setup/tree/main/desktop-app">ver o código / compilar</a></p>
   </div>
-  <div class="wrap" style="padding:0">
-    <div class="net">
-      <div class="dev"><svg class="ic"><use href="#i-pc"/></svg><div><div class="t">Seu PC (Windows)</div><div class="s">RetroPie ROM Sender</div></div></div>
-      <div class="wifi"><svg class="ic"><use href="#i-wifi"/></svg>REDE WIFI<br>SFTP</div>
-      <div class="dev"><svg class="ic"><use href="#i-pi"/></svg><div><div class="t">Raspberry Pi</div><div class="s">RetroPie · ~/RetroPie/roms</div></div></div>
-    </div>
-  </div>
+  <figure class="product">
+    <div class="window"><img src="assets/app_biblioteca.jpg?v=20261021" alt="RetroPie ROM Sender, aba Meus jogos: a biblioteca da Raspberry Pi por console, com capa e tamanho de cada jogo" width="2400" height="1632"></div>
+    <div class="float"><img src="assets/app_envio.jpg?v=20261021" alt="Barra de envio: anguna.gba, console Game Boy Advance, enviando pro fliperama 68%" width="2400" height="252"></div>
+  </figure>
+  <p class="facts"><b>34 consoles</b> · capas automáticas · sem terminal · código aberto (MIT)</p>
 </header>
 
 <main class="wrap">
@@ -168,48 +161,64 @@ footer a:hover{color:var(--txt)}
 <section id="como">
   <div class="shead">
     <p class="eyebrow">COMO FUNCIONA</p>
-    <h2>Do site de ROM ao fliperama, em 4 passos</h2>
-    <p>O fluxo é o mesmo que você já fazia — só que automático. Você continua clicando em "download" no site; o app cuida do resto pela rede.</p>
+    <h2>Três passos, e o jogo está na tela</h2>
   </div>
-  <div class="flowsteps">
-    <div class="fs"><h4>Navega e baixa</h4><p>Abra o site de ROM no navegador embutido e clique em Download, como sempre.</p></div>
-    <div class="fs"><h4>App intercepta</h4><p>Ele pega o arquivo e detecta o sistema pela própria URL do download.<span class="mono">.../roms/snes/...</span></p></div>
-    <div class="fs"><h4>Envia pela rede</h4><p>Transfere por SFTP para a pasta certa do emulador na Raspberry Pi.<span class="mono">~/RetroPie/roms/snes</span></p></div>
-    <div class="fs"><h4>Aparece na hora</h4><p>Reinicia o EmulationStation (opcional) e o jogo surge na lista, com a capa.</p></div>
-  </div>
-  <div class="note" style="margin-top:20px">
-    <svg class="ic"><use href="#i-alert"/></svg>
-    <p><b>Não é um scraper.</b> Quem clica em "download" é você, no site, respeitando o fluxo dele (contadores, anúncios). O app só pega o arquivo resultante e cuida da transferência. Baixe apenas jogos que você tem o direito de usar.</p>
-  </div>
+  <ol class="steps">
+    <li><span class="num">01</span><h4>Conecte</h4><p>Abra o app: ele procura a Raspberry Pi na rede sozinho. Só pede a senha da Pi na primeira vez.</p></li>
+    <li><span class="num">02</span><h4>Escolha o jogo</h4><p>Importe o arquivo do PC e diga de qual console ele é. São 34 sistemas, do Atari ao PlayStation.</p></li>
+    <li><span class="num">03</span><h4>Jogue</h4><p>O app envia, coloca a capa e reinicia a tela inicial do fliperama. O jogo já aparece na lista.</p></li>
+  </ol>
 </section>
 
 <section id="recursos">
   <div class="shead">
     <p class="eyebrow">O QUE ELE FAZ</p>
-    <h2>Quatro abas, tudo pela rede</h2>
-    <p>Além de enviar um jogo por vez, o app gerencia a biblioteca inteira da sua Raspberry Pi sem você encostar no terminal.</p>
+    <h2>Tudo o que você faria no terminal, com dois cliques</h2>
   </div>
-  <div class="feats">
-    <div class="feat"><div class="fi"><svg class="ic"><use href="#i-globe"/></svg></div><div>
-      <h3>Baixar</h3>
-      <p>Navegador embutido para pegar jogos. Um por vez, <b>em lote</b> (a categoria inteira, página por página, sozinho) ou <b>importar do PC</b> um arquivo que você já tem.</p>
-      <span class="tag">single · lote · importar</span>
-    </div></div>
-    <div class="feat"><div class="fi"><svg class="ic"><use href="#i-grid"/></svg></div><div>
-      <h3>Meus jogos</h3>
-      <p>Lista tudo que já está na Pi, por sistema, <b>com as capas</b>. Carrega em partes e busca as imagens em paralelo, para ser rápido mesmo com biblioteca grande.</p>
-      <span class="tag">biblioteca + capas</span>
-    </div></div>
-    <div class="feat"><div class="fi"><svg class="ic"><use href="#i-image"/></svg></div><div>
-      <h3>Temas</h3>
-      <p>Mostra os temas do EmulationStation já instalados na Raspberry e troca para o que você clicar — reiniciando o ES sozinho para aplicar.</p>
-      <span class="tag">trocar tema do ES</span>
-    </div></div>
-    <div class="feat"><div class="fi"><svg class="ic"><use href="#i-sliders"/></svg></div><div>
-      <h3>Conexão</h3>
-      <p>IP, usuário e senha da Pi, pasta base e pasta das ROMs no seu PC, reiniciar o ES após enviar e <b>manutenção</b> (ver espaço no cartão, reiniciar a Pi).</p>
-      <span class="tag">config + manutenção</span>
-    </div></div>
+  <div class="rows">
+    <div class="row">
+      <div class="shot"><img src="assets/app_consoles.jpg?v=20261021" alt="Janela Qual é o console deste jogo, com os 34 consoles suportados" width="2400" height="1632" loading="lazy"></div>
+      <div>
+        <h3>Diga o console. O resto é com ele.</h3>
+        <p>Escolha o arquivo no PC, aponte o console e clique em enviar. O app manda pela rede direto para a pasta certa do emulador.</p>
+        <ul>
+          <li><b>34 consoles</b>: Nintendo, Sega, PlayStation, Neo Geo, arcade, Atari e mais</li>
+          <li><b>Modo automático</b>: envia e busca a capa assim que o arquivo fica pronto</li>
+          <li>Reinicia o EmulationStation sozinho para o jogo aparecer na hora</li>
+        </ul>
+      </div>
+    </div>
+    <div class="row flip">
+      <div class="shot crop"><img src="assets/app_biblioteca.jpg?v=20261021" alt="Biblioteca com capas, ordenada pelos maiores jogos" width="2400" height="1632" loading="lazy"></div>
+      <div>
+        <h3>A biblioteca do fliperama, na tela do PC</h3>
+        <p>Veja tudo o que está na Raspberry Pi, separado por console, com a capa e o tamanho de cada jogo.</p>
+        <ul>
+          <li><b>Ordene por tamanho</b> e ache rápido o que está ocupando o cartão</li>
+          <li><b>Troque a capa</b> clicando no jogo</li>
+          <li><b>Remova</b> o que não usa, sem abrir a caixa</li>
+        </ul>
+      </div>
+    </div>
+    <div class="row">
+      <div class="shot"><img src="assets/app_temas.jpg?v=20261021" alt="Aba Temas: temas do EmulationStation instalados, com o atual destacado" width="2400" height="1632" loading="lazy"></div>
+      <div>
+        <h3>Troque o visual do fliperama</h3>
+        <p>O app lista os temas da tela inicial instalados na Pi e mostra qual está em uso. Clique em outro: ele aplica e reinicia a tela sozinho.</p>
+      </div>
+    </div>
+    <div class="row flip">
+      <div class="shot"><img src="assets/app_conexao.jpg?v=20261021" alt="Conexão com a Raspberry Pi: procurar na rede, espaço no cartão e reiniciar" width="2400" height="1632" loading="lazy"></div>
+      <div>
+        <h3>Acha a Raspberry sozinho e cuida dela</h3>
+        <p>Não sabe o IP da Pi? O app procura na rede. Depois, a manutenção fica a um clique.</p>
+        <ul>
+          <li><b>Procurar na rede</b>: encontra a Raspberry Pi automaticamente</li>
+          <li><b>Espaço no cartão</b>: veja quanto ainda cabe</li>
+          <li><b>Reiniciar a Raspberry</b> pelo PC</li>
+        </ul>
+      </div>
+    </div>
   </div>
 </section>
 
@@ -221,7 +230,7 @@ footer a:hover{color:var(--txt)}
   </div>
   <div class="reqs">
     <div class="req"><span class="num">01</span><h4>Um PC com Windows</h4><p>64-bit. Roda a versão portátil (sem instalar) ou o instalador.</p></div>
-    <div class="req"><span class="num">02</span><h4>Raspberry Pi com RetroPie</h4><p>Ligada e na mesma rede, com o SSH ativado e usuário <span class="mono">pi</span>. Ainda não tem? Siga o <a href="raspberry.html" style="color:var(--green)">guia de instalação do RetroPie</a>.</p></div>
+    <div class="req"><span class="num">02</span><h4>Raspberry Pi com RetroPie</h4><p>Ligada e na mesma rede, com o SSH ativado e usuário <span class="mono">pi</span>.</p></div>
     <div class="req"><span class="num">03</span><h4>O IP da Pi</h4><p>Você informa uma vez em "Conexão". Fica salvo só no seu PC, nunca sobe para lugar nenhum.</p></div>
   </div>
   <div class="note" style="margin-top:20px">
@@ -239,27 +248,12 @@ footer a:hover{color:var(--txt)}
   <ul class="trust">
     <li><svg class="ic"><use href="#i-code"/></svg><div><b>Leia o código antes de rodar</b><span>Todo o funcionamento está em <span class="mono">desktop-app/src</span>. Nada ofuscado.</span></div></li>
     <li><svg class="ic"><use href="#i-shield"/></svg><div><b>Não confie no meu .exe — gere o seu</b><span>Em 3 comandos você compila o app e obtém o mesmo programa.</span></div></li>
-    <li><svg class="ic"><use href="#i-eye"/></svg><div><b>Sem rastreio, sem telemetria, sem conta</b><span>Só conversa com o site que você abre e com a sua Raspberry Pi.</span></div></li>
+    <li><svg class="ic"><use href="#i-eye"/></svg><div><b>Sem rastreio, sem telemetria, sem conta</b><span>Só conversa com a sua Raspberry Pi e com os sites que você mesmo abrir.</span></div></li>
     <li><svg class="ic"><use href="#i-lock"/></svg><div><b>Seus dados ficam no seu PC</b><span>IP e senha da Pi vão para um arquivo local, nada sobe para servidores.</span></div></li>
   </ul>
   <div class="note">
     <svg class="ic"><use href="#i-alert"/></svg>
     <p><b>"O Windows protegeu o seu PC" (SmartScreen).</b> Como o app é grátis e sem assinatura digital paga, o Windows pode mostrar um aviso azul ao abrir — isso é esperado para qualquer app novo sem certificado, não quer dizer vírus. Clique em <b>"Mais informações" → "Executar assim mesmo"</b>. Se preferir, compile o seu: o resultado é idêntico, sem o aviso.</p>
-  </div>
-</section>
-
-<section id="baixar">
-  <div class="dl">
-    <div>
-      <p class="eyebrow" style="margin-bottom:10px">DOWNLOAD · GRÁTIS</p>
-      <h2>Baixe o RetroPie ROM Sender</h2>
-      <p>Versão portátil roda sem instalar. Os links apontam sempre para a versão mais recente.</p>
-      <small>Windows 64-bit · <a href="https://github.com/lucasdcorrea1/arcade-do-zero/releases">ver versões</a> · <a href="https://github.com/lucasdcorrea1/arcade-games-setup/tree/main/desktop-app">ver o código / compilar</a></small>
-    </div>
-    <div class="cta">
-      <a href="https://github.com/lucasdcorrea1/arcade-do-zero/releases/latest/download/RetroPie-ROM-Sender-portable.exe" class="btn primary"><svg class="ic"><use href="#i-down"/></svg>Baixar portátil</a>
-      <a href="https://github.com/lucasdcorrea1/arcade-do-zero/releases/latest/download/RetroPie-ROM-Sender-Setup.exe" class="btn"><svg class="ic"><use href="#i-down"/></svg>Instalador (.exe)</a>
-    </div>
   </div>
 </section>
 
