@@ -162,6 +162,29 @@ section { padding-block: clamp(64px, 9vw, 120px); }
 .app .note { margin-top: 36px; display: grid; gap: 8px; color: var(--mut); font-size: 16px; }
 .app .note b { color: var(--text); font-weight: 600; }
 
+/* the offer: what you get, the price, the three steps */
+.buy { padding-block: clamp(56px, 8vw, 104px); }
+.buy-card { display: grid; grid-template-columns: minmax(0, 6fr) minmax(0, 5fr); gap: clamp(24px, 4vw, 56px); align-items: center; padding: clamp(18px, 3vw, 32px); border: 2px solid color-mix(in srgb, var(--gold) 55%, var(--line)); border-radius: 12px; background: var(--panel); }
+.buy-pic img { width: 100%; aspect-ratio: 16 / 9; object-fit: cover; border-radius: 8px; border: 6px solid var(--bezel); }
+.buy-copy { display: grid; gap: 18px; align-content: start; }
+.buy-list { list-style: none; margin: 0; padding: 0; display: grid; gap: 10px; }
+.buy-list li { padding-left: 26px; position: relative; font-size: 17px; }
+.buy-list li::before { content: ""; position: absolute; left: 2px; top: .38em; width: 12px; height: 7px; border-left: 3px solid var(--gold); border-bottom: 3px solid var(--gold); transform: rotate(-45deg); }
+.buy-price { display: flex; align-items: baseline; gap: 14px; flex-wrap: wrap; }
+.buy-price b { font: 400 clamp(56px, 6vw, 76px)/0.9 var(--title); color: var(--gold); text-shadow: 0 0.06em 0 var(--ember); }
+.buy-price span { color: var(--mut); font-size: 15px; }
+.btn.big { min-height: 62px; font-size: 20px; padding: 0 34px; justify-self: start; }
+.btn:disabled { opacity: .6; cursor: progress; }
+.buy-note { font-size: 14px; color: var(--mut); }
+.how { list-style: none; margin: 28px 0 0; padding: 0; display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 16px; counter-reset: how; }
+.how li { counter-increment: how; display: grid; gap: 4px; padding: 16px 18px 18px 58px; position: relative; border: 1px solid var(--line); border-radius: 8px; background: var(--band); }
+.how li::before { content: counter(how); position: absolute; left: 18px; top: 14px; font: 400 34px/1 var(--title); color: var(--gold); }
+.how b { font-weight: 600; }
+.how span { color: var(--mut); font-size: 15px; }
+.how a { color: var(--text); }
+.trust { margin-top: 18px; color: var(--mut); font-size: 15px; max-width: 70ch; }
+@media (max-width: 900px) { .buy-card, .how { grid-template-columns: minmax(0, 1fr); } }
+
 /* ready-made cabinet: the waiting list, in the middle of the page */
 .ready .wrap { display: grid; grid-template-columns: minmax(0, 6fr) minmax(0, 5fr); gap: clamp(28px, 4vw, 64px); align-items: center; }
 .shots { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); gap: clamp(12px, 1.4vw, 18px); }
@@ -238,11 +261,11 @@ footer a { color: var(--mut); }
     <nav class="nav" aria-label="Seções">
       <a href="#partida">Como funciona</a>
       <a href="#app">App do celular</a>
+      <a href="#turbinar">Preço</a>
       <a href="#pronto">Fliper pronto</a>
-      <a href="#tema">Tema</a>
       <a href="#duvidas">Dúvidas</a>
     </nav>
-    <a class="btn primary" href="#falar">Quero no meu fliper</a>
+    <a class="btn primary" href="#turbinar">Comprar · R$ 97</a>
   </div>
 </header>
 
@@ -253,7 +276,7 @@ footer a { color: var(--mut); }
         <h1>Cada partida com nome, cara e placar</h1>
         <p class="lead">Um tema novo para a tela do fliperama e um app no celular. A família escolhe quem joga, o fliper anuncia a luta e guarda quem ganhou.</p>
         <div class="actions">
-          <a class="btn primary" href="#falar">Quero no meu fliper</a>
+          <a class="btn primary" href="#turbinar">Quero no meu fliper</a>
           <a class="btn ghost" href="#partida">Ver uma partida</a>
         </div>
         <p class="fineprint">Funciona em fliperama com Raspberry Pi. Não tem um? <a href="#pronto">Entre na lista do fliper pronto.</a></p>
@@ -334,6 +357,33 @@ footer a { color: var(--mut); }
         <p><b>Controle extra:</b> o celular vira o controle do segundo jogador.</p>
         <p><b>Para todo mundo:</b> botões grandes e poucas palavras. Criança e vô usam.</p>
       </div>
+    </div>
+  </section>
+
+  <section class="buy" id="turbinar">
+    <div class="wrap">
+      <div class="buy-card">
+        <div class="buy-pic"><img src="assets/tv-versus.webp" alt="Tela VERSUS do fliper turbinado" width="1600" height="900" loading="lazy"></div>
+        <div class="buy-copy">
+          <span><span class="tag gold">TURBINE SEU FLIPERAMA</span></span>
+          <h2>Tudo isso no seu fliper, <em>hoje</em></h2>
+          <ul class="buy-list">
+            <li>QUEM VAI JOGAR? com a cara de cada um</li>
+            <li>VERSUS antes da luta e QUEM GANHOU? no fim</li>
+            <li>App no celular: fila, ranking, torneio e escolher o jogo</li>
+            <li>Tema Arcade do Zero com arte em cada console</li>
+          </ul>
+          <div class="buy-price"><b>R$ 97</b><span>pagamento único · Pix ou cartão em até 3x</span></div>
+          <button class="btn primary big" type="button" id="buyBtn">Comprar agora</button>
+          <p class="buy-note" id="buyNote">O código para instalar aparece na tela logo depois do pagamento.</p>
+        </div>
+      </div>
+      <ol class="how">
+        <li><b>Compre aqui</b><span>Pix ou cartão. O código aparece na hora.</span></li>
+        <li><b>Baixe o app no computador</b><span>Windows. <a href="https://github.com/lucasdcorrea1/arcade-do-zero/releases/latest/download/RetroPie-ROM-Sender-Setup.exe">Baixar o app</a></span></li>
+        <li><b>Cole o código e clique em Instalar</b><span>O app acha o fliper pelo Wi-Fi e instala em uns 2 minutos.</span></li>
+      </ol>
+      <p class="trust">Para fliperama com Raspberry Pi e RetroPie. Não funcionou no seu? Você tem 7 dias para desistir e recebe o dinheiro de volta. E o app desinstala com um clique, deixando o fliper como era.</p>
     </div>
   </section>
 
@@ -419,7 +469,7 @@ footer a { color: var(--mut); }
         <fieldset>
           <legend>O que você quer?</legend>
           <div class="choices">
-            <label><input type="radio" name="want" id="w-tema" value="tema" checked>Tema e app no meu fliper</label>
+            <label><input type="radio" name="want" id="w-tema" value="tema" checked>Turbinar meu fliper</label>
             <label><input type="radio" name="want" id="w-fliper" value="fliper">Lista do fliper pronto</label>
             <label><input type="radio" name="want" id="w-saber" value="saber">Só quero saber mais</label>
           </div>
@@ -445,6 +495,14 @@ footer a { color: var(--mut); }
     <div class="wrap">
       <div class="head"><h2>Dúvidas</h2></div>
       <div class="faq">
+        <details>
+          <summary>Como recebo depois de pagar?</summary>
+          <p>Logo depois do pagamento aparece um código na tela. Você baixa o app no computador, cola o código e clica em Instalar. O app acha o fliper pelo Wi-Fi.</p>
+        </details>
+        <details>
+          <summary>E se não funcionar no meu fliper?</summary>
+          <p>Você tem 7 dias para desistir e recebe o dinheiro de volta. O app também desinstala com um clique e deixa o fliper como era.</p>
+        </details>
         <details>
           <summary>Vem com jogos?</summary>
           <p>Não. O tema, o app e o fliper vêm sem jogos. Você coloca os jogos que já tem.</p>
@@ -512,7 +570,7 @@ footer a { color: var(--mut); }
   const send = document.getElementById('send');
   const name = document.getElementById('f-name');
   const err = document.getElementById('f-name-err');
-  const WANT = { tema: 'Tema e app no meu fliper', fliper: 'Entrar na lista do fliper pronto', saber: 'Só quero saber mais' };
+  const WANT = { tema: 'Turbinar meu fliper (R$ 97)', fliper: 'Entrar na lista do fliper pronto', saber: 'Só quero saber mais' };
   const HAS = { pi: 'Sim, com Raspberry Pi', outro: 'Sim, de outro tipo', nao: 'Ainda não' };
   const message = () => {
     const f = new FormData(form);
@@ -541,6 +599,29 @@ footer a { color: var(--mut); }
     const done = () => { btn.textContent = 'Número copiado'; setTimeout(() => (btn.textContent = 'Copiar número'), 2000); };
     const pick = () => { const r = document.createRange(); r.selectNodeContents(document.getElementById('num')); const s = getSelection(); s.removeAllRanges(); s.addRange(r); };
     try { navigator.clipboard.writeText(text).then(done, pick); } catch (_) { pick(); }
+  });
+
+  // "Comprar agora": the checkout (Mercado Pago, through the site's own small server)
+  // opens the payment; after it the buyer lands on obrigado.html with the code.
+  // Until that server is set up, the purchase goes through WhatsApp.
+  const CHECKOUT_API = '';
+  const buy = document.getElementById('buyBtn');
+  const note = document.getElementById('buyNote');
+  const whatsapp = 'https://wa.me/' + PHONE + '?text=' + encodeURIComponent('Olá! Quero comprar o Turbine seu fliperama (R$ 97).');
+  buy.addEventListener('click', async () => {
+    if (!CHECKOUT_API) { window.location.href = whatsapp; return; }
+    buy.disabled = true;
+    buy.textContent = 'Abrindo o pagamento…';
+    try {
+      const r = await fetch(CHECKOUT_API + '/checkout', { method: 'POST' });
+      const d = await r.json();
+      if (!d.url) throw new Error(d.error || 'sem link');
+      window.location.href = d.url;
+    } catch (_) {
+      buy.disabled = false;
+      buy.textContent = 'Comprar agora';
+      note.innerHTML = 'O pagamento não abriu agora. Tente de novo ou <a href="' + whatsapp + '">compre pelo WhatsApp</a>.';
+    }
   });
 })();
 </script>
