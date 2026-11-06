@@ -1,0 +1,398 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Arcade do Zero App · seu fliperama do cartão vazio ao jogo na tela</title>
+<meta name="description" content="App grátis para Windows: cria o RetroPie no cartão da Raspberry Pi, coloca seus jogos no fliperama pelo Wi-Fi com capa e deixa tudo com cara de fliperama. Sem comandos, sem abrir a máquina.">
+<link rel="canonical" href="https://lucasdcorrea1.github.io/arcade-do-zero/app/">
+<meta property="og:title" content="Do cartão vazio ao fliperama jogando, num app só">
+<meta property="og:description" content="Crie o RetroPie, coloque jogos e jogue. App grátis para Windows, sem comandos.">
+<meta property="og:image" content="https://lucasdcorrea1.github.io/arcade-do-zero/fliper/assets/og.jpg">
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500&family=IBM+Plex+Sans:wght@400;500;600;700&family=Press+Start+2P&display=swap" rel="stylesheet">
+<style>
+/* the site's own look (app.html, index.html): night console, phosphor green, pixel labels.
+   Layout: hero (text | TV + app window), the 3 things it does, one section each, then trust and FAQ. */
+:root{--bg:#0c0d0f;--bg2:#141518;--card:#1a1b1f;--card2:#232429;--line:#2b2d33;--line2:#43454c;
+--txt:#f2f3f0;--mut:#c4c6c1;--dim:#9a9c97;--green:#2ee36a;--green2:#22a04b;--glow:rgba(46,227,106,.55);
+--amber:#ffc94a;--red:#ff6b5e;
+--sans:"IBM Plex Sans",system-ui,-apple-system,"Segoe UI",Roboto,sans-serif;
+--mono:"IBM Plex Mono",ui-monospace,"Cascadia Mono",Consolas,monospace;
+--pix:"Press Start 2P",var(--mono);color-scheme:dark}
+*{box-sizing:border-box}
+html{scroll-behavior:smooth}
+body{margin:0;background:var(--bg);color:var(--txt);font:16px/1.6 var(--sans);-webkit-font-smoothing:antialiased;
+background-image:radial-gradient(1100px 560px at 78% -10%,rgba(46,227,106,.11),transparent 60%),
+ radial-gradient(760px 400px at 0% 4%,rgba(46,227,106,.05),transparent 55%),
+ linear-gradient(transparent 0,transparent calc(100% - 1px),rgba(255,255,255,.018) 100%),
+ linear-gradient(90deg,transparent 0,transparent calc(100% - 1px),rgba(255,255,255,.018) 100%);
+background-size:auto,auto,34px 34px,34px 34px}
+body::after{content:"";position:fixed;inset:0;pointer-events:none;z-index:200;opacity:.5;
+background:repeating-linear-gradient(to bottom,rgba(0,0,0,0) 0 2px,rgba(0,0,0,.035) 2px 3px)}
+a{color:inherit}
+img{max-width:100%}
+.ic{width:17px;height:17px;fill:none;stroke:currentColor;stroke-width:1.8;stroke-linecap:round;stroke-linejoin:round;flex:none}
+.wrap{max-width:1140px;margin:0 auto;padding-left:max(32px,env(safe-area-inset-left,0px));padding-right:max(32px,env(safe-area-inset-right,0px))}
+.pix{font-family:var(--pix)}
+.mono{font-family:var(--mono)}
+.btn{display:inline-flex;align-items:center;gap:8px;height:46px;padding:0 19px;border:1px solid var(--line2);border-radius:5px;color:var(--txt);font-size:15px;font-weight:500;text-decoration:none;white-space:nowrap;transition:background .15s,border-color .15s}
+.btn:hover{background:var(--card2);border-color:#5a5d66}
+.btn.primary{background:var(--green);border-color:var(--green);color:#06130a;font-weight:700;box-shadow:0 0 0 1px rgba(46,227,106,.2),0 8px 30px -8px var(--glow)}
+.btn.primary:hover{background:#43ef7c}
+.btn:focus-visible,a:focus-visible,summary:focus-visible{outline:2px solid var(--green);outline-offset:3px}
+/* nav (same markup as the other pages) */
+.sitenav{position:sticky;top:0;z-index:60;display:flex;align-items:stretch;gap:26px;height:56px;padding:0 22px;
+background:rgba(12,13,15,.82);backdrop-filter:blur(10px);border-bottom:1px solid var(--line)}
+.sitenav a{text-decoration:none}
+.sn-logo{display:flex;align-items:center;gap:11px;color:var(--txt);white-space:nowrap}
+.sn-logo svg{width:22px;height:22px;fill:none;stroke:var(--green);stroke-width:1.5;stroke-linecap:round;stroke-linejoin:round;filter:drop-shadow(0 0 5px var(--glow))}
+.sn-logo span{font:9px/1 var(--pix);letter-spacing:.5px;padding-top:2px}
+.sn-links{display:flex;align-items:stretch;gap:2px}
+.sn-links a{display:flex;align-items:center;margin-bottom:-1px;padding:0 13px;border-bottom:2px solid transparent;color:var(--mut);font-size:14px;font-weight:500}
+.sn-links a:hover{color:var(--txt)}
+.sn-app{display:flex;align-items:center;margin-left:auto}
+.sn-app a{display:inline-flex;align-items:center;gap:7px;height:34px;padding:0 13px;border:1px solid #2ee36a;border-radius:5px;background:#2ee36a;color:#06130a;font-size:13.5px;font-weight:600;white-space:nowrap}
+.sn-app svg{width:15px;height:15px;fill:none;stroke:currentColor;stroke-width:1.9;stroke-linecap:round;stroke-linejoin:round}
+@media(max-width:680px){.sitenav{gap:4px;padding:0 10px}.sn-logo span{display:none}.sn-links a{padding:0 9px}.sn-app a{padding:0 9px}.sn-app .g{display:none}}
+
+.eyebrow{margin:0 0 14px;color:var(--green);font:9px/1 var(--pix);letter-spacing:1px}
+h1{margin:0 0 20px;font-size:50px;font-weight:700;letter-spacing:-1.6px;line-height:1.05;text-wrap:balance}
+h1 .hl{color:var(--green);text-shadow:0 0 28px var(--glow)}
+h2{margin:0;font-size:32px;font-weight:700;letter-spacing:-.8px;line-height:1.12;text-wrap:balance}
+h3{margin:0 0 10px;font-size:23px;font-weight:700;letter-spacing:-.5px;line-height:1.2;text-wrap:balance}
+p{margin:0}
+
+/* hero: the pitch on the left, the TV with the arcade's menu and the app window on the right */
+.hero{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1.08fr);gap:48px;align-items:center;padding:64px 0 30px}
+.badge{display:inline-flex;align-items:center;gap:9px;margin:0 0 22px;padding:7px 13px;border:1px solid var(--line2);border-radius:999px;background:var(--card);font:8.5px/1 var(--pix);color:var(--mut);letter-spacing:.5px}
+.badge b{color:var(--green);font-weight:400}
+.dot{width:7px;height:7px;border-radius:50%;background:var(--green);box-shadow:0 0 8px var(--glow)}
+.lead{margin:0 0 28px;color:var(--mut);font-size:19px;max-width:30em}
+.cta{display:flex;flex-wrap:wrap;gap:11px}
+.pack{margin:14px 0 0;color:var(--dim);font:12.5px var(--mono)}
+.pack a{text-decoration:underline;text-underline-offset:2px}
+.stage{position:relative;padding:0 0 58px 30px}
+.tv{position:relative;padding:14px 14px 22px;border-radius:14px;background:linear-gradient(#26282e,#16171b);border:1px solid #34363d;
+box-shadow:0 50px 90px -40px #000,0 0 100px -30px rgba(46,227,106,.35)}
+.tv img{display:block;width:100%;height:auto;aspect-ratio:16/9;object-fit:cover;border-radius:6px;background:#000}
+.tv::after{content:"";position:absolute;left:50%;bottom:7px;width:46px;height:5px;margin-left:-23px;border-radius:3px;background:#33353c}
+.stage .win{position:absolute;left:0;bottom:0;width:62%;overflow:hidden;border:1px solid #2f3446;border-radius:10px;
+box-shadow:0 30px 60px -16px #000,0 0 0 1px rgba(46,227,106,.1)}
+.stage .win img{display:block;width:100%;height:auto}
+.stage .tag{position:absolute;right:10px;bottom:22px;padding:7px 10px;border-radius:6px;background:rgba(12,13,15,.9);border:1px solid var(--line2);font:8px/1.4 var(--pix);color:var(--green)}
+
+/* the three things */
+.trio{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:16px;margin:46px 0 0}
+.trio a{display:block;padding:22px 22px 20px;border:1px solid var(--line);border-radius:10px;background:var(--bg2);text-decoration:none;transition:border-color .15s,transform .15s}
+.trio a:hover{border-color:var(--green2);transform:translateY(-2px)}
+.trio .k{display:flex;align-items:center;justify-content:space-between;margin-bottom:14px;color:var(--green);font:9px/1 var(--pix);letter-spacing:1px}
+.trio .k span{color:var(--dim)}
+.trio b{display:block;font-size:19px;margin-bottom:6px}
+.trio p{color:var(--mut);font-size:15px}
+
+section{padding:84px 0 0}
+.shead{display:grid;gap:10px;margin-bottom:32px;padding-bottom:18px;border-bottom:1px solid var(--line)}
+.shead p{color:var(--mut);font-size:16px;max-width:54em}
+/* CRIAR: the setup's steps, the way the app's "Novo fliperama" tab walks them */
+.setup{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1.05fr);gap:44px;align-items:start}
+.steps{margin:0;padding:0;list-style:none;display:grid;gap:0;border-left:1px solid var(--line2)}
+.steps li{position:relative;padding:0 0 24px 26px}
+.steps li:last-child{padding-bottom:0}
+.steps li::before{content:"";position:absolute;left:-5px;top:7px;width:9px;height:9px;border-radius:50%;background:var(--green);box-shadow:0 0 8px var(--glow)}
+.steps .num{color:var(--green);font:8px/1 var(--pix)}
+.steps h4{margin:8px 0 4px;font-size:17px;font-weight:600}
+.steps p{color:var(--mut);font-size:15px}
+.wizard{border:1px solid #2a2e3c;border-radius:12px;background:#0f1117;overflow:hidden;box-shadow:0 40px 70px -36px #000}
+.wizard .bar{display:flex;gap:7px;align-items:center;height:36px;padding:0 14px;border-bottom:1px solid #22262f;background:#13151c}
+.wizard .bar i{width:10px;height:10px;border-radius:50%;background:#2c303b}
+.wizard .bar span{margin-left:8px;color:var(--dim);font:12px var(--mono)}
+.trail{display:grid;grid-template-columns:repeat(5,1fr);gap:6px;padding:18px 18px 4px}
+.trail div{display:grid;gap:7px;justify-items:center;text-align:center;color:var(--dim);font:11.5px/1.25 var(--sans)}
+.trail div::before{content:attr(data-n);display:grid;place-items:center;width:28px;height:28px;border-radius:50%;border:1px solid var(--line2);font:8px var(--pix);color:var(--dim)}
+.trail .ok{color:var(--mut)}
+.trail .ok::before{content:"✓";background:var(--green2);border-color:var(--green2);color:#06130a;font:700 13px var(--sans)}
+.trail .now{color:var(--txt);font-weight:600}
+.trail .now::before{border-color:var(--green);color:var(--green);box-shadow:0 0 12px -2px var(--glow)}
+.wizard .body{padding:18px 22px 22px}
+.wizard .body h5{margin:0 0 4px;font-size:17px}
+.wizard .body p{color:var(--mut);font-size:14px;margin-bottom:14px}
+.prog{height:10px;border-radius:5px;background:#22252e;overflow:hidden}
+.prog i{display:block;height:100%;width:64%;background:linear-gradient(90deg,var(--green2),var(--green));box-shadow:0 0 14px var(--glow)}
+.prog-l{display:flex;justify-content:space-between;margin-top:8px;color:var(--dim);font:12px var(--mono)}
+.chips{display:flex;flex-wrap:wrap;gap:8px;margin-top:18px}
+.chips span{padding:6px 10px;border:1px solid var(--line);border-radius:6px;background:var(--card);color:var(--mut);font:12.5px var(--mono)}
+.chips b{color:var(--green);font-weight:500}
+.warn{display:flex;gap:12px;margin-top:22px;padding:14px 16px;border:1px solid var(--line2);border-left:3px solid var(--amber);border-radius:8px;background:var(--bg2);color:var(--mut);font-size:14.5px}
+.warn svg{width:19px;height:19px;color:var(--amber);flex:none;margin-top:2px}
+.warn b{color:var(--txt)}
+
+/* JOGOS and JOGAR: screenshot + text rows */
+.row{display:grid;grid-template-columns:minmax(0,1.2fr) minmax(0,1fr);gap:46px;align-items:center;padding:36px 0;border-top:1px solid var(--line)}
+.row:first-child{border-top:0;padding-top:0}
+.row.flip{grid-template-columns:minmax(0,1fr) minmax(0,1.2fr)}
+.row.flip .shot{order:2}
+.shot{overflow:hidden;border:1px solid #2a2e3c;border-radius:10px;box-shadow:0 30px 60px -30px #000;background:#0c0e15}
+.shot img{display:block;width:100%;height:auto}
+.row p{margin:0 0 14px;color:var(--mut);font-size:15.5px}
+.row ul{margin:0;padding:0;list-style:none;display:grid;gap:8px}
+.row li{position:relative;padding-left:22px;color:var(--mut);font-size:15px}
+.row li::before{content:"";position:absolute;left:2px;top:9px;width:8px;height:8px;border-radius:2px;background:var(--green)}
+.row li b{color:var(--txt);font-weight:600}
+.pair{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+.pair figure{margin:0}
+.pair figcaption{margin-top:8px;color:var(--dim);font:12px var(--mono)}
+.honest{display:flex;gap:14px;margin-top:6px;padding:18px 20px;border:1px solid var(--line2);border-left:3px solid var(--green);border-radius:8px;background:var(--bg2)}
+.honest svg{width:20px;height:20px;color:var(--green);flex:none;margin-top:2px}
+.honest p{color:var(--mut);font-size:15px}
+.honest b{color:var(--txt)}
+
+/* what you need */
+.reqs{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:14px}
+.req{padding:20px;border:1px solid var(--line);border-radius:9px;background:var(--bg2)}
+.req .num{color:var(--green);font:8px/1 var(--pix)}
+.req h4{margin:10px 0 6px;font-size:16px;font-weight:600}
+.req p{color:var(--mut);font-size:14px}
+/* trust */
+ul.trust{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:14px;margin:0 0 18px;padding:0}
+.trust li{display:flex;gap:13px;padding:16px 18px;border:1px solid var(--line);border-radius:9px;background:var(--card);list-style:none}
+.trust li svg{width:20px;height:20px;color:var(--green);flex:none;margin-top:2px}
+.trust b{display:block;font-size:15px;margin-bottom:2px}
+.trust span{color:var(--mut);font-size:14px}
+/* FAQ */
+.faq{display:grid;gap:10px}
+.faq details{border:1px solid var(--line);border-radius:9px;background:var(--bg2)}
+.faq summary{cursor:pointer;list-style:none;padding:16px 20px;font-weight:600;font-size:16px;display:flex;justify-content:space-between;gap:16px}
+.faq summary::-webkit-details-marker{display:none}
+.faq summary::after{content:"+";color:var(--green);font:12px var(--pix);margin-top:4px}
+.faq details[open] summary::after{content:"–"}
+.faq details p{padding:0 20px 18px;color:var(--mut);font-size:15px;max-width:60em}
+/* closing call */
+.final{margin-top:90px;padding:46px 40px;border:1px solid var(--green2);border-radius:14px;
+background:radial-gradient(600px 240px at 85% 0%,rgba(46,227,106,.16),transparent 70%),var(--bg2);
+display:grid;grid-template-columns:minmax(0,1fr) auto;gap:28px;align-items:center}
+.final h2{font-size:30px}
+.final p{margin-top:8px;color:var(--mut)}
+footer{display:flex;flex-wrap:wrap;justify-content:space-between;gap:12px;margin-top:80px;padding:28px max(32px,env(safe-area-inset-right,0px)) 28px max(32px,env(safe-area-inset-left,0px));border-top:1px solid var(--line);color:var(--dim);font-size:13.5px}
+footer a{color:var(--mut);text-decoration:none}
+footer a:hover{color:var(--txt)}
+
+@media(max-width:960px){
+  .hero{grid-template-columns:1fr;gap:36px;padding-top:44px}
+  h1{font-size:38px}
+  .setup{grid-template-columns:1fr}
+  .reqs{grid-template-columns:repeat(2,minmax(0,1fr))}
+}
+@media(max-width:720px){
+  .wrap{padding-left:max(18px,env(safe-area-inset-left,0px));padding-right:max(18px,env(safe-area-inset-right,0px))}
+  h1{font-size:33px}
+  h2{font-size:26px}
+  .lead{font-size:17px}
+  .stage{padding:0 0 50px 12px}
+  .stage .win{width:74%}
+  .trio,.reqs,ul.trust{grid-template-columns:1fr}
+  .row,.row.flip{grid-template-columns:1fr;gap:22px}
+  .row.flip .shot{order:0}
+  .trail{gap:2px;padding:14px 10px 2px}
+  .trail div{font-size:10.5px}
+  .final{grid-template-columns:1fr;padding:32px 22px}
+  .btn{height:44px;padding:0 15px;font-size:14.5px}
+}
+@media(prefers-reduced-motion:reduce){html{scroll-behavior:auto}.trio a{transition:none}.trio a:hover{transform:none}}
+</style>
+</head>
+<body>
+<svg width="0" height="0" style="position:absolute" aria-hidden="true"><defs>
+<symbol id="i-down" viewBox="0 0 24 24"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></symbol>
+<symbol id="i-code" viewBox="0 0 24 24"><polyline points="16 18 22 12 16 6"/><polyline points="8 6 2 12 8 18"/></symbol>
+<symbol id="i-shield" viewBox="0 0 24 24"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/><polyline points="9 12 11 14 15 10"/></symbol>
+<symbol id="i-eye" viewBox="0 0 24 24"><path d="M1 12s4-7 11-7 11 7 11 7-4 7-11 7-11-7-11-7z"/><circle cx="12" cy="12" r="3"/></symbol>
+<symbol id="i-lock" viewBox="0 0 24 24"><rect x="3" y="11" width="18" height="11" rx="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></symbol>
+<symbol id="i-alert" viewBox="0 0 24 24"><path d="M10.3 3.9 1.8 18a2 2 0 0 0 1.7 3h17a2 2 0 0 0 1.7-3L13.7 3.9a2 2 0 0 0-3.4 0z"/><line x1="12" y1="9" x2="12" y2="13"/><line x1="12" y1="17" x2="12.01" y2="17"/></symbol>
+<symbol id="i-info" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><line x1="12" y1="16" x2="12" y2="12"/><line x1="12" y1="8" x2="12.01" y2="8"/></symbol>
+</defs></svg>
+
+<nav class="sitenav"><a class="sn-logo" href="../index.html"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M6 3h12v6l-1.5 3H19v9H5v-9h2.5L6 9z"/><rect x="8" y="4.8" width="8" height="2.4"/><path d="M8.2 12h7.6"/><circle cx="9" cy="16" r=".9"/><circle cx="12" cy="16" r=".9"/><circle cx="15" cy="16" r=".9"/></svg><span>ARCADE DO ZERO</span></a><div class="sn-links"><a href="../index.html">Início</a><a href="../guia.html">Guia</a><a href="../controle.html">Controle</a></div><div class="sn-app"><a href="./" aria-current="page"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M5 12.5a10 10 0 0 1 14 0"/><path d="M8.5 16a5 5 0 0 1 7 0"/><line x1="12" y1="19.5" x2="12.01" y2="19.5"/></svg><span>App<span class="g"> grátis</span></span></a></div></nav>
+
+<main class="wrap">
+<header class="hero">
+  <div>
+    <span class="badge"><span class="dot"></span><b>GRÁTIS</b> PARA WINDOWS · RASPBERRY PI</span>
+    <h1>Do cartão vazio ao fliperama <span class="hl">jogando</span>. Num app só.</h1>
+    <p class="lead">Ele cria o RetroPie no cartão, coloca seus jogos pelo Wi-Fi com capa e deixa tudo com cara de fliperama. Sem digitar comando, sem abrir a máquina.</p>
+    <div class="cta">
+      <a href="https://github.com/lucasdcorrea1/arcade-do-zero/releases/latest/download/RetroPie-ROM-Sender-portable.exe" class="btn primary"><svg class="ic"><use href="#i-down"/></svg>Baixar grátis</a>
+      <a href="#criar" class="btn">Ver como funciona</a>
+    </div>
+    <p class="pack">Windows 10 e 11 (64-bit) · <a href="https://github.com/lucasdcorrea1/arcade-do-zero/releases/latest/download/RetroPie-ROM-Sender-Setup.exe">instalador .exe</a> · <a href="https://github.com/lucasdcorrea1/arcade-do-zero/releases">todas as versões</a></p>
+  </div>
+  <div class="stage">
+    <div class="tv"><img src="../fliper/assets/theme-menu.webp" alt="Tela do fliperama com o tema Arcade do Zero: a roda de videogames e o personagem" width="1280" height="720"></div>
+    <div class="win"><img src="../assets/app_biblioteca.jpg?v=20261021" alt="O app no computador mostrando os jogos do fliperama com capa" width="2400" height="1632"></div>
+    <span class="tag">NA TV · NO PC</span>
+  </div>
+</header>
+
+<nav class="trio" aria-label="O que o app faz">
+  <a href="#criar"><span class="k">CRIAR <span>01</span></span><b>Cria o RetroPie</b><p>Grava o cartão da Raspberry Pi com o Wi-Fi da sua casa junto. Liga e já está na rede.</p></a>
+  <a href="#jogos"><span class="k">JOGOS <span>02</span></span><b>Coloca os jogos</b><p>Escolhe o arquivo, diz o videogame, ele manda pelo Wi-Fi e acha a capa sozinho.</p></a>
+  <a href="#jogar"><span class="k">JOGAR <span>03</span></span><b>Deixa com cara de fliperama</b><p>Tema de fliperama pronto, centenas de outros visuais e a manutenção a um clique.</p></a>
+</nav>
+
+<section id="criar">
+  <div class="shead">
+    <p class="eyebrow">01 · CRIAR</p>
+    <h2>Ele grava o RetroPie pra você</h2>
+    <p>Nada de baixar imagem, achar programa de gravar cartão ou mexer no Linux. A aba <b>Novo fliperama</b> anda com você um passo de cada vez e só deixa seguir quando o passo está certo.</p>
+  </div>
+  <div class="setup">
+    <ol class="steps">
+      <li><span class="num">01</span><h4>Escolha a sua Raspberry Pi</h4><p>Pi 3 ou Pi 4. O app pega a versão certa do RetroPie para ela.</p></li>
+      <li><span class="num">02</span><h4>Coloque o cartão no computador</h4><p>Ele mostra só os cartões removíveis, com nome e tamanho, para você não apagar o disco errado.</p></li>
+      <li><span class="num">03</span><h4>Confirme o Wi-Fi da casa</h4><p>A rede do seu computador já vem preenchida. O fliperama nasce conectado.</p></li>
+      <li><span class="num">04</span><h4>Ele baixa, confere e grava</h4><p>Baixa o RetroPie, confere se o download veio inteiro e grava o cartão, com a barra de progresso na tela.</p></li>
+      <li><span class="num">05</span><h4>Ligue a Pi</h4><p>O app encontra o fliperama na rede sozinho e deixa tudo pronto: nome, fuso horário, conexão salva.</p></li>
+    </ol>
+    <div>
+      <div class="wizard" role="img" aria-label="Ilustração da aba Novo fliperama gravando o cartão no passo 4 de 5">
+        <div class="bar"><i></i><i></i><i></i><span>Novo fliperama</span></div>
+        <div class="trail"><div class="ok" data-n="1">Raspberry</div><div class="ok" data-n="2">Cartão</div><div class="ok" data-n="3">Wi-Fi</div><div class="now" data-n="4">Gravar</div><div data-n="5">Ligar</div></div>
+        <div class="body">
+          <h5>Gravando o RetroPie no cartão</h5>
+          <p>Não tire o cartão até terminar. O Wi-Fi da casa já está dentro.</p>
+          <div class="prog"><i></i></div>
+          <div class="prog-l"><span>RetroPie 4.8 · Pi 3/4</span><span>64%</span></div>
+          <div class="chips"><span>cartão <b>SD 32 GB</b></span><span>Wi-Fi <b>Casa</b></span><span>download <b>conferido</b></span></div>
+        </div>
+      </div>
+      <div class="warn"><svg class="ic"><use href="#i-alert"/></svg><p><b>Gravar apaga o cartão inteiro.</b> Use um cartão só para o fliperama. Antes de apagar, o app confere de novo se é removível e se o tamanho bate.</p></div>
+    </div>
+  </div>
+</section>
+
+<section id="jogos">
+  <div class="shead">
+    <p class="eyebrow">02 · JOGOS</p>
+    <h2>Seus jogos no fliperama, pelo Wi-Fi</h2>
+    <p>Do computador para a tela do fliperama em segundos. Sem pendrive, sem tirar o cartão, sem saber em qual pasta cada jogo mora.</p>
+  </div>
+  <div class="rows">
+    <div class="row">
+      <div class="shot"><img src="../assets/app_consoles.jpg?v=20261021" alt="Janela 'Qual é o videogame deste jogo?' com os videogames suportados" width="2400" height="1632" loading="lazy"></div>
+      <div>
+        <h3>Diga de qual videogame é. O resto é com ele.</h3>
+        <p>Escolha o arquivo no computador, marque o videogame e mande. O jogo vai para o lugar certo e aparece na lista do fliperama na hora.</p>
+        <ul>
+          <li><b>34 videogames</b>: Nintendo, Super Nintendo, Mega Drive, PlayStation, Dreamcast, Neo Geo, arcade e mais</li>
+          <li><b>Capa automática</b>: ele procura a capa do jogo e já põe no menu</li>
+          <li><b>Discos prontos</b>: jogo de PlayStation ou Dreamcast em .zip ou .7z é aberto e arrumado sozinho</li>
+        </ul>
+      </div>
+    </div>
+    <div class="row flip">
+      <div class="shot"><img src="../assets/app_envio.jpg?v=20261021" alt="Faixa de envio do app mostrando o jogo indo para o fliperama" width="2400" height="252" loading="lazy"></div>
+      <div>
+        <h3>Achou um jogo? Ele cai direto no fliperama</h3>
+        <p>O app tem um navegador por dentro. O que você baixar por ele já sai do computador direto para o fliperama, no videogame certo, sem você copiar nada.</p>
+        <ul>
+          <li><b>Modo automático</b>: baixou, mandou, capa posta</li>
+          <li><b>Não cabe?</b> Ele confere o espaço do cartão antes e avisa</li>
+          <li><b>Biblioteca</b> com todos os jogos do fliperama, tamanho de cada um e apagar com um clique</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+  <div class="honest"><svg class="ic"><use href="#i-info"/></svg><p><b>O app não vem com jogos.</b> Você coloca os jogos que já tem, os seus backups, e os muitos jogos livres e homebrew feitos por fãs para esses videogames. Jogo comercial só com o original na mão: o app é a ferramenta, a escolha do que colocar é sua.</p></div>
+</section>
+
+<section id="jogar">
+  <div class="shead">
+    <p class="eyebrow">03 · JOGAR</p>
+    <h2>Liga e já parece fliperama de verdade</h2>
+    <p>O RetroPie puro é cinza e cheio de menu. O app instala o tema do Arcade do Zero: abertura, menu e tela de carregamento desenhados em pixel, com cara de fliperama de bar.</p>
+  </div>
+  <div class="rows">
+    <div class="row">
+      <div class="pair">
+        <figure><div class="shot"><img src="../fliper/assets/theme-splash.webp" alt="Tela de abertura do tema Arcade do Zero" width="1600" height="900" loading="lazy"></div><figcaption>abertura</figcaption></figure>
+        <figure><div class="shot"><img src="../fliper/assets/theme-loading.webp" alt="Tela de carregamento do tema com o nome do videogame" width="1600" height="900" loading="lazy"></div><figcaption>carregando o jogo</figcaption></figure>
+      </div>
+      <div>
+        <h3>O tema do fliperama vem junto</h3>
+        <p>Um clique e a tela muda: abertura animada, menu com a roda de videogames e o personagem de cada um, tela de carregamento com o nome do console.</p>
+        <ul>
+          <li><b>Tema próprio</b>, desenhado para o Arcade do Zero</li>
+          <li>Funciona com o <b>controle do fliperama</b>: manche e botões, sem teclado</li>
+          <li>Quer voltar ao visual antigo? É só trocar na aba Temas</li>
+        </ul>
+      </div>
+    </div>
+    <div class="row flip">
+      <div class="shot"><img src="../assets/app_temas.jpg?v=20261021" alt="Aba Temas do app com os visuais disponíveis" width="2400" height="1632" loading="lazy"></div>
+      <div>
+        <h3>Centenas de outros visuais</h3>
+        <p>Prefere outro estilo? A aba Temas mostra os temas da comunidade com foto, e só os que funcionam no seu fliperama.</p>
+        <ul>
+          <li><b>Filtre por cor ou criador</b>, esconda os que não gostou</li>
+          <li><b>Espaço no cartão</b> e <b>reiniciar o fliperama</b> pelo computador</li>
+          <li><b>Acha o fliperama sozinho</b> no Wi-Fi de casa, sem número de rede</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section id="precisa">
+  <div class="shead">
+    <p class="eyebrow">O QUE VOCÊ PRECISA</p>
+    <h2>Quatro coisas, e duas você já tem</h2>
+  </div>
+  <div class="reqs">
+    <div class="req"><span class="num">01</span><h4>Um PC com Windows</h4><p>Windows 10 ou 11, 64-bit. É onde o app roda.</p></div>
+    <div class="req"><span class="num">02</span><h4>Uma Raspberry Pi</h4><p>Pi 3 ou Pi 4. Já tem RetroPie? Serve também: o app encontra.</p></div>
+    <div class="req"><span class="num">03</span><h4>Um cartão microSD</h4><p>16 GB ou mais. Para jogos de PlayStation, 32 GB.</p></div>
+    <div class="req"><span class="num">04</span><h4>Wi-Fi em casa</h4><p>O mesmo Wi-Fi para o PC e o fliperama.</p></div>
+  </div>
+</section>
+
+<section id="confianca">
+  <div class="shead">
+    <p class="eyebrow">CONFIANÇA</p>
+    <h2>Grátis, aberto e sem rastreio</h2>
+  </div>
+  <ul class="trust">
+    <li><svg class="ic"><use href="#i-code"/></svg><div><b>Código aberto</b><span>Todo o funcionamento está no GitHub, em desktop-app/src. Nada escondido.</span></div></li>
+    <li><svg class="ic"><use href="#i-shield"/></svg><div><b>Gere o seu próprio .exe</b><span>Em 3 comandos você compila o app e obtém o mesmo programa.</span></div></li>
+    <li><svg class="ic"><use href="#i-eye"/></svg><div><b>Sem conta, sem telemetria</b><span>Fala só com a sua Raspberry Pi, com os sites que você abrir e com o GitHub.</span></div></li>
+    <li><svg class="ic"><use href="#i-lock"/></svg><div><b>Seus dados ficam no seu PC</b><span>Endereço e senha da Pi ficam num arquivo local. Nada sobe para servidor.</span></div></li>
+  </ul>
+  <div class="warn"><svg class="ic"><use href="#i-alert"/></svg><p><b>"O Windows protegeu o seu PC".</b> App grátis sem certificado pago recebe esse aviso azul ao abrir. Não é vírus: clique em <b>Mais informações</b> e em <b>Executar assim mesmo</b>.</p></div>
+</section>
+
+<section id="perguntas">
+  <div class="shead">
+    <p class="eyebrow">PERGUNTAS</p>
+    <h2>Antes de baixar</h2>
+  </div>
+  <div class="faq">
+    <details><summary>É grátis mesmo?</summary><p>Sim. Sem período de teste, sem anúncio, sem conta. O código está aberto no GitHub.</p></details>
+    <details><summary>Preciso saber Linux ou programação?</summary><p>Não. Tudo é clicando: o app grava o cartão, acha o fliperama na rede e manda os jogos. Você nunca abre um terminal.</p></details>
+    <details><summary>O app vem com jogos?</summary><p>Não. Você coloca os jogos que já tem e jogos livres ou homebrew. Jogos comerciais só se você tiver o original: o app só transporta o arquivo que você escolher.</p></details>
+    <details><summary>Já tenho um fliperama com RetroPie. Serve?</summary><p>Serve. Pule a parte de criar: o app procura o fliperama no Wi-Fi e você já pode mandar jogos e trocar o tema.</p></details>
+    <details><summary>Funciona no Mac ou no Linux?</summary><p>Por enquanto só no Windows. Quem sabe compilar pode gerar no Mac ou no Linux a partir do código aberto, mas não é testado.</p></details>
+    <details><summary>Gravar o cartão apaga o quê?</summary><p>Só o cartão que você escolher, e ele inteiro. O app lista apenas cartões removíveis e confere tamanho e nome de novo antes de apagar.</p></details>
+  </div>
+</section>
+
+<div class="final">
+  <div><h2>Seu fliperama começa por aqui</h2><p>Baixe o app, coloque o cartão e siga os passos. O resto ele faz.</p></div>
+  <div class="cta"><a href="https://github.com/lucasdcorrea1/arcade-do-zero/releases/latest/download/RetroPie-ROM-Sender-portable.exe" class="btn primary"><svg class="ic"><use href="#i-down"/></svg>Baixar grátis</a></div>
+</div>
+</main>
+
+<footer>
+  <span>Arcade do Zero · projeto aberto · 2026 · gabinete: design original de <a href="https://makerworld.com/pt/@LeapTechOnline">LeapTechOnline</a></span>
+  <span><a href="../index.html">Início</a> · <a href="../guia.html">Guia</a> · <a href="../controle.html">Controle</a> · <a href="https://github.com/lucasdcorrea1/arcade-do-zero">GitHub</a></span>
+</footer>
+<!-- site-extras --><style>.wa-btn{position:fixed;right:20px;bottom:20px;z-index:190;display:flex;align-items:center;gap:9px;height:52px;padding:0 18px 0 15px;border-radius:26px;background:#25d366;color:#06130a;font:600 14.5px/1 "IBM Plex Sans",system-ui,sans-serif;text-decoration:none;box-shadow:0 10px 28px -8px rgba(0,0,0,.7)}.wa-btn:hover{background:#3ee07a}.wa-btn svg{width:24px;height:24px;fill:currentColor}.wa-btn.compact{width:52px;padding:0;justify-content:center}.wa-btn.compact span{display:none}@media(max-width:680px){.wa-btn{right:14px;bottom:14px;width:52px;padding:0;justify-content:center}.wa-btn span{display:none}}</style><a class="wa-btn" href="https://wa.me/5516999493490?text=Oi%21%20Vi%20o%20app%20RetroPie%20ROM%20Sender%20no%20site%20Arcade%20do%20Zero%20e%20tenho%20uma%20d%C3%BAvida." target="_blank" rel="noopener" aria-label="Fale no WhatsApp"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M.057 24l1.687-6.163a11.867 11.867 0 0 1-1.587-5.946C.16 5.335 5.495 0 12.05 0a11.817 11.817 0 0 1 8.413 3.488 11.824 11.824 0 0 1 3.48 8.414c-.003 6.557-5.338 11.892-11.893 11.892a11.9 11.9 0 0 1-5.688-1.448L.057 24zm6.597-3.807c1.676.995 3.276 1.591 5.392 1.592 5.448 0 9.886-4.434 9.889-9.885.002-5.462-4.415-9.89-9.881-9.892-5.452 0-9.887 4.434-9.889 9.884-.001 2.225.651 3.891 1.746 5.634l-.999 3.648 3.742-.981zm11.387-5.464c-.074-.124-.272-.198-.57-.347-.297-.149-1.758-.868-2.031-.967-.272-.099-.47-.149-.669.149-.198.297-.768.967-.941 1.165-.173.198-.347.223-.644.074-.297-.149-1.255-.462-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.297-.347.446-.521.151-.172.2-.296.3-.495.099-.198.05-.372-.025-.521-.075-.148-.669-1.611-.916-2.206-.242-.579-.487-.501-.669-.51l-.57-.01c-.198 0-.52.074-.792.372s-1.04 1.016-1.04 2.479 1.065 2.876 1.213 3.074c.149.198 2.095 3.2 5.076 4.487.709.306 1.263.489 1.694.626.712.226 1.36.194 1.872.118.571-.085 1.758-.719 2.006-1.413.248-.695.248-1.29.173-1.414z"/></svg><span>WhatsApp</span></a><script type='module' src='https://static.cloudflareinsights.com/beacon.min.js' data-cf-beacon='{"token": "d5aed4a777384f0ba421bb937a41ff36"}'></script><!-- /site-extras --></body>
+</html>
